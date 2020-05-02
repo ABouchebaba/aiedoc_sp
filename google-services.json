@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "631322958940",
+    "firebase_url": "https://aiedoc-test-sp.firebaseio.com",
+    "project_id": "aiedoc-test-sp",
+    "storage_bucket": "aiedoc-test-sp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631322958940:android:205b3066762a378c079a99",
+        "android_client_info": {
+          "package_name": "com.aiedoc.aiedocTestSp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "631322958940-p8fopeoq112tmqc260bjnsvoke2pit9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ6kSM-hBTl7NI1uaiD09fx8XooeuJF-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "631322958940-p8fopeoq112tmqc260bjnsvoke2pit9g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
