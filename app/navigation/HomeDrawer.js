@@ -10,6 +10,7 @@ import Commands from '../screens/Commands';
 import StoreStack from './StoreStack';
 
 const HomeDrawer = createDrawerNavigator();
+// android:launchMode="singleTask"
 
 function HomeDrawerScreen() {
   return (

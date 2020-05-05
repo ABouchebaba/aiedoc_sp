@@ -1,4 +1,5 @@
-import Animated, { Easing } from "react-native-reanimated";
+import React, {useState} from 'react';
+import Animated, {Easing} from 'react-native-reanimated';
 
 export const timing = (value, toValue, duration = 300) => {
   return Animated.timing(value, {
@@ -7,3 +8,6 @@ export const timing = (value, toValue, duration = 300) => {
     easing: Easing.linear,
   });
 };
+
+export * from './Socket';
+export * from './AppStateEvents';
