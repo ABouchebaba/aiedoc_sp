@@ -12,10 +12,10 @@ function AuthStackScreen() {
   return (
     <AuthStack.Navigator headerMode={false} initialRouteName={'AuthPhone'}>
       <AuthStack.Screen name="AuthPhone" component={AuthPhone} />
-      {/* <AuthStack.Screen name="AuthPin" component={AuthPin} />
+      <AuthStack.Screen name="AuthPin" component={AuthPin} />
       <AuthStack.Screen name="AuthForm" component={AuthForm} />
       <AuthStack.Screen name="AuthProForm" component={AuthProForm} />
-      <AuthStack.Screen name="AuthServiceForm" component={AuthServiceForm} /> */}
+      <AuthStack.Screen name="AuthServiceForm" component={AuthServiceForm} />
     </AuthStack.Navigator>
   );
 }

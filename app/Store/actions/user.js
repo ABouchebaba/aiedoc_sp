@@ -55,6 +55,7 @@ export const register = (user) => (dispatch) => {
         type: UNSET_USER,
       });
       // alert("Veuillez vérifier votre connexion internet");
+      console.log(err);
       console.log('error: ' + err?.response?.data || err.message);
     });
 };

@@ -18,9 +18,11 @@ const AuthServiceForm = (props) => {
   const {services, loading} = useSelector((state) => state.services);
   const [userService, setUserServices] = useState([]);
 
+  console.log(services.reduce((p, c) => [...p, c.services], []));
+
   function submitServices() {
-    const services = userService.map((x) => x.value.split(' -- ')[1]);
-    const data = {...infos, services: services};
+    // const services = userService.map((x) => x.value.split(' -- ')[1]);
+    const data = {...infos, services: userService};
     // console.log(data);
     const formData = new FormData();
     // Object.keys(data).forEach((key) => formData.append(key, data[key]));
@@ -34,12 +36,15 @@ const AuthServiceForm = (props) => {
     formData.append('commune', data.commune);
     formData.append('jobTitle', data.jobTitle);
     formData.append('sex', data.sex);
+    formData.append('files', data.files);
+    formData.append('types', data.types);
+    formData.append('descriptions', data.descriptions);
 
-    for (let i = 0; i < data.files.length; i++) {
-      formData.append('files', data.files[i]);
-      formData.append('types', data.types[i]);
-      formData.append('descriptions', data.descriptions[i]);
-    }
+    // for (let i = 0; i < data.files.length; i++) {
+    //   formData.append('files', data.files[i]);
+    //   formData.append('types', data.types[i]);
+    //   formData.append('descriptions', data.descriptions[i]);
+    // }
     // console.log(formData);
 
     dispatch(register(formData));
@@ -65,7 +70,13 @@ const AuthServiceForm = (props) => {
               selectedLabelStyle={{color: 'blue'}}
               rowStyle={{backgroundColor: 'rgba(255,255,255,0)'}}
               checkboxStyle={{borderColor: '#4EC7E6'}}
-              items={services}
+              items={services.reduce(
+                (services, type) => [
+                  ...services,
+                  ...type.services.map((s) => s.name),
+                ],
+                [],
+              )}
               selectedItems={userService}
               onSelectionsChange={(value) => setUserServices(value)}
             />

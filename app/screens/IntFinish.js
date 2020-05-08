@@ -1,12 +1,15 @@
 import React, {useEffect} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Linking} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {unsetCurrent, setCurrent} from '../Store/actions';
+import {setCurrent} from '../Store/actions';
 import {Socket, AppStateEvents} from '../helpers';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {BackImage} from '../components';
 
 const IntFinish = (props) => {
   const dispatch = useDispatch();
   const {intervention, loading} = useSelector((state) => state.current);
+  const phoneNumber = '0556276461';
   const socket = Socket.getInstance();
   socket.sync(intervention._id);
 
@@ -38,20 +41,59 @@ const IntFinish = (props) => {
     socket.emit('finish', intervention._id);
   };
 
+  const call = () => {
+    Linking.openURL(`tel:${phoneNumber}`);
+  };
+
   return (
-    <View>
-      <TouchableOpacity style={styles.action} onPress={finish}>
-        <Text>Finish</Text>
-      </TouchableOpacity>
-    </View>
+    <BackImage source={require('../../assets/bg/bg1.png')}>
+      <View>
+        <Text style={styles.callText}>
+          Appuyer sur le bouton ci-dessous pour contacter le client.
+        </Text>
+        <TouchableOpacity style={styles.call} onPress={call}>
+          <Ionicons name="md-call" size={60} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.finish} onPress={finish}>
+          <Text style={styles.finishText}>Préstation terminée ?</Text>
+          <Text style={styles.finishText}>Passer à la facture</Text>
+        </TouchableOpacity>
+      </View>
+    </BackImage>
   );
 };
 
 const styles = {
-  action: {
-    backgroundColor: 'yellow',
-    margin: 10,
-    padding: 10,
+  callText: {
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+    margin: 20,
+  },
+  call: {
+    width: 70,
+    height: 70,
+    backgroundColor: '#5cb85c',
+    borderRadius: 35,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20,
+  },
+  finish: {
+    backgroundColor: '#428bca',
+    borderRadius: 10,
+    maxWidth: 300,
+    marginTop: 50,
+    padding: 20,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  finishText: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
   },
 };
 

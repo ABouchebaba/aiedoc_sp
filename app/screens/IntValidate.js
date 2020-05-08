@@ -1,26 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {unsetCurrent, setCurrent} from '../Store/actions';
+import {getServices, setCurrent} from '../Store/actions';
+import {getAllServices} from '../Store/selectors';
 import {Socket, AppStateEvents} from '../helpers';
+import {BackImage} from '../components';
 
 const IntValidate = (props) => {
   const dispatch = useDispatch();
   const {intervention, loading} = useSelector((state) => state.current);
-  const [services, setservices] = useState({massage: 5000, injection: 3000});
+  const services = useSelector(getAllServices);
+  const [selected, setSelected] = useState([]);
 
-  let total_price = Object.values(services).reduce((p, c) => p + c);
+  let total_price = selected.reduce((p, c) => p + c.price, 0);
 
   const socket = Socket.getInstance();
-  socket.sync(intervention._id);
-
-  const responses = {
-    goReview: (intervention) => dispatch(setCurrent(intervention)),
-  };
-  socket.addEvents(responses);
 
   useEffect(() => {
+    socket.sync(intervention._id);
+    const responses = {
+      goReview: (intervention) => dispatch(setCurrent(intervention)),
+    };
+    socket.addEvents(responses);
     console.log('adding sync event');
+    dispatch(getServices());
     AppStateEvents.addNamedEvent('validate-sync', 'change', (nextAppState) => {
       if (nextAppState === 'active') {
         // trigger on foreground only
@@ -39,33 +42,124 @@ const IntValidate = (props) => {
   const validate = () => {
     socket.emit('validate', {
       int_id: intervention._id,
-      services: Object.keys(services),
+      services: selected.map((s) => s.name),
       total_price,
     });
   };
 
+  const addService = (s) => setSelected([...selected, s]);
+
+  const removeService = (i) => {
+    selected.splice(i, 1);
+    setSelected([...selected]);
+  };
+
   return (
-    <View>
-      <View>
-        {Object.keys(services).map((s) => (
-          <Text key={s}>{s} </Text>
-        ))}
+    <BackImage source={require('../../assets/bg/bg1.png')}>
+      <Text style={styles.title}>Selectioner les services effectués : </Text>
+      <View style={styles.toSelect}>
+        <ScrollView contentContainerStyle={styles.scroll}>
+          {services.map((s, i) => (
+            <TouchableOpacity
+              key={i}
+              onPress={() => addService(s)}
+              style={styles.element}>
+              <Text>
+                {s.name} - ({s.price} DA)
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
-      <View>
-        <Text>Total : {total_price}</Text>
+      <View style={styles.selected}>
+        <ScrollView contentContainerStyle={styles.scroll}>
+          {selected.map((s, i) => (
+            <TouchableOpacity
+              key={i}
+              onPress={() => removeService(i)}
+              style={styles.element}>
+              <Text>
+                {s.name} - ({s.price} DA)
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
-      <TouchableOpacity style={styles.action} onPress={validate}>
-        <Text>Validate</Text>
+
+      <Text style={styles.price}>Total : {total_price} DA</Text>
+
+      <TouchableOpacity onPress={validate} style={styles.validate}>
+        <Text style={styles.validateText}>Valider</Text>
       </TouchableOpacity>
-    </View>
+    </BackImage>
   );
 };
 
 const styles = {
-  action: {
-    backgroundColor: 'yellow',
-    margin: 10,
+  title: {
+    marginVertical: 20,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+  },
+  toSelect: {
+    alignSelf: 'center',
+    height: '40%',
+    width: '95%',
+    borderRadius: 20,
+    marginHorizontal: 10,
     padding: 10,
+    backgroundColor: '#428bca',
+  },
+  selected: {
+    alignSelf: 'center',
+    height: '25%',
+    width: '95%',
+    borderRadius: 20,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    padding: 10,
+    backgroundColor: '#428bca',
+  },
+  scroll: {
+    width: '100%',
+    // backgroundColor: '#428bca',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+  element: {
+    backgroundColor: 'white',
+    padding: 10,
+    margin: 5,
+    // width: '45%',
+    borderRadius: 5,
+  },
+  price: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'white',
+    padding: 10,
+    textAlign: 'center',
+    borderTopWidth: 3,
+    borderBottomWidth: 3,
+    borderColor: 'white',
+  },
+  validate: {
+    alignSelf: 'center',
+    marginVertical: 10,
+    padding: 20,
+    backgroundColor: '#5cb85c',
+    borderRadius: 10,
+    borderColor: 'white',
+    borderWidth: 1,
+  },
+  validateText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
   },
 };
 

@@ -1,8 +1,10 @@
-import { BACKEND_URL } from "react-native-dotenv";
-import axios from "axios";
+import {BACKEND_URL} from 'react-native-dotenv';
+import axios from 'axios';
 
-export const setState = async (id, state) => {
+export const setState = async (id, state, longitude, latitude) => {
   return axios.put(`${BACKEND_URL}/api/serviceProviders/${id}/state`, {
     state,
+    longitude,
+    latitude,
   });
 };
