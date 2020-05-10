@@ -18,36 +18,11 @@ const AuthServiceForm = (props) => {
   const {services, loading} = useSelector((state) => state.services);
   const [userService, setUserServices] = useState([]);
 
-  console.log(services.reduce((p, c) => [...p, c.services], []));
+  // console.log(services.reduce((p, c) => [...p, c.services], []));
 
-  function submitServices() {
-    // const services = userService.map((x) => x.value.split(' -- ')[1]);
+  async function submitServices() {
     const data = {...infos, services: userService};
-    // console.log(data);
-    const formData = new FormData();
-    // Object.keys(data).forEach((key) => formData.append(key, data[key]));
-    // console.log(formData)
-    formData.append('phone', data.phone);
-    formData.append('firstname', data.firstname);
-    formData.append('lastname', data.lastname);
-    formData.append('birthdate', data.birthdate);
-    formData.append('email', data.email);
-    formData.append('wilaya', data.wilaya);
-    formData.append('commune', data.commune);
-    formData.append('jobTitle', data.jobTitle);
-    formData.append('sex', data.sex);
-    formData.append('files', data.files);
-    formData.append('types', data.types);
-    formData.append('descriptions', data.descriptions);
-
-    // for (let i = 0; i < data.files.length; i++) {
-    //   formData.append('files', data.files[i]);
-    //   formData.append('types', data.types[i]);
-    //   formData.append('descriptions', data.descriptions[i]);
-    // }
-    // console.log(formData);
-
-    dispatch(register(formData));
+    dispatch(register(data));
   }
 
   useEffect(() => {
@@ -78,7 +53,9 @@ const AuthServiceForm = (props) => {
                 [],
               )}
               selectedItems={userService}
-              onSelectionsChange={(value) => setUserServices(value)}
+              onSelectionsChange={(value) => {
+                setUserServices(value.map((s) => s.value));
+              }}
             />
             <View style={styles.bottom}>
               {userService.length !== 0 && (

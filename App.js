@@ -1,4 +1,5 @@
 import React from 'react';
+import {AsyncStorage} from 'react-native';
 import {store, persistor} from './app/Store';
 import {Provider} from 'react-redux';
 import Navigator from './app/navigation';
@@ -57,7 +58,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     OneSignal.setLogLevel(6, 0);
-
+    // AsyncStorage.clear();
     OneSignal.init('aac6ed8b-9b71-4cd7-95c4-dc0931101a87', {
       kOSSettingsKeyAutoPrompt: false,
       kOSSettingsKeyInAppLaunchURL: false,

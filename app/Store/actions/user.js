@@ -1,6 +1,8 @@
 import {SET_USER, UNSET_USER, USER_LOADING} from '../../constants/ActionTypes';
 import {validatePin, getUserWithPhone, registerUser} from '../api';
 import axios from 'axios';
+import RNFetchBlob from 'rn-fetch-blob';
+
 import {Platform} from 'react-native';
 import * as Permissions from 'expo-permissions';
 
@@ -42,13 +44,49 @@ export const login = (info, callbacks) => (dispatch) => {
 
 export const register = (user) => (dispatch) => {
   dispatch({type: USER_LOADING});
-  registerUser(user)
+
+  let data = [
+    {name: 'phone', data: user.phone},
+    {name: 'firstname', data: user.firstname},
+    {name: 'lastname', data: user.lastname},
+    {name: 'birthdate', data: user.birthdate},
+    {name: 'email', data: user.email},
+    {name: 'wilaya', data: user.wilaya},
+    {name: 'commune', data: user.commune},
+    {name: 'jobTitle', data: user.jobTitle},
+    {name: 'sex', data: user.sex},
+    {name: 'services', data: JSON.stringify(user.services)},
+  ];
+
+  for (let i = 0; i < user.files.length; i++) {
+    data = [
+      ...data,
+      {name: 'types', data: user.types[i]},
+      {name: 'descriptions', data: user.descriptions[i]},
+      {
+        name: 'docs',
+        filename: user.files[i].name,
+        data: RNFetchBlob.wrap(user.files[i].uri),
+      },
+    ];
+  }
+
+  registerUser(data)
     .then((res) => {
-      dispatch({
-        type: SET_USER,
-        data: res.data,
-        token: res.headers['x-auth-token'],
-      });
+      if (res.info().status == 200) {
+        console.log(res.info().headers['x-auth-token']); // retrieve auth token
+        console.log(res.json()); // equivalent of res.data
+
+        dispatch({
+          type: SET_USER,
+          data: res.json(),
+          token: res.info().headers['x-auth-token'],
+        });
+      } else {
+        // server error : equivalent to normal catch
+        console.log(res?.text()); // this is the handeled error message in backend
+        alert('Une erreur est survenue, veuillez réessayer.');
+      }
     })
     .catch((err) => {
       dispatch({

@@ -1,5 +1,4 @@
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
@@ -34,20 +33,7 @@ const AuthProForm = (props) => {
   const disabledValidation = !(job !== '' && diplomes.length !== 0);
 
   async function addDiplome() {
-    let file = {};
-    try {
-      file = await FileSystem.readAsStringAsync(diplome.file.uri);
-    } catch (err) {
-      console.log('error reading file');
-    }
-
-    // console.log(diplome.file);
-    console.log(file);
-    diplomes.push({
-      type: diplome.type,
-      description: diplome.description,
-      file: file,
-    });
+    diplomes.push(diplome);
     setDiplome({type: '', file: '', description: ''});
   }
 
@@ -60,31 +46,28 @@ const AuthProForm = (props) => {
 
   const _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({
-      // type: "application/pdf",
       copyToCacheDirectory: true,
     });
-    // alert(result.uri);
-    console.log(result);
-    if (result.type == 'success') setDiplome({...diplome, file: result});
+
+    const file = {
+      uri: result.uri,
+      name: result.name,
+    };
+    setDiplome({...diplome, file});
   };
 
   const submit = () => {
     const info = props.route.params;
-    // console.log({...info, jobTitle: job,diplomas: diplomes});
 
     const descriptions = [];
     const files = [];
     const types = [];
-    // cownsole.log(diplomes)
     diplomes.map(async (x) => {
       descriptions.push(x.description);
       types.push(x.type);
       files.push(x.file);
     });
-    // console.log(descriptions);
-    // console.log(types);
-    // console.log(files.length);
-    // dispatch(register({...info, jobTitle: job,diplomas: diplomes}));
+
     props.navigation.navigate('AuthServiceForm', {
       ...info,
       jobTitle: job,

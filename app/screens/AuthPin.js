@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { View, TextInput, Button, ActivityIndicator } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../Store/actions";
+import React, {useState} from 'react';
+import {View, TextInput, Button, ActivityIndicator} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {login} from '../Store/actions';
 
 const AuthPin = (props) => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.user.loading);
-  const [verificationCode, setVerificationCode] = useState("");
-  // const { phoneNumber, verificationId } = props.route.params;
-  const phoneNumber = "+213556276461";
-  const verificationId = "azerty";
+  const [verificationCode, setVerificationCode] = useState('');
+  const {phoneNumber, verificationId} = props.route.params;
+  // const phoneNumber = "+213556276461";
+  // const verificationId = 'azerty';
 
   const onPinError = () => {
-    alert("Wrong pin code");
+    alert('Wrong pin code');
   };
   const onVerfiyPhoneError = (err) => {
-    props.navigation.navigate("AuthForm", { phoneNumber });
+    props.navigation.navigate('AuthForm', {phoneNumber});
   };
 
   const onPressConfirmVerificationCode = async () => {};
@@ -55,19 +55,19 @@ const AuthPin = (props) => {
 const styles = {
   container: {
     flex: 1,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   TextInput: {
-    backgroundColor: "white",
-    width: "60%",
+    backgroundColor: 'white',
+    width: '60%',
     height: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
     borderWidth: 1,
-    borderColor: "#efefef",
+    borderColor: '#efefef',
     borderRadius: 20,
     marginBottom: 10,
   },

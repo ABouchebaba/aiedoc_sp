@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,30 +7,30 @@ import {
   ActivityIndicator,
   Picker,
   Alert,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { register } from "../Store/actions";
-import DatePicker from "../components/DatePicker";
-import Button from "../components/Button";
-import { BackImage } from "../components/";
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {register} from '../Store/actions';
+import DatePicker from '../components/DatePicker';
+import Button from '../components/Button';
+import {BackImage} from '../components/';
 
 const AuthForm = (props) => {
   const dispatch = useDispatch();
-  // const { phoneNumber: phone } = props.route.params;
-  const phone = "+213555077433";
-  const [email, setEmail] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [birthdate, setBirthdate] = useState("");
+  const {phoneNumber: phone} = props.route.params;
+  // const phone = "+213555077433";
+  const [email, setEmail] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [birthdate, setBirthdate] = useState('');
   const [wilaya, setWilaya] = useState({
-    nom: "",
-    code: "",
+    nom: '',
+    code: '',
   });
-  const [region, setRegion] = useState("");
-  const [sex, setSex] = useState("");
+  const [region, setRegion] = useState('');
+  const [sex, setSex] = useState('');
 
-  const wilayas = require("../helpers/wilayas.json");
-  const communes = wilaya == "" ? [] : require("../helpers/communes.json");
+  const wilayas = require('../helpers/wilayas.json');
+  const communes = wilaya == '' ? [] : require('../helpers/communes.json');
   // const communes = []
   const disabled = !(
     email &&
@@ -46,7 +46,7 @@ const AuthForm = (props) => {
   const submit = () => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       // console.log({ phone, email, firstname, lastname, birthdate, wilaya,commune:region  });
-      props.navigation.navigate("AuthProForm", {
+      props.navigation.navigate('AuthProForm', {
         phone,
         email,
         firstname,
@@ -54,24 +54,24 @@ const AuthForm = (props) => {
         birthdate,
         wilaya: wilaya.nom,
         commune: region,
-        sex: sex
+        sex: sex,
       });
       // dispatch(register({ phone, email, firstname, lastname, birthdate }));
     } else {
-      return Alert.alert("Erreur", "Adresse mail incorrecte");
+      return Alert.alert('Erreur', 'Adresse mail incorrecte');
     }
     // register user in backend@
   };
 
   return (
-    <BackImage source={require("../../assets/bg/bg1.png")}>
+    <BackImage source={require('../../assets/bg/bg1.png')}>
       {loading ? (
         <ActivityIndicator size="large" color="white" />
       ) : (
         <View style={styles.mainView}>
           <Text style={styles.title}>Informations personnelle</Text>
           <View style={styles.row}>
-            <View style={{ flex: 0.48 }}>
+            <View style={{flex: 0.48}}>
               <Text style={styles.label}>Prénom</Text>
               <TextInput
                 placeholder="Elon"
@@ -81,7 +81,7 @@ const AuthForm = (props) => {
                 style={styles.RowTextInput}
               />
             </View>
-            <View style={{ flex: 0.48 }}>
+            <View style={{flex: 0.48}}>
               <Text style={styles.label}>Nom</Text>
               <TextInput
                 placeholder="Musk"
@@ -93,7 +93,7 @@ const AuthForm = (props) => {
             </View>
           </View>
           <View style={styles.row}>
-            <View style={{ flex: 0.6 }}>
+            <View style={{flex: 0.6}}>
               <Text style={styles.label}>Date de naissance</Text>
               <DatePicker
                 title="Date de naissance"
@@ -102,27 +102,29 @@ const AuthForm = (props) => {
                 style={styles.TextInput}
               />
             </View>
-            <View style={{ flex: 0.35 }}>
+            <View style={{flex: 0.35}}>
               <Text style={styles.label}>Sexe</Text>
               <View style={styles.buttonWhite}>
-              <Picker
-                selectedValue={sex}
-                onValueChange={(itemValue) => setSex(itemValue)}
-              >
-                <Picker.Item color="#006592" label={"Homme"} value={"male"} />
-                <Picker.Item color="#006592" label={"Femme"} value={'female'} />
-              </Picker>
+                <Picker
+                  selectedValue={sex}
+                  onValueChange={(itemValue) => setSex(itemValue)}>
+                  <Picker.Item color="#006592" label={'Homme'} value={'male'} />
+                  <Picker.Item
+                    color="#006592"
+                    label={'Femme'}
+                    value={'female'}
+                  />
+                </Picker>
               </View>
             </View>
           </View>
           <View style={styles.row}>
-            <View style={{ flex: 0.48 }}>
+            <View style={{flex: 0.48}}>
               <Text style={styles.label}>Wilaya</Text>
               <View style={styles.buttonWhite}>
                 <Picker
                   selectedValue={wilaya}
-                  onValueChange={(itemValue) => setWilaya(itemValue)}
-                >
+                  onValueChange={(itemValue) => setWilaya(itemValue)}>
                   {wilayas.map((v, i) => {
                     return (
                       <Picker.Item
@@ -136,13 +138,12 @@ const AuthForm = (props) => {
                 </Picker>
               </View>
             </View>
-            <View style={{ flex: 0.48 }}>
+            <View style={{flex: 0.48}}>
               <Text style={styles.label}>Commune</Text>
               <View style={styles.buttonWhite}>
                 <Picker
                   selectedValue={region}
-                  onValueChange={(value) => setRegion(value)}
-                >
+                  onValueChange={(value) => setRegion(value)}>
                   {communes
                     .filter((commune) => commune.wilaya_id === wilaya.code)
                     .map((v, i) => {
@@ -165,7 +166,7 @@ const AuthForm = (props) => {
             autoCompleteType="email"
             keyboardType="email-address"
             textContentType="emailAddress"
-            style={{ ...styles.TextInput, width: "90%" }}
+            style={{...styles.TextInput, width: '90%'}}
           />
           <Button title="Register" onPress={submit} disabled={disabled} />
         </View>
@@ -176,18 +177,18 @@ const AuthForm = (props) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   title: {
     fontSize: 25,
-    color: "white",
+    color: 'white',
     marginBottom: 20,
   },
   TextInput: {
-    backgroundColor: "#F2F2F2",
-    width: "100%",
+    backgroundColor: '#F2F2F2',
+    width: '100%',
     borderRadius: 50,
     paddingLeft: 20,
     fontSize: 20,
@@ -195,8 +196,8 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   RowTextInput: {
-    backgroundColor: "#F2F2F2",
-    width: "100%",
+    backgroundColor: '#F2F2F2',
+    width: '100%',
     borderRadius: 50,
     paddingLeft: 20,
     fontSize: 20,
@@ -204,19 +205,19 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   buttonWhite: {
-    backgroundColor: "#F2F2F2",
+    backgroundColor: '#F2F2F2',
     borderRadius: 50,
     paddingLeft: 20,
     fontSize: 20,
     marginBottom: 40,
   },
   row: {
-    flexDirection: "row",
-    width: "90%",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    width: '90%',
+    justifyContent: 'space-between',
   },
   label: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
     marginLeft: 10,
   },
