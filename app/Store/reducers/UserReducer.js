@@ -1,16 +1,17 @@
 import {
   USER_LOADING,
   SET_USER,
+  SET_USER_DATA,
   SET_USER_STATE,
   SET_LOCATION,
   UNSET_USER,
   ERROR_USER,
-} from "../../constants/ActionTypes";
+} from '../../constants/ActionTypes';
 
 const initialState = {
   user: false,
   token: false,
-  location: { latitude: 36.7538, longitude: 3.058 },
+  location: {latitude: 36.7538, longitude: 3.058},
   loading: false,
   error: false,
 };
@@ -32,9 +33,17 @@ const UserReducer = (state = initialState, action) => {
         error: false,
       };
     }
+    case SET_USER_DATA: {
+      return {
+        ...state,
+        user: action.data,
+        loading: false,
+        error: false,
+      };
+    }
     case SET_USER_STATE: {
-      let user = { ...state.user, state: action.data };
-      return { ...state, user, loading: false, error: false };
+      let user = {...state.user, state: action.data};
+      return {...state, user, loading: false, error: false};
     }
     case SET_LOCATION: {
       return {

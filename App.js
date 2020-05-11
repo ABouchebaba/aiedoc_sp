@@ -29,7 +29,7 @@ class App extends React.Component {
   };
 
   onReceived(notification) {
-    // console.log('Notification received: ', notification);
+    console.log('Notification received: ', notification);
   }
 
   onOpened(openResult) {
@@ -38,6 +38,7 @@ class App extends React.Component {
     // console.log('isActive: ', openResult.notification.isAppInFocus);
     // console.log('openResult: ', openResult);
 
+    console.log('problem', openResult.notification.payload);
     // Get data from notification
     const data = openResult.notification.payload.additionalData;
 
@@ -51,25 +52,15 @@ class App extends React.Component {
     }
   }
 
-  onIds(device) {
-    console.log('Device info: ', device);
-  }
-
   constructor(props) {
     super(props);
     OneSignal.setLogLevel(6, 0);
     // AsyncStorage.clear();
-    OneSignal.init('aac6ed8b-9b71-4cd7-95c4-dc0931101a87', {
-      kOSSettingsKeyAutoPrompt: false,
-      kOSSettingsKeyInAppLaunchURL: false,
-      kOSSettingsKeyInFocusDisplayOption: 2,
-    });
   }
 
   componentWillUnmount() {
     OneSignal.removeEventListener('received', this.onReceived);
     OneSignal.removeEventListener('opened', this.onOpened);
-    OneSignal.removeEventListener('ids', this.onIds);
   }
 
   static getDerivedStateFromError(error) {
@@ -81,12 +72,22 @@ class App extends React.Component {
     // console.log(error);
   }
 
+  onIds = () => {
+    console.log('starting');
+  };
+
   componentDidMount() {
+    OneSignal.addEventListener('ids', this.onIds);
     OneSignal.addEventListener('received', this.onReceived);
     OneSignal.addEventListener('opened', this.onOpened);
-    OneSignal.addEventListener('ids', this.onIds);
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    console.log('Client id : ' + store.getState().current.client_id);
+    console.log('added events');
+
+    OneSignal.init('aac6ed8b-9b71-4cd7-95c4-dc0931101a87', {
+      kOSSettingsKeyAutoPrompt: false,
+      kOSSettingsKeyInAppLaunchURL: false,
+      kOSSettingsKeyInFocusDisplayOption: 2,
+    });
   }
 
   async load() {

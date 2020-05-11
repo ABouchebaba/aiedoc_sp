@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {getServices, setCurrent} from '../Store/actions';
+import {getServices, setCurrent, setUser} from '../Store/actions';
 import {getAllServices} from '../Store/selectors';
 import {Socket, AppStateEvents} from '../helpers';
 import {BackImage} from '../components';
@@ -19,7 +19,10 @@ const IntValidate = (props) => {
   useEffect(() => {
     socket.sync(intervention._id);
     const responses = {
-      goReview: (intervention) => dispatch(setCurrent(intervention)),
+      goReview: ({intervention, sp}) => {
+        dispatch(setUser(sp));
+        dispatch(setCurrent(intervention));
+      },
     };
     socket.addEvents(responses);
     console.log('adding sync event');
@@ -40,6 +43,7 @@ const IntValidate = (props) => {
   }, []);
 
   const validate = () => {
+    console.log('validating');
     socket.emit('validate', {
       int_id: intervention._id,
       services: selected.map((s) => s.name),

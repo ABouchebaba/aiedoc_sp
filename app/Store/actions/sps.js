@@ -10,20 +10,28 @@ import * as Permissions from 'expo-permissions';
 export const setOnlineState = (id, state) => async (dispatch) => {
   dispatch({type: USER_LOADING});
 
-  const {status, permissions} = await Permissions.askAsync(
-    Permissions.LOCATION,
-  );
-  if (status !== 'granted') {
-    // throw new Error("Permission to access location was denied");
-    alert("La permission d'accés à la localisation non-accordée");
+  try {
+    const {status, permissions} = await Permissions.askAsync(
+      Permissions.LOCATION,
+    );
+    if (status !== 'granted') {
+      // throw new Error("Permission to access location was denied");
+      alert("La permission d'accés à la localisation non-accordée");
+      return;
+    }
+  } catch (err) {
+    console.log(err.message);
     return;
   }
-  let {coords} = await Location.getCurrentPositionAsync({
-    accuracy: 5,
-    enableHighAccuracy: true,
-  });
 
-  const {longitude, latitude} = coords;
+  // let {coords} = await Location.getCurrentPositionAsync({
+  //   accuracy: 5,
+  //   enableHighAccuracy: true,
+  // });
+  // const {longitude, latitude} = coords;
+
+  const longitude = 3.067078;
+  const latitude = 36.6954435;
 
   setState(id, state, longitude, latitude)
     .then((res) => {

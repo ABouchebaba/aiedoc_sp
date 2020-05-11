@@ -52,6 +52,8 @@ export class Socket {
   emit(message, data) {
     if (this.socket) {
       this.socket.emit(message, data);
+    } else {
+      console.log('emit error: socket not defined');
     }
   }
 

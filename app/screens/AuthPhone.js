@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   View,
   TextInput,
@@ -7,68 +7,75 @@ import {
   ImageBackground,
   StyleSheet,
   Text,
-} from "react-native";
-import { sendPin, getOptions } from "../Store/api";
-import { login } from "../Store/actions";
+} from 'react-native';
+import {sendPin, getOptions} from '../Store/api';
+import {login} from '../Store/actions';
 import {
   FirebaseRecaptchaVerifierModal,
   FirebaseAuthApplicationVerifier,
-} from "expo-firebase-recaptcha";
-import { TouchableOpacity } from "react-native-gesture-handler";
+} from 'expo-firebase-recaptcha';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AuthPhone = (props) => {
   const dispatch = useDispatch();
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(
-    FirebaseAuthApplicationVerifier
+    FirebaseAuthApplicationVerifier,
   );
   const [step, setStep] = useState(0);
-  const [verificationCode, setVerificationCode] = useState("");
-  const [verificationId, setVerificationId] = useState("");
+  const [verificationCode, setVerificationCode] = useState('');
+  const [verificationId, setVerificationId] = useState('');
+
+  if (step == 1) {
+    console.log('state phone number', phoneNumber);
+    console.log('state verificationCode', verificationCode);
+    console.log('state verificationId', verificationId);
+  }
 
   const textinput = React.createRef();
 
   const onPressSendVerificationCode = () => {
-    const number = "+213" + phoneNumber.slice(1);
+    const number = '+213' + phoneNumber.slice(1);
+    console.log('phone', number);
     sendPin(number, recaptchaVerifier)
       .then((res) => {
+        console.log('received pin');
         setVerificationId(res);
         setPhoneNumber(number);
         setStep(1);
       })
       .catch((err) => {
         console.log(err);
-        alert("Invalid phone number");
+        alert('Invalid phone number');
       });
   };
   const loading = useSelector((state) => state.user.loading);
   const onPinError = () => {
-    alert("Wrong pin code");
+    alert('Wrong pin code');
   };
   const onVerfiyPhoneError = (err) => {
     restartProcess();
-    props.navigation.navigate("AuthForm", { phoneNumber });
+    props.navigation.navigate('AuthForm', {phoneNumber});
   };
   const restartProcess = () => {
-    setVerificationId("");
-    setPhoneNumber("");
-    setVerificationCode("");
+    setVerificationId('');
+    setPhoneNumber('');
+    setVerificationCode('');
     setStep(0);
   };
   const onPressConfirmVerificationCode = async () =>
     dispatch(
       login(
-        { phoneNumber, verificationId, verificationCode },
-        { onPinError, onVerfiyPhoneError }
-      )
+        {phoneNumber, verificationId, verificationCode},
+        {onPinError, onVerfiyPhoneError},
+      ),
     );
 
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../assets/bg/bg1.png")}
-        style={styles.image}
-      >
+        source={require('../../assets/bg/bg1.png')}
+        style={styles.image}>
         {step === 0 && (
           <>
             <FirebaseRecaptchaVerifierModal
@@ -76,11 +83,11 @@ const AuthPhone = (props) => {
               firebaseConfig={getOptions()}
             />
             <View style={styles.mainView}>
-              <Text style={{ fontSize: 22, color: "white", marginBottom: 10 }}>
-              Entrez votre numéro de téléphone
+              <Text style={{fontSize: 22, color: 'white', marginBottom: 10}}>
+                Entrez votre numéro de téléphone
               </Text>
               <View style={styles.inputView}>
-                <Text style={{ fontSize: 27, padding: 10 }}>+213</Text>
+                <Text style={{fontSize: 27, padding: 10}}>+213</Text>
                 <TextInput
                   placeholder="0123456789"
                   keyboardType="phone-pad"
@@ -92,9 +99,8 @@ const AuthPhone = (props) => {
               </View>
               <TouchableOpacity
                 onPress={onPressSendVerificationCode}
-                style={styles.submit}
-              >
-                <Text style={{ fontSize: 27, color: "white" }}>Vérifier</Text>
+                style={styles.submit}>
+                <Text style={{fontSize: 27, color: 'white'}}>Vérifier</Text>
               </TouchableOpacity>
             </View>
           </>
@@ -110,39 +116,38 @@ const AuthPhone = (props) => {
                 maxLength={6}
                 keyboardType="number-pad"
                 textContentType="postalCode"
-                style={{ width: 1 }}
+                style={{width: 1}}
               />
               <TouchableOpacity
                 style={styles.pinView}
                 //add ref onPress={textinput.current.focus()}
               >
                 <Text style={styles.pin}>
-                  {verificationCode.charAt(0) || " "}
+                  {verificationCode.charAt(0) || ' '}
                 </Text>
                 <Text style={styles.pin}>
-                  {verificationCode.charAt(1) || " "}
+                  {verificationCode.charAt(1) || ' '}
                 </Text>
                 <Text style={styles.pin}>
-                  {verificationCode.charAt(2) || " "}
+                  {verificationCode.charAt(2) || ' '}
                 </Text>
                 <Text style={styles.pin}>
-                  {verificationCode.charAt(3) || " "}
+                  {verificationCode.charAt(3) || ' '}
                 </Text>
                 <Text style={styles.pin}>
-                  {verificationCode.charAt(4) || " "}
+                  {verificationCode.charAt(4) || ' '}
                 </Text>
                 <Text style={styles.pin}>
-                  {verificationCode.charAt(5) || " "}
+                  {verificationCode.charAt(5) || ' '}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={onPressConfirmVerificationCode}
-                style={styles.submit}
-              >
-                <Text style={{ fontSize: 27, color: "white" }}>Vérifier</Text>
+                style={styles.submit}>
+                <Text style={{fontSize: 27, color: 'white'}}>Vérifier</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={restartProcess} style={styles.resend}>
-                <Text style={{ fontSize: 15, color: "black" }}>Renvoyer</Text>
+                <Text style={{fontSize: 15, color: 'black'}}>Renvoyer</Text>
               </TouchableOpacity>
             </>
           ))}
@@ -157,19 +162,19 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
+    resizeMode: 'cover',
+    justifyContent: 'center',
   },
   mainView: {
-    paddingHorizontal: "8%",
+    paddingHorizontal: '8%',
   },
   inputView: {
-    flexDirection: "row",
-    backgroundColor: "white",
+    flexDirection: 'row',
+    backgroundColor: 'white',
     borderRadius: 50,
   },
   TextInput: {
-    backgroundColor: "#F2F2F2",
+    backgroundColor: '#F2F2F2',
     flex: 1,
     borderBottomRightRadius: 50,
     borderTopRightRadius: 50,
@@ -177,38 +182,38 @@ const styles = StyleSheet.create({
     fontSize: 27,
   },
   submit: {
-    backgroundColor: "#11A0C1",
+    backgroundColor: '#11A0C1',
     marginTop: 30,
     paddingVertical: 10,
-    alignItems: "center",
+    alignItems: 'center',
     borderRadius: 50,
-    width: "80%",
-    alignSelf: "center",
+    width: '80%',
+    alignSelf: 'center',
   },
   resend: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     marginTop: 30,
     paddingVertical: 6,
-    alignItems: "center",
+    alignItems: 'center',
     borderRadius: 50,
-    width: "30%",
-    alignSelf: "center",
+    width: '30%',
+    alignSelf: 'center',
   },
   pinView: {
-    alignItems: "center",
-    flexDirection: "row",
-    alignSelf: "center",
-    justifyContent: "space-between",
-    width: "75%",
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    width: '75%',
   },
   pin: {
     fontSize: 30,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     width: 40,
-    height: "auto",
+    height: 'auto',
     borderRadius: 10,
-    alignSelf: "center",
-    textAlign: "center",
+    alignSelf: 'center',
+    textAlign: 'center',
   },
 });
 

@@ -5,12 +5,12 @@ import * as Permissions from 'expo-permissions';
 export const getLocation = () => async (dispatch) => {
   dispatch({type: LOGIN_LOADING});
 
-  // const { status, permissions } = await Permissions.askAsync(
-  //   Permissions.LOCATION
-  // );
-  // if (status !== "granted") {
-  //   throw new Error("Permission to access location was denied");
-  // }
+  const {status, permissions} = await Permissions.askAsync(
+    Permissions.LOCATION,
+  );
+  if (status !== 'granted') {
+    throw new Error('Permission to access location was denied');
+  }
   let {coords} = await Location.getCurrentPositionAsync({
     accuracy: 5,
     enableHighAccuracy: true,

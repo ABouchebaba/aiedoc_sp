@@ -2,6 +2,7 @@ export const DEFAULT_ACTION = 'DEFAULT_ACTION';
 
 export const USER_LOADING = 'USER_LOADING';
 export const SET_USER = 'SET_USER';
+export const SET_USER_DATA = 'SET_USER_DATA';
 export const SET_USER_STATE = 'SET_USER_STATE';
 export const SET_LOCATION = 'SET_LOCATION';
 export const UNSET_USER = 'UNSET_USER';
