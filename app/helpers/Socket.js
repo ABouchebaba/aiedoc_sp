@@ -1,15 +1,15 @@
 import React from 'react';
 import socketIOClient from 'socket.io-client';
-import {BACKEND_URL} from 'react-native-dotenv';
 
 export class Socket {
   static instance = false;
+
   socket = false;
+  initCallback = false;
 
   static getInstance() {
     if (Socket.instance === false) {
       Socket.instance = new Socket();
-      // console.log("new instance");
     }
 
     return this.instance;
@@ -19,49 +19,89 @@ export class Socket {
     return Boolean(this.socket);
   }
 
-  init() {
-    this.socket = socketIOClient(BACKEND_URL, {reconnection: false});
+  isConnected() {
+    if (!this.isInitialized()) return false;
+    return this.socket.connected;
   }
 
-  sync(int_id) {
-    if (this.isInitialized()) this.destroy();
-    this.init();
-    this.emit('join', int_id);
+  // TODO: ADD on connect_error event.
+  init(url, callback = () => {}) {
+    // socket needs to be uninitialized and disconnected
+    // to trigger initial connect
+    if (this.isConnected()) {
+      console.log('Init: Socket already initialized');
+      return;
+    }
+    if (this.isInitialized()) {
+      console.log('Init : Socket is already initialized');
+      return;
+    }
+
+    this.initCallback = () => callback(Socket.instance);
+    this.socket = socketIOClient(url, {reconnection: false});
+    this.socket.on('connect', this.initCallback);
+  }
+
+  // TODO: ADD on connect_error event.
+  sync() {
+    // socket needs to be initialized and disconnected
+    // to trigger connect (reconnect)
+    if (this.isConnected()) {
+      console.log('Sync : Socket is already connected');
+      return;
+    }
+    if (!this.isInitialized()) {
+      console.log('Sync : Socket is not initialized');
+      return;
+    }
+    /// remove all event listeners to avoid duplicates
+    this.socket.removeAllListeners();
+    /// re-add the connect event listener for re-initialization
+    this.socket.on('connect', this.initCallback);
+    this.socket.connect();
   }
 
   addEvents(events) {
+    if (!this.isConnected()) {
+      console.log('Add Events : socket not connected or not initialized');
+      return;
+    }
     Object.keys(events).map((e) => {
-      console.log('adding : ' + e);
       this.on(e, events[e]);
     });
   }
 
-  get() {
-    return this.socket;
-  }
-
   on(key, callback) {
-    if (this.socket) {
-      this.socket.on(key, callback);
-    } else {
-      console.log("can't add event to socket");
-      // console.log(this.socket);
+    if (!this.isConnected()) {
+      console.log(`On ${key} : socket not connected or not initialized`);
+      return;
     }
+    this.socket.on(key, callback);
   }
 
   emit(message, data) {
-    if (this.socket) {
-      this.socket.emit(message, data);
-    } else {
-      console.log('emit error: socket not defined');
+    if (!this.isConnected()) {
+      console.log(`Emit ${message} : socket not connected or not initialized`);
+      return;
     }
+    this.socket.emit(message, data);
+  }
+
+  disconnect() {
+    if (!this.isInitialized()) {
+      console.log('disconnect : socket is not initialized');
+      return;
+    }
+    if (!this.isConnected()) {
+      console.log('disconnect: Socket already disconnected');
+      return;
+    }
+    this.socket.disconnect();
+    console.log(this.socket.connected, this.socket.disconnected);
   }
 
   destroy() {
-    if (this.socket) {
-      // disconnect before
-      this.socket.emit('disconnect');
-      this.socket = false;
-    }
+    this.disconnect();
+    this.socket = false;
   }
 }

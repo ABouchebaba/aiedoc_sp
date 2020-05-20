@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {getServices, setCurrent, setUser} from '../Store/actions';
+import {getServices} from '../Store/actions';
+import {initSocket} from '../Store/api';
 import {getAllServices} from '../Store/selectors';
-import {Socket, AppStateEvents} from '../helpers';
+import {Socket} from '../helpers';
 import {BackImage} from '../components';
+import {BACKEND_URL} from 'react-native-dotenv';
 
 const IntValidate = (props) => {
   const dispatch = useDispatch();
@@ -17,33 +19,17 @@ const IntValidate = (props) => {
   const socket = Socket.getInstance();
 
   useEffect(() => {
-    socket.sync(intervention._id);
-    const responses = {
-      goReview: ({intervention, sp}) => {
-        dispatch(setUser(sp));
-        dispatch(setCurrent(intervention));
-      },
-    };
-    socket.addEvents(responses);
-    console.log('adding sync event');
     dispatch(getServices());
-    AppStateEvents.addNamedEvent('validate-sync', 'change', (nextAppState) => {
-      if (nextAppState === 'active') {
-        // trigger on foreground only
-        console.log('sync event');
-        socket.sync(intervention._id);
-        socket.addEvents(responses);
-      }
-    });
-    return () => {
-      console.log('removing sync event validate');
-      AppStateEvents.removeNamedEvent('validate-sync');
-      // socket.destroy();
-    };
+  }, []);
+
+  useEffect(() => {
+    /// initial setting of socket
+    if (!socket.isInitialized()) {
+      socket.init(BACKEND_URL, initSocket(dispatch, intervention._id));
+    }
   }, []);
 
   const validate = () => {
-    console.log('validating');
     socket.emit('validate', {
       int_id: intervention._id,
       services: selected.map((s) => s.name),

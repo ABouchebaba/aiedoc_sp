@@ -7,41 +7,25 @@ import {
   TextInput,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {Socket, AppStateEvents} from '../helpers';
-import {unsetCurrent, resetCurrentIntervention} from '../Store/actions';
-import {LoadingModal, BackImage} from '../components';
+import {Socket} from '../helpers';
+import {initSocket} from '../Store/api';
+import {BackImage} from '../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {BACKEND_URL} from 'react-native-dotenv';
 
 const IntReview = (props) => {
   const dispatch = useDispatch();
   const {intervention, loading} = useSelector((state) => state.current);
   const [review, setreview] = useState({comment: '', rating: 0});
   let ref = useRef(null);
+
   const socket = Socket.getInstance();
 
   useEffect(() => {
-    socket.sync(intervention._id);
-    const responses = {
-      goHome: () => {
-        socket.destroy();
-        dispatch(unsetCurrent());
-      },
-    };
-    socket.addEvents(responses);
-    console.log('adding sync event');
-    AppStateEvents.addNamedEvent('review-sync', 'change', (nextAppState) => {
-      if (nextAppState === 'active') {
-        // trigger on foreground only
-        console.log('sync event');
-        socket.sync(intervention._id);
-        socket.addEvents(responses);
-      }
-    });
-    return () => {
-      console.log('removing sync event review');
-      AppStateEvents.removeNamedEvent('review-sync');
-      // socket.destroy();
-    };
+    /// initial setting of socket
+    if (!socket.isInitialized()) {
+      socket.init(BACKEND_URL, initSocket(dispatch, intervention._id));
+    }
   }, []);
 
   const confirm = () => {

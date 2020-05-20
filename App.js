@@ -29,7 +29,7 @@ class App extends React.Component {
   };
 
   onReceived(notification) {
-    console.log('Notification received: ', notification);
+    // console.log('Notification received: ', notification);
   }
 
   onOpened(openResult) {
@@ -38,17 +38,18 @@ class App extends React.Component {
     // console.log('isActive: ', openResult.notification.isAppInFocus);
     // console.log('openResult: ', openResult);
 
-    console.log('problem', openResult.notification.payload);
+    // console.log('problem', openResult.notification.payload);
     // Get data from notification
     const data = openResult.notification.payload.additionalData;
 
-    // data has client_id then it is an intervention notification
-    if (data.client_id) {
-      console.log('opening');
-      console.log(data);
-
+    // data has intervention key then it is an intervention notification
+    if (data.intervention) {
+      // console.log('opening');
+      // console.log(data);
+      const {intervention, client, distance} = data;
+      client.distance = distance;
       // set state current intervention
-      store.dispatch(setCurrent(data));
+      store.dispatch(setCurrent(intervention, client));
     }
   }
 
@@ -73,15 +74,15 @@ class App extends React.Component {
   }
 
   onIds = () => {
-    console.log('starting');
+    // console.log('starting');
   };
 
   componentDidMount() {
-    OneSignal.addEventListener('ids', this.onIds);
+    // OneSignal.addEventListener('ids', this.onIds);
     OneSignal.addEventListener('received', this.onReceived);
     OneSignal.addEventListener('opened', this.onOpened);
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    console.log('added events');
+    // console.log('added events');
 
     OneSignal.init('aac6ed8b-9b71-4cd7-95c4-dc0931101a87', {
       kOSSettingsKeyAutoPrompt: false,

@@ -12,7 +12,7 @@ const uncheckedIcon = (
 export const ServiceCard = (props) => {
   const type = props.type;
 
-  console.log(props.type);
+  // console.log(props.type);
   return (
     <View style={styles.typeView}>
       <Text style={styles.typeTitle}>{type.type}</Text>

@@ -14,7 +14,7 @@ function InterventionStackScreen() {
 
   let name = 'Home';
   let screen = Home;
-  console.log('state : ' + intervention.state);
+  // console.log('state : ' + intervention.state);
   switch (intervention.state) {
     case 'pending': {
       name = 'Check';

@@ -26,27 +26,27 @@ const AuthPhone = (props) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationId, setVerificationId] = useState('');
 
-  if (step == 1) {
-    console.log('state phone number', phoneNumber);
-    console.log('state verificationCode', verificationCode);
-    console.log('state verificationId', verificationId);
-  }
+  // if (step == 1) {
+  //   console.log('state phone number', phoneNumber);
+  //   console.log('state verificationCode', verificationCode);
+  //   console.log('state verificationId', verificationId);
+  // }
 
   const textinput = React.createRef();
 
   const onPressSendVerificationCode = () => {
     const number = '+213' + phoneNumber.slice(1);
-    console.log('phone', number);
+    // console.log('phone', number);
     sendPin(number, recaptchaVerifier)
       .then((res) => {
-        console.log('received pin');
+        // console.log('received pin');
         setVerificationId(res);
         setPhoneNumber(number);
         setStep(1);
       })
       .catch((err) => {
         console.log(err);
-        alert('Invalid phone number');
+        // alert('Invalid phone number');
       });
   };
   const loading = useSelector((state) => state.user.loading);

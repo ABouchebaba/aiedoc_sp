@@ -21,17 +21,16 @@ export const setOnlineState = (id, state) => async (dispatch) => {
     }
   } catch (err) {
     console.log(err.message);
+    alert('Une erreur est survenue.');
     return;
   }
 
-  // let {coords} = await Location.getCurrentPositionAsync({
-  //   accuracy: 5,
-  //   enableHighAccuracy: true,
-  // });
-  // const {longitude, latitude} = coords;
-
-  const longitude = 3.067078;
-  const latitude = 36.6954435;
+  let {coords} = await Location.getCurrentPositionAsync({
+    accuracy: 5,
+    enableHighAccuracy: true,
+  });
+  const {longitude, latitude} = coords;
+  console.log('coords : ', longitude, latitude);
 
   setState(id, state, longitude, latitude)
     .then((res) => {

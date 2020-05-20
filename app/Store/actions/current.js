@@ -2,7 +2,10 @@ import {
   UNSET_CURRENT,
   SET_CURRENT,
   LOADING_CURRENT_INTERVENTION,
+  STOP_LOADING,
+  SET_CURRENT_INTERVENTION,
 } from '../../constants/ActionTypes';
+import {getInterventionById} from '../api/interventions';
 import {Socket} from '../../helpers';
 
 export const unsetCurrent = () => (dispatch) => {
@@ -11,9 +14,16 @@ export const unsetCurrent = () => (dispatch) => {
   });
 };
 
-export const setCurrent = (intervention) => (dispatch) => {
+export const setCurrent = (intervention, client = false) => (dispatch) => {
   dispatch({
     type: SET_CURRENT,
+    intervention,
+    client,
+  });
+};
+export const setCurrentIntervention = (intervention) => (dispatch) => {
+  dispatch({
+    type: SET_CURRENT_INTERVENTION,
     intervention,
   });
 };
@@ -23,22 +33,31 @@ export const loadCurrentIntervention = () => (dispatch) => {
   });
 };
 
-export const resetCurrentIntervention = (int_id) => (dispatch) => {
+export const resetCurrentIntervention = (int_id, responses) => (dispatch) => {
   dispatch(loadCurrentIntervention());
 
-  const socket = Socket.getInstance();
-  // Cleaning socket disconnect mess
-  // Overkill ...
-  if (socket.isInitialized()) socket.destroy();
-  socket.init();
-  socket.emit('join', int_id);
+  getInterventionById(int_id)
+    .then((res) => {
+      const intervention = res.data;
+      if (intervention.state === 'canceled') {
+        alert("Le client a annulé sa demande d'intervention.");
+        dispatch(unsetCurrent());
+        return;
+      }
 
-  // Socket should be initialized
-  // expecting to receive intervention
-  // from server as resync response
-  socket.on('resync', (intervention) => {
-    dispatch(setCurrentIntervention(intervention));
-  });
-  // triggering resync
-  socket.emit('resync', int_id);
+      const socket = Socket.getInstance();
+      socket.sync(intervention._id);
+      socket.addEvents(responses);
+
+      dispatch({
+        type: STOP_LOADING,
+      });
+    })
+    .catch((err) => {
+      const message = err.response.data || err.message;
+      console.log(message);
+      dispatch({
+        type: STOP_LOADING,
+      });
+    });
 };

@@ -22,9 +22,10 @@ export class AppStateEvents {
 
   static addNamedEvent(name, event, callback) {
     if (AppStateEvents.namedEvents[name]) {
-      // console.log(`Event ${name} already exists`);
+      console.log(`Event ${name} already exists`);
       return;
     }
+    console.log('adding ', name);
     AppStateEvents.addIfNotExists(event, callback);
     AppStateEvents.namedEvents[name] = {
       event,
@@ -37,6 +38,7 @@ export class AppStateEvents {
     if (!namedEvent) {
       console.log('Warning: trying to remove unexisting named event');
     } else {
+      console.log('removing ', name);
       const {event, callback} = namedEvent;
       AppStateEvents.remove(event, callback);
       delete AppStateEvents.namedEvents[name];

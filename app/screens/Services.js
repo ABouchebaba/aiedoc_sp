@@ -14,7 +14,7 @@ const Services = (props) => {
   const fruits = ['Apples', 'Oranges', 'Pears'];
 
   function submitServices() {
-    console.log(userService);
+    // console.log(userService);
   }
 
   useEffect(() => {

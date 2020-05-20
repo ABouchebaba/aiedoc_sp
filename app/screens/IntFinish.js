@@ -1,52 +1,35 @@
 import React, {useEffect} from 'react';
 import {View, Text, TouchableOpacity, Linking} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {setCurrent} from '../Store/actions';
-import {Socket, AppStateEvents} from '../helpers';
+import {initSocket} from '../Store/api';
+import {Socket} from '../helpers';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {BackImage} from '../components';
+import {BackImage, LoadingModal} from '../components';
+import {BACKEND_URL} from 'react-native-dotenv';
 
 const IntFinish = (props) => {
   const dispatch = useDispatch();
-  const {intervention, loading} = useSelector((state) => state.current);
-  const phoneNumber = '0556276461';
-  const socket = Socket.getInstance();
-  socket.sync(intervention._id);
+  const {intervention, client, loading} = useSelector((state) => state.current);
 
-  const responses = {
-    goFacture: (intervention) => dispatch(setCurrent(intervention)),
-  };
-  socket.addEvents(responses);
+  const socket = Socket.getInstance();
 
   useEffect(() => {
-    console.log('adding sync event');
-    AppStateEvents.addNamedEvent('finish-sync', 'change', (nextAppState) => {
-      if (nextAppState === 'active') {
-        // trigger on foreground only
-        console.log('sync event');
-        socket.sync(intervention._id);
-        socket.addEvents(responses);
-      }
-    });
-    return () => {
-      console.log('removing sync event finish');
-      AppStateEvents.removeNamedEvent('finish-sync');
-      // socket.destroy();
-    };
+    if (!socket.isInitialized()) {
+      socket.init(BACKEND_URL, initSocket(dispatch, intervention._id));
+    }
   }, []);
 
   const finish = () => {
-    console.log('finishing');
-    console.log(socket.isInitialized());
     socket.emit('finish', intervention._id);
   };
 
   const call = () => {
-    Linking.openURL(`tel:${phoneNumber}`);
+    Linking.openURL(`tel:${client.phone}`);
   };
 
   return (
     <BackImage source={require('../../assets/bg/bg1.png')}>
+      <LoadingModal showModal={loading} text="synchronisation" />
       <View>
         <Text style={styles.callText}>
           Appuyer sur le bouton ci-dessous pour contacter le client.

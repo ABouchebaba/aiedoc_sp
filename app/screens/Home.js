@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {BackImage, Header, Switch} from '../components';
+import {BackImage, Header, Switch, LoadingModal} from '../components';
 import {setOnlineState} from '../Store/actions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -23,7 +23,7 @@ const Home = (props) => {
 
   const powerColor = user.state !== 'notReady' ? colors : colors.reverse();
 
-  console.log(user.state);
+  // console.log(user.state);
 
   const toggleOnline = () => {
     if (user.state !== 'notReady') {
@@ -42,6 +42,7 @@ const Home = (props) => {
 
   return (
     <BackImage source={require('../../assets/bg/bgHome.png')}>
+      <LoadingModal showModal={loading} text="Mise à jour du statut" />
       <Header />
       <View style={styles.wrapper}>
         <View>
@@ -62,6 +63,7 @@ const Home = (props) => {
           {user.state !== 'notReady' ? 'VOUS ETES EN SERVICE' : ''}
         </Text>
         <Switch
+          loading={loading}
           state={user.state}
           enable={enableEmergency}
           disable={disableEmergency}
