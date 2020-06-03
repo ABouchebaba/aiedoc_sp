@@ -1,5 +1,4 @@
 import React from 'react';
-import {AsyncStorage} from 'react-native';
 import {store, persistor} from './app/Store';
 import {Provider} from 'react-redux';
 import Navigator from './app/navigation';
