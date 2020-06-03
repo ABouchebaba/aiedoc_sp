@@ -1,15 +1,15 @@
 import {
   GET_PRODUCTS,
   GET_CATEGORIES,
+  PRODUCTS_LOADING,
+  CATEGORIES_LOADING,
   ERROR_STORE,
-  STORE_LOADING_CATEGORIES,
-  STORE_LOADING_PRODUCTS,
 } from "../../constants/ActionTypes";
 
 import { products, categories } from "../api";
 
 export const getProducts = () => (dispatch) => {
-  dispatch({ type: STORE_LOADING_PRODUCTS });
+  dispatch({ type: PRODUCTS_LOADING });
   products()
     .then((res) => {
       console.log("Get product - got results : " + res.data.length);
@@ -28,7 +28,7 @@ export const getProducts = () => (dispatch) => {
 };
 
 export const getCategories = () => (dispatch) => {
-    dispatch({ type: STORE_LOADING_CATEGORIES });
+    dispatch({ type: CATEGORIES_LOADING });
     categories()
       .then((res) => {
         console.log("Get Categories - got results : " + res.data.length);

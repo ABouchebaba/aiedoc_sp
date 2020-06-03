@@ -1,14 +1,16 @@
-import Entypo from 'react-native-vector-icons/Entypo';
+import {Entypo} from '@expo/vector-icons';
 import React, {useRef, useState} from 'react';
 import {
   Dimensions,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {BACKEND_URL} from 'react-native-dotenv';
 import DropdownAlert from 'react-native-dropdownalert';
-import Gallery from 'react-native-image-gallery';
+import GallerySwiper from 'react-native-gallery-swiper';
 import RNPickerSelect from 'react-native-picker-select';
 import {useDispatch, useSelector} from 'react-redux';
 import {BackImage, MarketHeader} from '../components';
@@ -46,24 +48,36 @@ const ProductProfile = ({route, navigation}) => {
       <View style={styles.header}>
         <MarketHeader />
       </View>
-      <View style={styles.mainView}>
+      <ScrollView style={styles.mainView}>
         <View style={styles.search}>
-          <Gallery
+          <GallerySwiper
             style={{flex: 1, paddingVertical: 10, backgroundColor: 'white'}}
-            images={[
-              {
-                source: require('../../assets/product.jpg'),
-                dimensions: {width: 300, height: 300},
-              },
-              {
-                source: require('../../assets/product.jpg'),
-                dimensions: {width: 300, height: 300},
-              },
-              {
-                source: require('../../assets/product.jpg'),
-                dimensions: {width: 300, height: 300},
-              },
-            ]}
+            images={
+              product.images.length > 0
+                ? product.images.map((image) => ({
+                    uri: BACKEND_URL + '/' + image,
+                    dimensions: {width: 1000, height: 1000},
+                  }))
+                : [{
+                    source: require('../../assets/product.jpg'),
+                    dimensions: {width: 300, height: 300},
+                  }]
+            }
+            //   [
+            //     {
+            //       source: require("../../assets/product.jpg"),
+            //       dimensions: { width: 300, height: 300 },
+            //     },
+            //     {
+            //       source: require("../../assets/product.jpg"),
+            //       dimensions: { width: 300, height: 300 },
+            //     },
+            //     {
+            //       source: require("../../assets/product.jpg"),
+            //       dimensions: { width: 300, height: 300 },
+            //     },
+            // ]
+
             initialNumToRender={2}
             // Turning this off will make it feel faster
             // and prevent the scroller to slow down
@@ -71,8 +85,12 @@ const ProductProfile = ({route, navigation}) => {
             sensitiveScroll={false}
           />
         </View>
-        <Text style={styles.name}>{product.name}</Text>
-        <Text style={styles.brand}>{product.brand.toUpperCase()}</Text>
+        <Text style={styles.name}>
+          {product.name.replace(/(\r\n|\n|\r)/gm, '').slice(0,40)}
+        </Text>
+        <Text style={styles.brand}>
+          {product.brand.toUpperCase().replace(/(\r\n|\n|\r)/gm, '')}
+        </Text>
         {product.rating > 0 && (
           <View style={styles.ratingView}>
             {[...Array(5)].map((x, i) =>
@@ -131,7 +149,8 @@ const ProductProfile = ({route, navigation}) => {
           convallis vestibulum. Praesent fringilla semper vestibulum. Proin eget
           tincidunt lorem. Phasellus fermentum placerat urna.
         </Text>
-      </View>
+        <View style={{paddingBottom: 30}} />
+      </ScrollView>
       <DropdownAlert
         ref={alert}
         updateStatusBar={false}

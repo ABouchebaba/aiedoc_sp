@@ -20,3 +20,17 @@ export const getLocation = () => async (dispatch) => {
     data: coords,
   });
 };
+
+export const getLocationForCommand = async () => {
+  const { status, permissions } = await Permissions.askAsync(
+    Permissions.LOCATION
+  );
+  if (status !== "granted") {
+    throw new Error("Permission to access location was denied");
+  }
+  let { coords } = await Location.getCurrentPositionAsync({
+    accuracy: 5,
+    enableHighAccuracy: true,
+  });
+  return coords
+};

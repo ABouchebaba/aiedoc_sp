@@ -1,8 +1,8 @@
 import {
   GET_PRODUCTS,
   GET_CATEGORIES,
-  STORE_LOADING_CATEGORIES,
-  STORE_LOADING_PRODUCTS,
+  PRODUCTS_LOADING,
+  CATEGORIES_LOADING,
   ERROR_STORE,
 } from "../../constants/ActionTypes";
 
@@ -38,17 +38,19 @@ const StoreReducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.data,
-        loading: false,
+        loadingCat: false,
+        loadingProd: false,
       };
     }
 
-    case STORE_LOADING_PRODUCTS: {
+    case PRODUCTS_LOADING: {
       return {
         ...state,
         loadingProd: true,
       };
     }
-    case STORE_LOADING_CATEGORIES: {
+
+    case CATEGORIES_LOADING: {
       return {
         ...state,
         loadingCat: true,

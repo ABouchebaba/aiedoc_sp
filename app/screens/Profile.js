@@ -27,7 +27,7 @@ const Profile = (props) => {
           </TouchableOpacity>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{justifyContent: 'center', alignItems: 'center'}}>
             <Image
               source={require('../../assets/malePin.png')}
@@ -40,7 +40,7 @@ const Profile = (props) => {
                 borderRadius: 70,
               }}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <View style={styles.inputGroup}>
             <Text style={styles.text}>Email</Text>
             <TextInput

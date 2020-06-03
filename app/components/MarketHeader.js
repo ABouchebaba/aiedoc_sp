@@ -1,36 +1,36 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {useSelector} from 'react-redux';
+import React from "react";
+import { View, TouchableOpacity, Image, StyleSheet, Text } from "react-native";
+import { Entypo, SimpleLineIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 export const MarketHeader = (props) => {
-  const {cart} = useSelector((state) => state.cart);
+  const { cart } = useSelector((state) => state.cart);
   const navigation = useNavigation();
-  // console.log("cart", cart);
+
   return (
     <View style={styles.image}>
       <TouchableOpacity onPress={navigation.openDrawer}>
         <Entypo name="menu" size={60} color="white" style={styles.logo} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('StoreHome')}>
+      <TouchableOpacity onPress={() => navigation.navigate("StoreHome")}>
         <Image
           style={styles.tinyLogo}
-          source={require('../../assets/boutique.png')}
+          source={require("../../assets/boutique.png")}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+      <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
         {cart.length === 0 ? (
           <Image
-            style={{width: 55, height: 55, resizeMode: 'contain'}}
-            source={require('../../assets/empty_cart.png')}
+            style={{width:55,height:55,resizeMode:'contain'}}
+            source={require("../../assets/empty_cart.png")}
           />
         ) : (
           <>
             <Text style={styles.text}>{cart.length}</Text>
             <Image
-              style={{width: 50, height: 50, resizeMode: 'contain'}}
-              source={require('../../assets/fill_cart.png')}
+              style={{width:50,height:50,resizeMode:'contain'}}
+              source={require("../../assets/fill_cart.png")}
             />
           </>
         )}
@@ -42,30 +42,30 @@ export const MarketHeader = (props) => {
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
-    alignSelf: 'center',
-    width: '90%',
+    alignSelf: "center",
+    width: "90%",
   },
   tinyLogo: {
     width: 60,
     height: 60,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   logo: {
     width: 60,
     height: 60,
   },
   text: {
-    color: 'white',
-    backgroundColor: 'red',
-    textAlign: 'center',
+    color: "white",
+    backgroundColor: "red",
+    textAlign: "center",
     width: 20,
     height: 20,
     borderRadius: 50,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

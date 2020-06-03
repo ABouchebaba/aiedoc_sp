@@ -22,6 +22,7 @@ import {
   addQuantity,
   removeProduct,
   removeQuantity,
+  getCommands,
 } from "../Store/actions";
 
 const { width, height } = Dimensions.get("window");
@@ -39,6 +40,7 @@ const Cart = ({ route, navigation }) => {
   }
 
   function doneModal() {
+    dispatch(getCommands(_id))
     setDone(true);
     setTimeout(() => {
       navigation.navigate("StoreHome");
@@ -63,16 +65,15 @@ const Cart = ({ route, navigation }) => {
 
   function submit(address) {
     const data = {
-      // address: address.address,
+      address: address.address,
       // wilaya: address.wilaya,
       // location: address.location,
-      user_id: _id,
-      user_type: "ServiceProvider",
+      user: _id,
+      user_type: "Client",
       total_price: total,
       products: cart.map((product) => {
         return {
-          product_id: product.product_id,
-          product_name: product.product_name,
+          product: product.product_id,
           qty: product.qty,
           option: product.option + " ",
         };

@@ -11,7 +11,6 @@ const Services = (props) => {
   let services = useSelector((state) => state.services.services);
 
   const [userService, setUserServices] = useState([]);
-  const fruits = ['Apples', 'Oranges', 'Pears'];
 
   function submitServices() {
     // console.log(userService);
