@@ -47,6 +47,9 @@ class App extends React.Component {
       // console.log(data);
       const {intervention, client, distance} = data;
       client.distance = distance;
+      if(!intervention.services) {
+        intervention.services = []
+      }
       // set state current intervention
       store.dispatch(setCurrent(intervention, client));
     }

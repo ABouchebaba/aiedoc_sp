@@ -5,7 +5,7 @@ import RNPickerSelect from "react-native-picker-select";
 
 export const CategoriesFilter = (props) => {
   const categories = props.categories.filter(
-    (cat) => cat.level === "SubSubFamilly"
+    (cat) => cat.level === "SubSubFamily"
   );
   const [category, setCategory] = useState("");
   const [sorted, setSorted] = useState(false);

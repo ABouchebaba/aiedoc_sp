@@ -36,10 +36,10 @@ const AuthPhone = (props) => {
 
   const onPressSendVerificationCode = () => {
     const number = '+213' + phoneNumber.slice(1);
-    // console.log('phone', number);
+    console.log('phone', number);
     sendPin(number, recaptchaVerifier)
       .then((res) => {
-        // console.log('received pin');
+        console.log('received pin');
         setVerificationId(res);
         setPhoneNumber(number);
         setStep(1);
@@ -64,6 +64,7 @@ const AuthPhone = (props) => {
     setStep(0);
   };
   const onPressConfirmVerificationCode = async () =>
+  console.log("hi");
     dispatch(
       login(
         {phoneNumber, verificationId, verificationCode},
