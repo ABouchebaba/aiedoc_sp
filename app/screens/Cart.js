@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   Dimensions,
   ScrollView,
@@ -7,30 +7,30 @@ import {
   TouchableOpacity,
   View,
   Image,
-  ActivityIndicator
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+  ActivityIndicator,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   BackImage,
   CartCard,
   CartModal,
   CommandSetModal,
   MarketHeader,
-} from "../components";
+} from '../components';
 import {
   addCommand,
   addQuantity,
   removeProduct,
   removeQuantity,
   getCommands,
-} from "../Store/actions";
+} from '../Store/actions';
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get('window');
 
-const Cart = ({ route, navigation }) => {
+const Cart = ({route, navigation}) => {
   const dispatch = useDispatch();
-  const { cart, loading } = useSelector((state) => state.cart);
-  const { _id } = useSelector((state) => state.user.user);
+  const {cart, loading} = useSelector((state) => state.cart);
+  const {_id} = useSelector((state) => state.user.user);
 
   const [model, setModel] = useState(false);
   const [done, setDone] = useState(false);
@@ -40,10 +40,10 @@ const Cart = ({ route, navigation }) => {
   }
 
   function doneModal() {
-    dispatch(getCommands(_id))
+    dispatch(getCommands(_id));
     setDone(true);
     setTimeout(() => {
-      navigation.navigate("StoreHome");
+      navigation.navigate('StoreHome');
     }, 2000);
   }
 
@@ -56,7 +56,7 @@ const Cart = ({ route, navigation }) => {
   }
 
   function minus(id, option) {
-    dispatch(removeQuantity(id,option, cart));
+    dispatch(removeQuantity(id, option, cart));
   }
 
   const total = cart.reduce(function (accumulator, currentValue) {
@@ -69,13 +69,13 @@ const Cart = ({ route, navigation }) => {
       // wilaya: address.wilaya,
       // location: address.location,
       user: _id,
-      user_type: "Client",
+      user_type: 'ServiceProvider',
       total_price: total,
       products: cart.map((product) => {
         return {
           product: product.product_id,
           qty: product.qty,
-          option: product.option + " ",
+          option: product.option + ' ',
         };
       }),
     };
@@ -85,7 +85,7 @@ const Cart = ({ route, navigation }) => {
   }
 
   return (
-    <BackImage source={require("../../assets/bg/bgMarket.png")}>
+    <BackImage source={require('../../assets/bg/bgMarket.png')}>
       <View style={styles.header}>
         <MarketHeader />
       </View>
@@ -104,8 +104,7 @@ const Cart = ({ route, navigation }) => {
             <View style={styles.scrollNotch} />
             <ScrollView
               style={styles.list}
-              contentContainerStyle={styles.listStyle}
-            >
+              contentContainerStyle={styles.listStyle}>
               {cart.map((product, i) => (
                 <CartCard
                   remove={remove}
@@ -122,17 +121,16 @@ const Cart = ({ route, navigation }) => {
             </View>
             <TouchableOpacity
               style={styles.confirm}
-              onPress={() => setModel(true)}
-            >
+              onPress={() => setModel(true)}>
               <Text style={styles.confirmText}>CONFIRMER</Text>
             </TouchableOpacity>
           </>
         ) : (
           <>
-            <Text style={{ color: "white", fontSize: 30, marginVertical: 40 }}>
+            <Text style={{color: 'white', fontSize: 30, marginVertical: 40}}>
               Votre panier est vide
             </Text>
-            <Image source={require("../../assets/empty_cart_big.png")} />
+            <Image source={require('../../assets/empty_cart_big.png')} />
           </>
         )}
       </View>
@@ -144,90 +142,90 @@ const Cart = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   header: {
-    height: "15%",
-    width: "100%",
-    justifyContent: "center",
+    height: '15%',
+    width: '100%',
+    justifyContent: 'center',
   },
   mainView: {
-    height: "85%",
-    width: "100%",
-    backgroundColor: "rgba(17, 160, 193, .7)",
+    height: '85%',
+    width: '100%',
+    backgroundColor: 'rgba(17, 160, 193, .7)',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    justifyContent: "flex-start",
-    alignItems: "center",
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   tinyLogo: {
     width: 80,
     height: 80,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   scrollNotch: {
-    width: "100%",
+    width: '100%',
     height: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderBottomWidth: 4,
-    borderColor: "#09677D",
+    borderColor: '#09677D',
   },
   name: {
     fontSize: 25,
-    color: "white",
+    color: 'white',
     marginBottom: 10,
   },
   list: {
     flex: 1,
-    width: "100%",
-    backgroundColor: "#ebebeb",
+    width: '100%',
+    backgroundColor: '#ebebeb',
   },
   listStyle: {
-    alignItems: "center",
-    justifyContent: "space-around",
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
   totalView: {
     borderTopWidth: 4,
-    borderColor: "#09677D",
-    backgroundColor: "white",
+    borderColor: '#09677D',
+    backgroundColor: 'white',
     height: 50,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 10,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    width: "100%",
+    width: '100%',
   },
   total: {
-    textAlign: "left",
-    color: "#11A0C1",
+    textAlign: 'left',
+    color: '#11A0C1',
     fontSize: 20,
   },
   price: {
-    textAlign: "right",
-    color: "red",
+    textAlign: 'right',
+    color: 'red',
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   confirm: {
     height: 80,
     marginVertical: 20,
     borderRadius: 50,
-    width: "80%",
-    backgroundColor: "#D61F2C",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '80%',
+    backgroundColor: '#D61F2C',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   confirmText: {
     fontSize: 30,
-    color: "white",
+    color: 'white',
   },
   scrollContain: {
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     // borderRightWidth: 4,
     // backgroundColor: "#cadce6",
   },

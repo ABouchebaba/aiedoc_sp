@@ -1,6 +1,6 @@
-import { FontAwesome, AntDesign } from "@expo/vector-icons";
-import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import {FontAwesome, AntDesign} from '@expo/vector-icons';
+import _ from 'lodash';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -9,65 +9,62 @@ import {
   View,
   TouchableOpacity,
   Text,
-} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { useDispatch, useSelector } from "react-redux";
+} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   BackImage,
   CategoriesFilter,
   MarketHeader,
   ProductCard,
-} from "../components";
-import { getCategories, getProducts } from "../Store/actions";
-const { width, height } = Dimensions.get("window");
+} from '../components';
+import {getCategories, getProducts} from '../Store/actions';
+const {width, height} = Dimensions.get('window');
 
 const StoreHome = (props) => {
   const dispatch = useDispatch();
-  const { products, categories, loadingCat, loadingProd } = useSelector(
-    (state) => state.store
+  const {products, categories, loadingCat, loadingProd} = useSelector(
+    (state) => state.store,
   );
 
-  console.log("loadingProd",loadingProd)
-  console.log("loadingCat",loadingCat)
-  
   const [filteredData, setFilteredData] = useState([]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getProducts());
   }, []);
 
-  useEffect(() => {  
+  useEffect(() => {
     setFilteredData(products);
   }, [products]);
 
   function searchByCategory(cat) {
     let data = products;
-    if (cat !== "") {
-      data = data.filter((product) => product.category === cat);
+    if (cat !== '') {
+      data = data.filter((product) => product.category._id === cat);
     }
     setFilteredData(data);
   }
 
   function sortAZ(sorted) {
     if (sorted) {
-      setFilteredData(_.orderBy(filteredData, ["name"], ["asc"]));
+      setFilteredData(_.orderBy(filteredData, ['name'], ['asc']));
     } else {
-      setFilteredData(_.orderBy(filteredData, ["name"], ["desc"]));
+      setFilteredData(_.orderBy(filteredData, ['name'], ['desc']));
     }
   }
 
   function sortPrice(sorted) {
     if (sorted) {
-      setFilteredData(_.orderBy(filteredData, ["price"], ["asc"]));
+      setFilteredData(_.orderBy(filteredData, ['price'], ['asc']));
     } else {
-      setFilteredData(_.orderBy(filteredData, ["price"], ["desc"]));
+      setFilteredData(_.orderBy(filteredData, ['price'], ['desc']));
     }
   }
 
   return (
-    <BackImage source={require("../../assets/bg/bgMarket.png")}>
+    <BackImage source={require('../../assets/bg/bgMarket.png')}>
       <View style={styles.header}>
         <MarketHeader navigation={props.navigation} />
       </View>
@@ -102,11 +99,10 @@ const StoreHome = (props) => {
         ) : (
           <ScrollView
             style={styles.list}
-            contentContainerStyle={styles.listStyle}
-          >
+            contentContainerStyle={styles.listStyle}>
             {filteredData
               .filter((product) =>
-                product.name.toUpperCase().includes(searchText.toUpperCase())
+                product.name.toUpperCase().includes(searchText.toUpperCase()),
               )
               .map((product, i) => {
                 // console.log(product)
@@ -115,7 +111,7 @@ const StoreHome = (props) => {
                     key={i}
                     navigation={props.navigation}
                     product={product}
-                    category={""}
+                    category={''}
                   />
                 );
               })}
@@ -125,20 +121,19 @@ const StoreHome = (props) => {
       <TouchableOpacity
         style={styles.command}
         // onPress={() => props.navigation.navigate("Mes achats")}
-        onPress={() => 
+        onPress={() =>
           setTimeout(() => {
-            props.navigation.navigate("Mes achats");
-          }, 5000)}
-      >
+            props.navigation.navigate('Mes achats');
+          }, 5000)
+        }>
         <AntDesign name="CodeSandbox" size={30} color="#11A0C1" />
         <Text
           style={{
             fontSize: 10,
-            textAlign: "center",
-            color: "#11A0C1",
-            fontWeight: "bold",
-          }}
-        >
+            textAlign: 'center',
+            color: '#11A0C1',
+            fontWeight: 'bold',
+          }}>
           Commandes
         </Text>
       </TouchableOpacity>
@@ -150,15 +145,15 @@ export default StoreHome;
 
 const styles = StyleSheet.create({
   header: {
-    height: "15%",
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    height: '15%',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   mainView: {
-    height: "86%",
-    width: "100%",
-    backgroundColor: "rgba(17, 160, 193, .7)",
+    height: '86%',
+    width: '100%',
+    backgroundColor: 'rgba(17, 160, 193, .7)',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
@@ -166,35 +161,35 @@ const styles = StyleSheet.create({
     // height: 120,
     marginHorizontal: 20,
     marginVertical: 10,
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
     // backgroundColor: "blue",
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     marginBottom: 10,
     // alignItems:'baseline'
   },
   list: {
-    height: "80%",
+    height: '80%',
     flex: 1,
     margin: 10,
     marginBottom: 10,
   },
   listStyle: {
-    alignItems: "center",
-    justifyContent: "space-around",
-    flexWrap: "wrap",
-    width: "100%",
-    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+    width: '100%',
+    flexDirection: 'row',
   },
   inputView: {
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 50,
   },
   TextInput: {
-    backgroundColor: "#F2F2F2",
+    backgroundColor: '#F2F2F2',
     flex: 1,
     borderBottomLeftRadius: 50,
     borderTopLeftRadius: 50,
@@ -204,31 +199,31 @@ const styles = StyleSheet.create({
   icon: {
     borderBottomRightRadius: 50,
     borderTopRightRadius: 50,
-    backgroundColor: "#F2F2F2",
-    alignItems: "center",
-    height: "100%",
-    justifyContent: "center",
+    backgroundColor: '#F2F2F2',
+    alignItems: 'center',
+    height: '100%',
+    justifyContent: 'center',
     padding: 10,
   },
   scrollContain: {
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRightWidth: 4,
   },
   command: {
     borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.2)",
-    alignItems: "center",
-    justifyContent: "center",
+    borderColor: 'rgba(0,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 80,
-    position: "absolute",
+    position: 'absolute',
     bottom: 10,
     right: 10,
     height: 80,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 100,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 3,
