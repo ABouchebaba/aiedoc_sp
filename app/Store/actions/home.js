@@ -12,7 +12,7 @@ export const getLocation = () => async (dispatch) => {
     throw new Error('Permission to access location was denied');
   }
   let {coords} = await Location.getCurrentPositionAsync({
-    accuracy: 5,
+    accuracy: 6,
     enableHighAccuracy: true,
   });
   dispatch({
@@ -22,15 +22,15 @@ export const getLocation = () => async (dispatch) => {
 };
 
 export const getLocationForCommand = async () => {
-  const { status, permissions } = await Permissions.askAsync(
-    Permissions.LOCATION
+  const {status, permissions} = await Permissions.askAsync(
+    Permissions.LOCATION,
   );
-  if (status !== "granted") {
-    throw new Error("Permission to access location was denied");
+  if (status !== 'granted') {
+    throw new Error('Permission to access location was denied');
   }
-  let { coords } = await Location.getCurrentPositionAsync({
+  let {coords} = await Location.getCurrentPositionAsync({
     accuracy: 5,
     enableHighAccuracy: true,
   });
-  return coords
+  return coords;
 };

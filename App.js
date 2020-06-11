@@ -21,6 +21,7 @@ const firebaseConfig = {
   messagingSenderId: '631322958940',
   appId: '1:631322958940:web:270280599bf775de079a99',
 };
+
 class App extends React.Component {
   state = {
     isReady: false,
@@ -47,8 +48,8 @@ class App extends React.Component {
       // console.log(data);
       const {intervention, client, distance} = data;
       client.distance = distance;
-      if(!intervention.services) {
-        intervention.services = []
+      if (!intervention.services) {
+        intervention.services = [];
       }
       // set state current intervention
       store.dispatch(setCurrent(intervention, client));
@@ -64,6 +65,7 @@ class App extends React.Component {
   componentWillUnmount() {
     OneSignal.removeEventListener('received', this.onReceived);
     OneSignal.removeEventListener('opened', this.onOpened);
+    OneSignal.removeEventListener('ids', this.onIds);
   }
 
   static getDerivedStateFromError(error) {

@@ -51,6 +51,7 @@ const AuthPhone = (props) => {
   };
   const loading = useSelector((state) => state.user.loading);
   const onPinError = () => {
+    // console.log('wrong');
     alert('Wrong pin code');
   };
   const onVerfiyPhoneError = (err) => {
@@ -63,14 +64,15 @@ const AuthPhone = (props) => {
     setVerificationCode('');
     setStep(0);
   };
-  const onPressConfirmVerificationCode = async () =>
-  console.log("hi");
+  const onPressConfirmVerificationCode = async () => {
+    console.log('hi');
     dispatch(
       login(
         {phoneNumber, verificationId, verificationCode},
         {onPinError, onVerfiyPhoneError},
       ),
     );
+  };
 
   return (
     <View style={styles.container}>

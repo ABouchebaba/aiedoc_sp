@@ -21,25 +21,30 @@ export const login = (info, callbacks) => (dispatch) => {
       // Correct pin code !!
       // then check phone number in backend
       console.log('firebase working ', res.data);
-      getUserWithPhone(info.phoneNumber)
-        .then((res) => {
-          console.log('token :: ' + res.headers['x-auth-token']);
-          // user already registred
-          // so user goes home
-          dispatch({
-            type: SET_USER,
-            data: res.data,
-            token: res.headers['x-auth-token'],
-          });
+      OneSignal.getPermissionSubscriptionState(({userId}) => {
+        getUserWithPhone({
+          phoneNumber: info.phoneNumber,
+          pushNotificationId: userId,
         })
-        // user not registred
-        .catch((err) => {
-          dispatch({
-            type: UNSET_USER,
+          .then((res) => {
+            console.log('token :: ' + res.headers['x-auth-token']);
+            // user already registred
+            // so user goes home
+            dispatch({
+              type: SET_USER,
+              data: res.data,
+              token: res.headers['x-auth-token'],
+            });
+          })
+          // user not registred
+          .catch((err) => {
+            dispatch({
+              type: UNSET_USER,
+            });
+            console.log('user not registered');
+            callbacks.onVerfiyPhoneError(err);
           });
-          console.log('user not registered');
-          callbacks.onVerfiyPhoneError(err);
-        });
+      });
     })
     // user typed wrong pin code
     .catch((err) => {
