@@ -1,21 +1,13 @@
+import React, {useEffect} from 'react';
+import {Modal, ScrollView, StyleSheet, Text, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import React from 'react';
-import {Image, Modal, StyleSheet, Text, View, ScrollView} from 'react-native';
+import {useSelector} from 'react-redux';
 
 export const InterventionModel = (props) => {
-  // const services = props.services
-  const services = [
-    {
-      service: 'injection',
-      prix: 200,
-    },
-    {
-      service: 'massage',
-      prix: 300,
-    },
-  ];
+  const {types} = useSelector((state) => state.services);
+  
+  const Allservices = types.reduce((p, c) => [...p, ...c.services], []);
+
   return (
     <Modal
       animationType="slide"
@@ -25,19 +17,21 @@ export const InterventionModel = (props) => {
       <View style={styles.modelCard}>
         <View style={styles.modelInfo}>
           <Text style={styles.modelText}>
-            Liste des services ({services.length})
+            Liste des services ({props.services.length})
           </Text>
           <ScrollView
             style={styles.list}
             contentContainerStyle={styles.listStyle}>
             <View style={styles.prd}>
               <Text style={styles.prdTitle}>Service: </Text>
+              <Text style={{width:'50%'}}></Text>
               <Text style={styles.prdTitle}>Prix: </Text>
             </View>
-            {services.map((srv, index) => (
+            {Allservices.map((srv, index) => (
+              props.services.includes(srv.name) &&
               <View key={index} style={styles.prd}>
-                <Text style={styles.prdText}>{srv.service}</Text>
-                <Text style={styles.total}>{srv.prix}</Text>
+                <Text style={styles.prdText}>{srv.name}</Text>
+                <Text style={styles.total}>{srv.price}</Text>
               </View>
             ))}
           </ScrollView>
@@ -106,17 +100,19 @@ const styles = StyleSheet.create({
     // marginTop:10
   },
   listStyle: {
-    paddingVertical: 10,
+    // paddingVertical: 10,
     backgroundColor: 'white',
     // alignItems: "center",
-    borderTopWidth: 1,
-    borderColor: '#707070',
+    borderTopWidth:5,
+    borderBottomWidth:5,
+    borderColor:'#21b9e0',
     justifyContent: 'flex-start',
   },
   prd: {
     paddingHorizontal: 10,
     paddingVertical: 10,
-    borderBottomWidth: 1,
+    borderBottomWidth: 3,
+    borderColor:"#4EC7E6",
     justifyContent: 'space-around',
     flexDirection: 'row',
   },
@@ -132,11 +128,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   prdTitle: {
-    alignSelf: 'center',
+    // alignSelf: 'center',
     color: 'white',
     fontSize: 18,
     backgroundColor: '#11A0C1',
     paddingHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: 5,
   },
 });

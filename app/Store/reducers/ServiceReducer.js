@@ -5,7 +5,7 @@ import {
 } from "../../constants/ActionTypes";
 
 const initialState = {
-  services: [],
+  types: [],
   loading: false,
   error: false,
 };
@@ -15,7 +15,7 @@ const ServiceReducer = (state = initialState, action) => {
     case SET_SERVICES: {
       return {
         ...state,
-        services: action.data,
+        types: action.data,
         loading: false,
         error: false,
       };

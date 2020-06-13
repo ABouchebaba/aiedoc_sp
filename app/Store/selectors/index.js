@@ -6,13 +6,8 @@ export const default_selector = createSelector(
 );
 
 export const getAllServices = createSelector(
-  (state) => state.services.services,
+  (state) => state.services.types,
   (types) => {
     return types.reduce((data, t) => [...data, ...t.services], []);
-    let data = [];
-    types.map((t) => {
-      data = [...data, ...t.services];
-    });
-    return data;
   },
 );

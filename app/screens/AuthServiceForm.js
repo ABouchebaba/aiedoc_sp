@@ -15,7 +15,7 @@ import {getServices, register} from '../Store/actions';
 const AuthServiceForm = (props) => {
   const infos = props.route.params;
   const dispatch = useDispatch();
-  const {services, loading} = useSelector((state) => state.services);
+  const {types, loading} = useSelector((state) => state.services);
   const [userService, setUserServices] = useState([]);
 
   // console.log(services.reduce((p, c) => [...p, c.services], []));
@@ -45,9 +45,9 @@ const AuthServiceForm = (props) => {
               selectedLabelStyle={{color: 'blue'}}
               rowStyle={{backgroundColor: 'rgba(255,255,255,0)'}}
               checkboxStyle={{borderColor: '#4EC7E6'}}
-              items={services.reduce(
-                (services, type) => [
-                  ...services,
+              items={types.reduce(
+                (types, type) => [
+                  ...types,
                   ...type.services.map((s) => s.name),
                 ],
                 [],
