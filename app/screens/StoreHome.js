@@ -120,12 +120,7 @@ const StoreHome = (props) => {
       </View>
       <TouchableOpacity
         style={styles.command}
-        // onPress={() => props.navigation.navigate("Mes achats")}
-        onPress={() =>
-          setTimeout(() => {
-            props.navigation.navigate('Mes achats');
-          }, 5000)
-        }>
+        onPress={() => props.navigation.navigate("Mes achats")}>
         <AntDesign name="CodeSandbox" size={30} color="#11A0C1" />
         <Text
           style={{

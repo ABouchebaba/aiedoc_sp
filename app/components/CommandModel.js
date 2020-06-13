@@ -5,7 +5,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 export const CommandModel = (props) => {
   // const intervention = props.intervention
-  // console.log(props.products);
+  console.log(props.products);
 
   return (
     <Modal
@@ -23,7 +23,7 @@ export const CommandModel = (props) => {
           >
             {props.products.map((prd, index) => (
               <View key={index} style={styles.prd}>
-                <Text style={styles.prdTitle} >Nom: {prd.product_name}</Text>
+                <Text style={styles.prdTitle} >{prd.product.name.trim()}</Text>
                 <Text style={styles.prdText} >Option: {prd.option.length==0? 'Standard':prd.option}</Text>
                 <Text style={styles.prdText} >Prix: 100</Text>
                 <Text style={styles.prdText} >Quantité: {prd.qty}</Text>
@@ -97,18 +97,19 @@ const styles = StyleSheet.create({
     // marginTop:10
   },
   listStyle: {
-    
-    paddingVertical:10,
+    // paddingVertical:10,
     backgroundColor: "white",
     // alignItems: "center",
-    borderTopWidth:1,
-    borderColor:'#707070',
+    borderTopWidth:5,
+    borderBottomWidth:5,
+    borderColor:'#21b9e0',
     justifyContent: "flex-start",
   },
   prd:{
     paddingHorizontal:10,
     paddingVertical:10,
-    borderBottomWidth:1
+    borderBottomWidth:1,
+    borderColor:"#4EC7E6"
   },
   prdText:{
     // alignSelf: "center",
@@ -123,9 +124,10 @@ const styles = StyleSheet.create({
   prdTitle:{
     alignSelf: "center",
     color: "white",
-    fontSize: 18,
+    fontSize: 16,
     backgroundColor:'#11A0C1',
     paddingHorizontal:10,
-    borderRadius:20
+    borderRadius:10,
+    textAlign:'center'
   }
 });

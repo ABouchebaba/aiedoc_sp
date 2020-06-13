@@ -1,17 +1,14 @@
 import { Entypo, FontAwesome } from "@expo/vector-icons";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
-  ScrollView,
+  ActivityIndicator,
+  RefreshControl, ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-  ActivityIndicator,
-  RefreshControl
+  View
 } from "react-native";
 import { InterventionModel } from "./InterventionModel";
-import { useDispatch, useSelector } from "react-redux";
-import { getInterventions } from "../Store/actions";
 
 export const Interventions = (props) => {
   
@@ -38,7 +35,7 @@ export const Interventions = (props) => {
   function interventionModel(services) {
     setIntervention({ open: true, services: services });
   }
-
+  
   return loading ? (
     <View style={styles.scrollContain}>
       <ActivityIndicator size="large" color="#11A0C1" />
@@ -51,6 +48,7 @@ export const Interventions = (props) => {
       }
     >
       {interventions.map((inv, i) => (
+        
         inv.state === "validated" &&
         <TouchableOpacity
           key={i}
@@ -69,11 +67,13 @@ export const Interventions = (props) => {
             </FontAwesome>
           </View>
           <View style={styles.rightSide}>
-            <Text style={{...styles.text,fontSize:15}}>Rating</Text>
+            <Text style={{...styles.text,fontSize:15}}>Evaluation</Text>
             <View style={styles.ratingView}>
-              {[...Array(inv.client_rating)].map((x, i) => (
-                <Entypo key={i} name="star" size={30} color="#FFD700"></Entypo>
+              {[...Array(5)].map((x, i) => (
+                (inv.client_rating > i)? <Entypo key={i} name="star" size={30} color="#FFD700"/>:
+                <Entypo key={i} name="star" size={30} color="#AAA"/>
               ))}
+              
             </View>
           </View>
         </TouchableOpacity>

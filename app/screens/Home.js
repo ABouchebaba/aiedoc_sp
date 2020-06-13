@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {BackImage, Header, Switch, LoadingModal} from '../components';
-import {setOnlineState} from '../Store/actions';
+import {setOnlineState, getServices} from '../Store/actions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const {height} = Dimensions.get('window');
@@ -20,10 +20,13 @@ const colors = [powerOffColor, powerOnColor];
 const Home = (props) => {
   const dispatch = useDispatch();
   const {user, loading} = useSelector((state) => state.user);
-
+  const {types} = useSelector((state) => state.services);
   const powerColor = user.state !== 'notReady' ? colors : colors.reverse();
 
   // console.log(user.state);
+  useEffect(()=> {
+    if(types.length === 0) dispatch(getServices())
+  },[])
 
   const toggleOnline = () => {
     if (user.state !== 'notReady') {
