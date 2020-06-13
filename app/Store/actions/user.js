@@ -4,7 +4,7 @@ import {
   UNSET_USER,
   USER_LOADING,
 } from '../../constants/ActionTypes';
-import {validatePin, getUserWithPhone, registerUser} from '../api';
+import {validatePin, getUserWithPhone, registerUser, setState} from '../api';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
 import OneSignal from 'react-native-onesignal';
@@ -127,11 +127,24 @@ export const register = (user) => (dispatch) => {
   });
 };
 
-export const logout = () => (dispatch) => {
-  delete axios.defaults.headers.common['x-auth-token'];
-  return dispatch({
-    type: UNSET_USER,
-  });
+export const logout = (user) => (dispatch) => {
+  const {_id, location} = user;
+  const [longitude, latitude] = location.coordinates;
+
+  setState(_id, 'notReady', longitude, latitude)
+    .then((res) => {
+      delete axios.defaults.headers.common['x-auth-token'];
+      return dispatch({
+        type: UNSET_USER,
+      });
+    })
+    .catch((err) => {
+      console.log('Logout - got error : ' + err.message);
+      return dispatch({
+        type: ERROR_USER,
+        data: err.message,
+      });
+    });
 };
 
 export const setUser = (user) => (dispatch) => {
