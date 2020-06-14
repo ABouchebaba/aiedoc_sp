@@ -23,10 +23,10 @@ const Home = (props) => {
   const {types} = useSelector((state) => state.services);
   const powerColor = user.state !== 'notReady' ? colors : colors.reverse();
 
-  // console.log(user.state);
-  useEffect(()=> {
-    if(types.length === 0) dispatch(getServices())
-  },[])
+  console.log();
+  useEffect(() => {
+    if (types.length === 0) dispatch(getServices());
+  }, []);
 
   const toggleOnline = () => {
     if (user.state !== 'notReady') {

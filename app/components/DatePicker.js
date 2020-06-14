@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Platform, TouchableOpacity, Text } from "react-native";
+import React, {useState} from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {Platform, TouchableOpacity, Text} from 'react-native';
 
 const DatePicker = (props) => {
   const [show, setShow] = useState(false);
@@ -8,10 +8,10 @@ const DatePicker = (props) => {
 
   const dateValue = props.value
     ? new Date(props.value)
-    : new Date("2000-01-01");
+    : new Date('2000-01-01');
 
   const onChange = (event, selectedDate) => {
-    setShow(Platform.OS === "ios");
+    setShow(Platform.OS === 'ios');
     if (selectedDate) {
       const currentDate = selectedDate.toISOString().slice(0, 10);
       props.onChange(currentDate);
@@ -22,9 +22,7 @@ const DatePicker = (props) => {
     <React.Fragment>
       <TouchableOpacity onPress={showDatePicker} style={props.style}>
         {props.value ? (
-          <Text style={styles.hasValue}>
-            {props.value}
-          </Text>
+          <Text style={styles.hasValue}>{props.value}</Text>
         ) : (
           <Text style={styles.hasNoValue}>{props.title}</Text>
         )}
@@ -41,8 +39,8 @@ const DatePicker = (props) => {
 };
 
 const styles = {
-  hasValue: { fontSize: 20 },
-  hasNoValue: { fontSize: 20, color: "#bababa" },
+  hasValue: {fontSize: 15},
+  hasNoValue: {fontSize: 15, color: '#bababa'},
 };
 
 export default DatePicker;

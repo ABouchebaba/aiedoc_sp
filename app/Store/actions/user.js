@@ -10,6 +10,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import OneSignal from 'react-native-onesignal';
 
 import {Platform} from 'react-native';
+import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
 export const login = (info, callbacks) => (dispatch) => {
@@ -127,9 +128,28 @@ export const register = (user) => (dispatch) => {
   });
 };
 
-export const logout = (user) => (dispatch) => {
-  const {_id, location} = user;
-  const [longitude, latitude] = location.coordinates;
+export const logout = (user) => async (dispatch) => {
+  const {_id} = user;
+  try {
+    const {status, permissions} = await Permissions.askAsync(
+      Permissions.LOCATION,
+    );
+    if (status !== 'granted') {
+      // throw new Error("Permission to access location was denied");
+      alert("La permission d'accés à la localisation non-accordée");
+      return;
+    }
+  } catch (err) {
+    console.log(err.message);
+    alert('Une erreur est survenue.');
+    return;
+  }
+
+  let {coords} = await Location.getCurrentPositionAsync({
+    accuracy: 5,
+    enableHighAccuracy: true,
+  });
+  const {longitude, latitude} = coords;
 
   setState(_id, 'notReady', longitude, latitude)
     .then((res) => {

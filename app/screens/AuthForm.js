@@ -5,7 +5,6 @@ import {
   TextInput,
   StyleSheet,
   ActivityIndicator,
-  Picker,
   Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -13,6 +12,7 @@ import {register} from '../Store/actions';
 import DatePicker from '../components/DatePicker';
 import Button from '../components/Button';
 import {BackImage} from '../components/';
+import {Picker} from '@react-native-community/picker';
 
 const AuthForm = (props) => {
   const dispatch = useDispatch();
@@ -23,11 +23,11 @@ const AuthForm = (props) => {
   const [lastname, setLastname] = useState('');
   const [birthdate, setBirthdate] = useState('');
   const [wilaya, setWilaya] = useState({
-    nom: '',
-    code: '',
+    nom: 'Adrar',
+    code: '1',
   });
-  const [region, setRegion] = useState('');
-  const [sex, setSex] = useState('');
+  const [region, setRegion] = useState('Adrar');
+  const [sex, setSex] = useState('male');
 
   const wilayas = require('../helpers/wilayas.json');
   const communes = wilaya == '' ? [] : require('../helpers/communes.json');
@@ -93,7 +93,7 @@ const AuthForm = (props) => {
             </View>
           </View>
           <View style={styles.row}>
-            <View style={{flex: 0.6}}>
+            <View style={{flex: 0.5}}>
               <Text style={styles.label}>Date de naissance</Text>
               <DatePicker
                 title="Date de naissance"
@@ -102,11 +102,13 @@ const AuthForm = (props) => {
                 style={styles.TextInput}
               />
             </View>
-            <View style={{flex: 0.35}}>
+            <View style={{flex: 0.45}}>
               <Text style={styles.label}>Sexe</Text>
               <View style={styles.buttonWhite}>
                 <Picker
                   selectedValue={sex}
+                  itemStyle={{fontSize: 15}}
+                  style={{fontSize: 15}}
                   onValueChange={(itemValue) => setSex(itemValue)}>
                   <Picker.Item color="#006592" label={'Homme'} value={'male'} />
                   <Picker.Item
@@ -182,17 +184,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 25,
+    fontSize: 20,
     color: 'white',
-    marginBottom: 20,
+    marginBottom: 15,
   },
   TextInput: {
     backgroundColor: '#F2F2F2',
     width: '100%',
     borderRadius: 50,
     paddingLeft: 20,
-    fontSize: 20,
-    paddingVertical: 10,
+    fontSize: 15,
+    paddingVertical: 15,
     marginBottom: 40,
   },
   RowTextInput: {
@@ -200,7 +202,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 50,
     paddingLeft: 20,
-    fontSize: 20,
+    fontSize: 15,
     paddingVertical: 10,
     marginBottom: 40,
   },
@@ -208,7 +210,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
     borderRadius: 50,
     paddingLeft: 20,
-    fontSize: 20,
+    fontSize: 15,
     marginBottom: 40,
   },
   row: {
@@ -218,7 +220,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 15,
     marginLeft: 10,
   },
 });
