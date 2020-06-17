@@ -7,6 +7,8 @@ import {
   ImageBackground,
   StyleSheet,
   Text,
+  Image,
+  Alert,
 } from 'react-native';
 import {sendPin, getOptions} from '../Store/api';
 import {login} from '../Store/actions';
@@ -19,6 +21,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 const AuthPhone = (props) => {
   const dispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState('');
+  const reg = /^(\+213)(5|6|7)[0-9]{8}$/
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(
     FirebaseAuthApplicationVerifier,
   );
@@ -35,8 +38,8 @@ const AuthPhone = (props) => {
   const textinput = React.createRef();
 
   const onPressSendVerificationCode = () => {
-    const number = '+213' + phoneNumber.slice(1);
-    console.log('phone', number);
+    const number = (phoneNumber.charAt(0) == 0 && phoneNumber.length == 10 ) ? phoneNumber.slice(1): phoneNumber;
+    if(!reg.test('+213'+ number)) return Alert.alert('Numéro érroné','Veuillez vérifier votre numéro de téléphone')
     sendPin(number, recaptchaVerifier)
       .then((res) => {
         console.log('received pin');
@@ -86,7 +89,8 @@ const AuthPhone = (props) => {
               firebaseConfig={getOptions()}
             />
             <View style={styles.mainView}>
-              <Text style={{fontSize: 22, color: 'white', marginBottom: 10}}>
+              <Image source={require("../../assets/logo.png")} style={styles.logo} />
+              <Text style={{fontSize: 20, color: 'white', marginBottom: 10, textAlign:'center'}}>
                 Entrez votre numéro de téléphone
               </Text>
               <View style={styles.inputView}>
@@ -170,11 +174,21 @@ const styles = StyleSheet.create({
   },
   mainView: {
     paddingHorizontal: '8%',
+    // backgroundColor:'red',
+    marginBottom: 100
   },
   inputView: {
     flexDirection: 'row',
     backgroundColor: 'white',
     borderRadius: 50,
+  },
+  logo: {
+    alignSelf: 'center',
+    width: 150,
+    height:200,
+    resizeMode: 'contain',
+    marginBottom:20
+    // backgroundColor:'red'
   },
   TextInput: {
     backgroundColor: '#F2F2F2',
