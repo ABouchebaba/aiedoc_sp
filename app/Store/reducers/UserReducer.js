@@ -6,6 +6,7 @@ import {
   SET_LOCATION,
   UNSET_USER,
   ERROR_USER,
+  SET_USER_PICTURE,
 } from '../../constants/ActionTypes';
 
 const initialState = {
@@ -45,6 +46,15 @@ const UserReducer = (state = initialState, action) => {
       let user = {...state.user, state: action.data};
       return {...state, user, loading: false, error: false};
     }
+    case SET_USER_PICTURE: {
+      state.user.picture = action.data;
+      return {
+        ...state,
+        user: {...state.user},
+        loading: false,
+        error: false,
+      };
+    }
     case SET_LOCATION: {
       return {
         ...state,
@@ -66,6 +76,7 @@ const UserReducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.data,
+        loading: false,
       };
     }
 

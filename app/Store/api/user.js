@@ -11,7 +11,6 @@ export const getUserWithPhone = async ({phoneNumber, pushNotificationId}) => {
 };
 
 export const registerUser = async (user) => {
-  console.log(BACKEND_URL);
   return RNFetchBlob.fetch(
     'POST',
     `${BACKEND_URL}/api/serviceProviders/register`,
@@ -19,6 +18,18 @@ export const registerUser = async (user) => {
       'Content-Type': 'multipart/form-data',
     },
     user,
+  );
+};
+
+export const update_picture = async (id, picture, token) => {
+  return RNFetchBlob.fetch(
+    'PUT',
+    `${BACKEND_URL}/api/serviceProviders/${id}/picture`,
+    {
+      'Content-Type': 'multipart/form-data',
+      'x-auth-token': token,
+    },
+    picture,
   );
 };
 

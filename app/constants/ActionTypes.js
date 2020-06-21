@@ -5,6 +5,7 @@ export const SET_USER = 'SET_USER';
 export const SET_USER_DATA = 'SET_USER_DATA';
 export const SET_USER_STATE = 'SET_USER_STATE';
 export const SET_LOCATION = 'SET_LOCATION';
+export const SET_USER_PICTURE = 'SET_USER_PICTURE';
 export const UNSET_USER = 'UNSET_USER';
 export const ERROR_USER = 'ERROR_USER';
 
@@ -14,8 +15,8 @@ export const ERROR_SERVICES = 'ERROR_SERVICES';
 
 export const GET_PRODUCTS = 'GET_PRODUCTS';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
-export const PRODUCTS_LOADING = "PRODUCTS_LOADING";
-export const CATEGORIES_LOADING = "CATEGORIES_LOADING";
+export const PRODUCTS_LOADING = 'PRODUCTS_LOADING';
+export const CATEGORIES_LOADING = 'CATEGORIES_LOADING';
 export const ERROR_STORE = 'ERROR_STORE';
 
 export const GET_COMMANDS = 'GET_COMMANDS';

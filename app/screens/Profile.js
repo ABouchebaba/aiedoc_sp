@@ -1,5 +1,5 @@
 import Entypo from 'react-native-vector-icons/Entypo';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -11,12 +11,37 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {BackImage} from '../components';
+import {BACKEND_URL} from 'react-native-dotenv';
+import * as DocumentPicker from 'expo-document-picker';
+import {updatePicture} from '../Store/actions';
 
 const Profile = (props) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
+  const {user, token} = useSelector((state) => state.user);
+  const [selectedPicture, setSelectedPicture] = useState({
+    uri: BACKEND_URL + '/' + user.picture,
+  });
 
-  const changeProfilePicture = () => {};
+  const picture_uri = selectedPicture.uri;
+
+  const changeProfilePicture = async () => {
+    let result = await DocumentPicker.getDocumentAsync({
+      copyToCacheDirectory: true,
+      type: 'image/*',
+    });
+
+    if (result.type === 'success') {
+      const picture = {
+        uri: result.uri,
+        name: result.name,
+      };
+      setSelectedPicture(picture);
+    }
+  };
+
+  const save_picture = () => {
+    dispatch(updatePicture(user._id, selectedPicture, token));
+  };
 
   return (
     <BackImage source={require('../../assets/bg/bgHome.png')}>
@@ -27,20 +52,14 @@ const Profile = (props) => {
           </TouchableOpacity>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* <TouchableOpacity
+          <TouchableOpacity
+            onPress={changeProfilePicture}
             style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Image
-              source={require('../../assets/malePin.png')}
-              style={{
-                width: 100,
-                height: 100,
-                resizeMode: 'cover',
-                borderWidth: 10,
-                borderColor: '#11A0C1',
-                borderRadius: 70,
-              }}
-            />
-          </TouchableOpacity> */}
+            <Image source={{uri: picture_uri}} style={styles.picture} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={save_picture} style={styles.save_picture}>
+            <Entypo name="save" size={40} color="white" />
+          </TouchableOpacity>
           <View style={styles.inputGroup}>
             <Text style={styles.text}>Email</Text>
             <TextInput
@@ -132,6 +151,20 @@ const styles = StyleSheet.create({
   mainView: {
     height: '85%',
     justifyContent: 'flex-start',
+  },
+  picture: {
+    backgroundColor: '#efefef',
+    width: 200,
+    height: 200,
+    resizeMode: 'cover',
+    borderWidth: 5,
+    borderColor: '#11A0C1',
+    borderRadius: 100,
+  },
+  save_picture: {
+    position: 'absolute',
+    right: 20,
+    top: 150,
   },
 });
 

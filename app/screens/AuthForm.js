@@ -46,7 +46,7 @@ const AuthForm = (props) => {
   const submit = () => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       // console.log({ phone, email, firstname, lastname, birthdate, wilaya,commune:region  });
-      props.navigation.navigate('AuthProForm', {
+      props.navigation.navigate('AuthProfilePicture', {
         phone,
         email,
         firstname,

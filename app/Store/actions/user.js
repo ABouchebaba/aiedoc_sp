@@ -3,8 +3,16 @@ import {
   SET_USER_DATA,
   UNSET_USER,
   USER_LOADING,
+  SET_USER_PICTURE,
+  ERROR_USER,
 } from '../../constants/ActionTypes';
-import {validatePin, getUserWithPhone, registerUser, setState} from '../api';
+import {
+  validatePin,
+  getUserWithPhone,
+  registerUser,
+  setState,
+  update_picture,
+} from '../api';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
 import OneSignal from 'react-native-onesignal';
@@ -57,6 +65,48 @@ export const login = (info, callbacks) => (dispatch) => {
     });
 };
 
+export const updatePicture = (id, picture, token) => (dispatch) => {
+  dispatch({type: USER_LOADING});
+
+  let data = [
+    {
+      name: 'picture',
+      filename: picture.name,
+      data: RNFetchBlob.wrap(picture.uri),
+    },
+  ];
+
+  update_picture(id, data, token)
+    .then((res) => {
+      if (res.info().status == 200) {
+        console.log('received res : ', res.data);
+        dispatch({
+          type: SET_USER_PICTURE,
+          data: res.data,
+        });
+      } else {
+        console.log(res?.text()); // this is the handeled error message in backend
+        alert('Une erreur est survenue, veuillez réessayer.');
+        dispatch({
+          type: ERROR_USER,
+          data: err.message,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(
+        'error updating picture : ' + err?.response?.data || err.message,
+      );
+      alert(
+        'Une erreur est survenue lors du chargement de la photo de profile',
+      );
+      return dispatch({
+        type: ERROR_USER,
+        data: err.message,
+      });
+    });
+};
+
 export const register = (user) => (dispatch) => {
   dispatch({type: USER_LOADING});
 
@@ -73,6 +123,15 @@ export const register = (user) => (dispatch) => {
     {name: 'services', data: JSON.stringify(user.services)},
     {name: 'types', data: JSON.stringify(user.types)},
     {name: 'descriptions', data: JSON.stringify(user.descriptions)},
+  ];
+
+  data = [
+    ...data,
+    {
+      name: 'picture',
+      filename: user.picture.name,
+      data: RNFetchBlob.wrap(user.picture.uri),
+    },
   ];
 
   for (let i = 0; i < user.files.length; i++) {

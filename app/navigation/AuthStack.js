@@ -5,6 +5,7 @@ import AuthPin from '../screens/AuthPin';
 import AuthForm from '../screens/AuthForm';
 import AuthProForm from '../screens/AuthProForm';
 import AuthServiceForm from '../screens/AuthServiceForm';
+import AuthProfilePicture from '../screens/AuthProfilePicture';
 
 const AuthStack = createStackNavigator();
 
@@ -16,6 +17,10 @@ function AuthStackScreen() {
       <AuthStack.Screen name="AuthForm" component={AuthForm} />
       <AuthStack.Screen name="AuthProForm" component={AuthProForm} />
       <AuthStack.Screen name="AuthServiceForm" component={AuthServiceForm} />
+      <AuthStack.Screen
+        name="AuthProfilePicture"
+        component={AuthProfilePicture}
+      />
     </AuthStack.Navigator>
   );
 }
