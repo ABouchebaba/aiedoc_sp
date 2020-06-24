@@ -173,11 +173,7 @@ const ProductProfile = ({route, navigation}) => {
 
         <Text style={styles.brand}>Desciption</Text>
         <Text style={styles.description}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris mattis
-          laoreet lorem vitae rhoncus. Orci varius natoque penatibus et magnis
-          dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum
-          convallis vestibulum. Praesent fringilla semper vestibulum. Proin eget
-          tincidunt lorem. Phasellus fermentum placerat urna.
+        {product.description}
         </Text>
         <View style={{paddingBottom: 30}} />
       </ScrollView>
