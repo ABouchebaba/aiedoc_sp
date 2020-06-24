@@ -4,7 +4,7 @@ import {setCommand} from "../api";
 import _ from "lodash";
 
 export const addToCart = (product, cart) => (dispatch) => {
-  if (cart.length === 0) {
+  if (cart.length === 0||(product.from!=null && product.to!==null) ) {
     cart.push(product);
     console.log("add new product: ", product.product_id);
     return dispatch({
@@ -58,10 +58,11 @@ export const removeQuantity = (id, option, cart) => (dispatch) => {
 export const removeProduct = (id, option, cart) => (dispatch) => {
   if (cart.length > 0) {
     console.log("remove product:", id);
-    let newCart = cart.filter((product) => {
-      if (product.product_id !== id || product.option !== option) {
+    let newCart = cart.filter((product,i) => {
+      if (i !== id || product.option !== option) {
         return product;
       }
+      // console.log(i)
     });
     return dispatch({
       type: SET_PRODUCT,
@@ -85,7 +86,7 @@ export const addCommand = (data, doneModal) => (dispatch) => {
     })
     .catch((err) => {
       alert("Veuillez vérifier votre connexion internet");
-      console.log(err.message);
+      console.log(err.response.data);
       dispatch({
         type: ERROR_CART,
         data: err.message,

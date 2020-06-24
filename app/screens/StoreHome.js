@@ -1,6 +1,6 @@
 import {FontAwesome, AntDesign} from '@expo/vector-icons';
 import _ from 'lodash';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -9,6 +9,7 @@ import {
   View,
   TouchableOpacity,
   Text,
+  RefreshControl
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
@@ -38,6 +39,15 @@ const StoreHome = (props) => {
   useEffect(() => {
     setFilteredData(products);
   }, [products]);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    dispatch(getCategories());
+    dispatch(getProducts());
+    setRefreshing(false);
+  }, [refreshing, products]);
 
   function searchByCategory(cat) {
     let data = products;
@@ -99,7 +109,11 @@ const StoreHome = (props) => {
         ) : (
           <ScrollView
             style={styles.list}
-            contentContainerStyle={styles.listStyle}>
+            contentContainerStyle={styles.listStyle}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            >
             {filteredData
               .filter((product) =>
                 product.name.toUpperCase().includes(searchText.toUpperCase()),

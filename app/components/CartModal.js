@@ -20,12 +20,12 @@ export const CartModal = (props) => {
   const [wilaya, setWilaya] = useState('');
   const [location, setLocation] = useState({});
 
-  useEffect(() => {
+  /* useEffect(() => {
     getLocationForCommand().then((res) => {
       console.log(res);
       setLocation(res);
     });
-  }, []);
+  }, []); */
 
   function submit() {
     if (address.length > 5 && wilaya !== '') {

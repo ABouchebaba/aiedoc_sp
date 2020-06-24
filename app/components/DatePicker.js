@@ -32,6 +32,7 @@ const DatePicker = (props) => {
           display="spinner"
           value={dateValue}
           onChange={onChange}
+          minimumDate={props.minDate}
         />
       )}
     </React.Fragment>

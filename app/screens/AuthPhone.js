@@ -38,8 +38,9 @@ const AuthPhone = (props) => {
   const textinput = React.createRef();
 
   const onPressSendVerificationCode = () => {
-    const number = (phoneNumber.charAt(0) == 0 && phoneNumber.length == 10 ) ? phoneNumber.slice(1): phoneNumber;
-    if(!reg.test('+213'+ number)) return Alert.alert('Numéro érroné','Veuillez vérifier votre numéro de téléphone')
+    const tempNumber = (phoneNumber.charAt(0) == 0 && phoneNumber.length == 10 ) ? phoneNumber.slice(1): phoneNumber;
+    const number = '+213'+ tempNumber
+    if(!reg.test(number)) return Alert.alert('Numéro érroné','Veuillez vérifier votre numéro de téléphone')
     sendPin(number, recaptchaVerifier)
       .then((res) => {
         console.log('received pin');

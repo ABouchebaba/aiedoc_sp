@@ -1,31 +1,45 @@
-import {Entypo} from '@expo/vector-icons';
-import React, {useRef, useState} from 'react';
+import { Entypo } from '@expo/vector-icons';
+import React, { useRef, useState } from 'react';
 import {
   Dimensions,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+
+
+  TextInput, TouchableOpacity,
+  View
 } from 'react-native';
-import {BACKEND_URL} from 'react-native-dotenv';
+import { BACKEND_URL } from 'react-native-dotenv';
 import DropdownAlert from 'react-native-dropdownalert';
 import GallerySwiper from 'react-native-gallery-swiper';
 import RNPickerSelect from 'react-native-picker-select';
-import {useDispatch, useSelector} from 'react-redux';
-import {BackImage, MarketHeader} from '../components';
-import {addToCart} from '../Store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { BackImage, MarketHeader } from '../components';
+import DatePicker from '../components/DatePicker';
+import { addToCart } from '../Store/actions';
 
 const {width, height} = Dimensions.get('window');
-
+const today = new Date()
 const ProductProfile = ({route, navigation}) => {
   const {product} = route.params;
   const alert = useRef(null);
   const dispatch = useDispatch();
   const {cart} = useSelector((state) => state.cart);
   const [option, setOption] = useState('');
+  const [from, setFrom] = useState(today.toISOString().slice(0,10));
+  const [to, setTo] = useState('');
 
+  const rent = product.category.name === 'Location';
+   
+  const disabled = rent
+    ? from === '' || to === '' || (product.options.length > 1 && option === '')
+    : product.options.length > 1 && option === '';
+  
   function _addToCart() {
+    let myDate
+    if (rent) myDate = new Date(new Date(from).getTime()+(to*24*60*60*1000));
+   
     const productAdd = {
       product_id: product._id,
       product_name: product.name,
@@ -33,7 +47,10 @@ const ProductProfile = ({route, navigation}) => {
       qty: 1,
       option: option,
       price: product.price,
+      from: rent?from:null,
+      to: rent?myDate.toISOString().slice(0, 10):null,
     };
+    
     dispatch(addToCart(productAdd, cart));
     // dispatch(removeProduct(product._id, cart));
     alert.current.alertWithType(
@@ -42,6 +59,7 @@ const ProductProfile = ({route, navigation}) => {
       `${product.name} ajouté au panier.`,
     );
   }
+
 
   return (
     <BackImage source={require('../../assets/bg/bgMarket.png')}>
@@ -58,26 +76,13 @@ const ProductProfile = ({route, navigation}) => {
                     uri: BACKEND_URL + '/' + image,
                     dimensions: {width: 1000, height: 1000},
                   }))
-                : [{
-                    source: require('../../assets/product.jpg'),
-                    dimensions: {width: 300, height: 300},
-                  }]
+                : [
+                    {
+                      source: require('../../assets/product.jpg'),
+                      dimensions: {width: 300, height: 300},
+                    },
+                  ]
             }
-            //   [
-            //     {
-            //       source: require("../../assets/product.jpg"),
-            //       dimensions: { width: 300, height: 300 },
-            //     },
-            //     {
-            //       source: require("../../assets/product.jpg"),
-            //       dimensions: { width: 300, height: 300 },
-            //     },
-            //     {
-            //       source: require("../../assets/product.jpg"),
-            //       dimensions: { width: 300, height: 300 },
-            //     },
-            // ]
-
             initialNumToRender={2}
             // Turning this off will make it feel faster
             // and prevent the scroller to slow down
@@ -86,7 +91,7 @@ const ProductProfile = ({route, navigation}) => {
           />
         </View>
         <Text style={styles.name}>
-          {product.name.replace(/(\r\n|\n|\r)/gm, '').slice(0,40)}
+          {product.name.replace(/(\r\n|\n|\r)/gm, '').slice(0, 40)}
         </Text>
         <Text style={styles.brand}>
           {product.brand.toUpperCase().replace(/(\r\n|\n|\r)/gm, '')}
@@ -108,14 +113,38 @@ const ProductProfile = ({route, navigation}) => {
         <View style={styles.buy}>
           <Text style={styles.name}>{product.price} DA</Text>
           <TouchableOpacity
-            style={styles.buyButton}
+            style={disabled ? styles.disabledbuyButton : styles.buyButton}
             onPress={_addToCart}
-            disabled={option === '' ? product.options.length !== 0 : false}>
-            <Text style={styles.buyText}>Acheter</Text>
+            disabled={disabled}>
+            <Text style={disabled ? styles.disabledbuyText : styles.buyText}>
+              {rent ? 'Louer' : 'Acheter'}
+            </Text>
           </TouchableOpacity>
         </View>
-
-        {product.options.length !== 0 && (
+        {product.category.name === 'Location' && (
+          <View style={styles.buy}>
+            <View style={{width: '45%'}}>
+              <Text style={styles.brand}>Date du début</Text>
+              <DatePicker
+                title="Début"
+                onChange={setFrom}
+                value={from}
+                style={styles.TextInput}
+                minDate={today}
+              />
+            </View>
+            <View style={{width: '45%'}}>
+              <Text style={styles.brand}>La durée</Text>
+              <TextInput
+                placeholder="en jours"
+                onChangeText={setTo}
+                keyboardType="number-pad"
+                style={styles.TextInput}
+              />
+            </View>
+          </View>
+        )}
+        {product.options.length > 1 && (
           <View>
             <Text style={styles.brand}>Variation</Text>
             <RNPickerSelect
@@ -141,6 +170,7 @@ const ProductProfile = ({route, navigation}) => {
             />
           </View>
         )}
+
         <Text style={styles.brand}>Desciption</Text>
         <Text style={styles.description}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris mattis
@@ -223,8 +253,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  disabledbuyButton: {
+    backgroundColor: '#A0A0A0',
+    width: '65%',
+    borderRadius: 30,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  TextInput: {
+    backgroundColor: '#F2F2F2',
+    width: '100%',
+    borderRadius: 50,
+    paddingLeft: 20,
+    fontSize: 15,
+    paddingVertical: 15,
+    marginTop: 10,
+    marginBottom: 10,
+  },
   buyText: {
     color: 'white',
+    fontSize: 30,
+  },
+  disabledbuyText: {
+    color: 'black',
     fontSize: 30,
   },
   description: {

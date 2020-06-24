@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Dimensions,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Image,
-  ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -20,9 +20,9 @@ import {
 import {
   addCommand,
   addQuantity,
+  getCommands,
   removeProduct,
   removeQuantity,
-  getCommands,
 } from '../Store/actions';
 
 const {width, height} = Dimensions.get('window');
@@ -59,11 +59,19 @@ const Cart = ({route, navigation}) => {
     dispatch(removeQuantity(id, option, cart));
   }
 
-  const total = cart.reduce(function (accumulator, currentValue) {
-    return accumulator + currentValue.qty * currentValue.price;
+  const total = cart.reduce((accumulator, currentValue) => {
+    if (currentValue.from !== null && currentValue.to !== null) {
+      const diff = new Date(currentValue.to) - new Date(currentValue.from)
+      return accumulator + (currentValue.qty * currentValue.price*(diff/(1000*60*60*24)));
+    } else {
+      return accumulator + currentValue.qty * currentValue.price;
+    }
   }, 0);
 
+  // const totalRent = cart.reduce()
+
   function submit(address) {
+    let isBuy, isRent;
     const data = {
       address: address.address,
       // wilaya: address.wilaya,
@@ -72,14 +80,23 @@ const Cart = ({route, navigation}) => {
       user_type: 'ServiceProvider',
       total_price: total,
       products: cart.map((product) => {
-        return {
+        const prd = {
           product: product.product_id,
           qty: product.qty,
           option: product.option + ' ',
         };
+        if (product.from !== null && product.to !== null) {
+          prd.from = product.from;
+          prd.to = product.to;
+          isRent = true;
+        } else {
+          isBuy = true;
+        }
+        return prd;
       }),
+      type: isBuy && isRent ? 'both' : isRent ? 'rent' : 'buy',
     };
-    // console.log(data);
+    console.log(data);
     dispatch(addCommand(data, doneModal));
     close();
   }
@@ -97,10 +114,6 @@ const Cart = ({route, navigation}) => {
         ) : cart.length !== 0 ? (
           <>
             <Text style={styles.name}>Votre panier</Text>
-            {/* <Image
-              style={styles.tinyLogo}
-              source={require("../../assets/cart.png")}
-            /> */}
             <View style={styles.scrollNotch} />
             <ScrollView
               style={styles.list}
@@ -111,6 +124,7 @@ const Cart = ({route, navigation}) => {
                   product={product}
                   plus={plus}
                   minus={minus}
+                  index={i}
                   key={i}
                 />
               ))}
@@ -122,6 +136,7 @@ const Cart = ({route, navigation}) => {
             <TouchableOpacity
               style={styles.confirm}
               onPress={() => setModel(true)}>
+              {/* onPress={submit}> */}
               <Text style={styles.confirmText}>CONFIRMER</Text>
             </TouchableOpacity>
           </>
