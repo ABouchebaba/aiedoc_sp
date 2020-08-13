@@ -9,25 +9,43 @@ import {
 } from 'react-native';
 import SelectMultiple from 'react-native-select-multiple';
 import {useDispatch, useSelector} from 'react-redux';
-import {BackImage} from '../components';
-import {getServices, register} from '../Store/actions';
+import {BackImage, ServiceFilter} from '../components';
+import {getServices, register, setUser} from '../Store/actions';
 
 const AuthServiceForm = (props) => {
   const infos = props.route.params;
   const dispatch = useDispatch();
-  const {types, loading} = useSelector((state) => state.services);
-  const [userService, setUserServices] = useState([]);
-
-  // console.log(services.reduce((p, c) => [...p, c.services], []));
+  const {loading} = useSelector((state) => state.services);
+  const [selectedServices, setSelectedServices] = useState([]);
 
   async function submitServices() {
-    const data = {...infos, services: userService};
+    const data = {...infos, services: selectedServices.map((s) => s._id)};
     dispatch(register(data));
   }
 
   useEffect(() => {
     dispatch(getServices());
   }, []);
+
+  const selectService = (service) => {
+    const services = selectedServices.filter((s) => s._id !== service._id);
+
+    if (services.length === selectedServices.length) {
+      // service not selected --> add it to list
+      setSelectedServices([...services, service]);
+    } else {
+      // service already selected --> remove it
+      setSelectedServices(services);
+    }
+  };
+
+  const clearServices = () => {
+    setSelectedServices([]);
+  };
+
+  const serviceSelected = (id) => {
+    return selectedServices.find((s) => s._id === id);
+  };
 
   return (
     <BackImage source={require('../../assets/bg/bg1.png')}>
@@ -39,26 +57,14 @@ const AuthServiceForm = (props) => {
           </View>
         ) : (
           <View style={styles.mainView}>
-            <SelectMultiple
-              style={{padding: 10}}
-              labelStyle={styles.text}
-              selectedLabelStyle={{color: 'blue'}}
-              rowStyle={{backgroundColor: 'rgba(255,255,255,0)'}}
-              checkboxStyle={{borderColor: '#4EC7E6'}}
-              items={types.reduce(
-                (types, type) => [
-                  ...types,
-                  ...type.services.map((s) => s.name),
-                ],
-                [],
-              )}
-              selectedItems={userService}
-              onSelectionsChange={(value) => {
-                setUserServices(value.map((s) => s.value));
-              }}
+            <ServiceFilter
+              select={selectService}
+              selected={serviceSelected}
+              nbSelected={selectedServices.length}
+              clear={clearServices}
             />
             <View style={styles.bottom}>
-              {userService.length !== 0 && (
+              {selectedServices.length !== 0 && (
                 <TouchableOpacity
                   onPress={submitServices}
                   style={{

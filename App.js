@@ -3,6 +3,7 @@ import {store, persistor} from './app/Store';
 import {Provider} from 'react-redux';
 import Navigator from './app/navigation';
 // import {AppLoading} from 'expo';
+import SplashScreen from 'react-native-splash-screen';
 import {PersistGate} from 'redux-persist/integration/react';
 import * as firebase from 'firebase/app';
 import {enableScreens} from 'react-native-screens';
@@ -93,6 +94,7 @@ class App extends React.Component {
       kOSSettingsKeyInAppLaunchURL: false,
       kOSSettingsKeyInFocusDisplayOption: 2,
     });
+    SplashScreen.hide();
   }
 
   async load() {

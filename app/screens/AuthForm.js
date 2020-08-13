@@ -14,6 +14,8 @@ import Button from '../components/Button';
 import {BackImage} from '../components/';
 import {Picker} from '@react-native-community/picker';
 
+const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
 const AuthForm = (props) => {
   const dispatch = useDispatch();
   const {phoneNumber: phone} = props.route.params;
@@ -31,7 +33,7 @@ const AuthForm = (props) => {
 
   const wilayas = require('../helpers/wilayas.json');
   const communes = wilaya == '' ? [] : require('../helpers/communes.json');
-  // const communes = []
+
   const disabled = !(
     email &&
     firstname &&
@@ -41,11 +43,11 @@ const AuthForm = (props) => {
     region &&
     sex
   );
+
   const loading = useSelector((state) => state.user.loading);
 
   const submit = () => {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      // console.log({ phone, email, firstname, lastname, birthdate, wilaya,commune:region  });
+    if (emailRegex.test(email)) {
       props.navigation.navigate('AuthProfilePicture', {
         phone,
         email,
@@ -54,9 +56,8 @@ const AuthForm = (props) => {
         birthdate,
         wilaya: wilaya.nom,
         commune: region,
-        sex: sex,
+        sex,
       });
-      // dispatch(register({ phone, email, firstname, lastname, birthdate }));
     } else {
       return Alert.alert('Erreur', 'Adresse mail incorrecte');
     }

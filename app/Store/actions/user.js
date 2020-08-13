@@ -132,6 +132,21 @@ export const register = (user) => (dispatch) => {
       filename: user.picture.name,
       data: RNFetchBlob.wrap(user.picture.uri),
     },
+    {
+      name: 'extNaissance',
+      filename: user.extNaissance.name,
+      data: RNFetchBlob.wrap(user.extNaissance.uri),
+    },
+    {
+      name: 'residence',
+      filename: user.residence.name,
+      data: RNFetchBlob.wrap(user.residence.uri),
+    },
+    {
+      name: 'idCard',
+      filename: user.idCard.name,
+      data: RNFetchBlob.wrap(user.idCard.uri),
+    },
   ];
 
   for (let i = 0; i < user.files.length; i++) {

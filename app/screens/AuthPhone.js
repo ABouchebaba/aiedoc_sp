@@ -21,7 +21,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 const AuthPhone = (props) => {
   const dispatch = useDispatch();
   const [phoneNumber, setPhoneNumber] = useState('');
-  const reg = /^(\+213)(5|6|7)[0-9]{8}$/
+  const reg = /^(\+213)(5|6|7)[0-9]{8}$/;
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(
     FirebaseAuthApplicationVerifier,
   );
@@ -29,21 +29,23 @@ const AuthPhone = (props) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationId, setVerificationId] = useState('');
 
-  // if (step == 1) {
-  //   console.log('state phone number', phoneNumber);
-  //   console.log('state verificationCode', verificationCode);
-  //   console.log('state verificationId', verificationId);
-  // }
-
   const textinput = React.createRef();
 
+  const loading = useSelector((state) => state.user.loading);
+
   const onPressSendVerificationCode = () => {
-    const tempNumber = (phoneNumber.charAt(0) == 0 && phoneNumber.length == 10 ) ? phoneNumber.slice(1): phoneNumber;
-    const number = '+213'+ tempNumber
-    if(!reg.test(number)) return Alert.alert('Numéro érroné','Veuillez vérifier votre numéro de téléphone')
+    const tempNumber =
+      phoneNumber.charAt(0) == 0 && phoneNumber.length == 10
+        ? phoneNumber.slice(1)
+        : phoneNumber;
+    const number = '+213' + tempNumber;
+    if (!reg.test(number))
+      return Alert.alert(
+        'Numéro érroné',
+        'Veuillez vérifier votre numéro de téléphone',
+      );
     sendPin(number, recaptchaVerifier)
       .then((res) => {
-        console.log('received pin');
         setVerificationId(res);
         setPhoneNumber(number);
         setStep(1);
@@ -53,23 +55,25 @@ const AuthPhone = (props) => {
         // alert('Invalid phone number');
       });
   };
-  const loading = useSelector((state) => state.user.loading);
+
   const onPinError = () => {
     // console.log('wrong');
     alert('Wrong pin code');
   };
+
   const onVerfiyPhoneError = (err) => {
     restartProcess();
     props.navigation.navigate('AuthForm', {phoneNumber});
   };
+
   const restartProcess = () => {
     setVerificationId('');
     setPhoneNumber('');
     setVerificationCode('');
     setStep(0);
   };
+
   const onPressConfirmVerificationCode = async () => {
-    console.log('hi');
     dispatch(
       login(
         {phoneNumber, verificationId, verificationCode},
@@ -90,8 +94,17 @@ const AuthPhone = (props) => {
               firebaseConfig={getOptions()}
             />
             <View style={styles.mainView}>
-              <Image source={require("../../assets/logo.png")} style={styles.logo} />
-              <Text style={{fontSize: 20, color: 'white', marginBottom: 10, textAlign:'center'}}>
+              <Image
+                source={require('../../assets/logo.png')}
+                style={styles.logo}
+              />
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: 'white',
+                  marginBottom: 10,
+                  textAlign: 'center',
+                }}>
                 Entrez votre numéro de téléphone
               </Text>
               <View style={styles.inputView}>
@@ -176,7 +189,7 @@ const styles = StyleSheet.create({
   mainView: {
     paddingHorizontal: '8%',
     // backgroundColor:'red',
-    marginBottom: 100
+    marginBottom: 100,
   },
   inputView: {
     flexDirection: 'row',
@@ -186,9 +199,9 @@ const styles = StyleSheet.create({
   logo: {
     alignSelf: 'center',
     width: 150,
-    height:200,
+    height: 200,
     resizeMode: 'contain',
-    marginBottom:20
+    marginBottom: 20,
     // backgroundColor:'red'
   },
   TextInput: {

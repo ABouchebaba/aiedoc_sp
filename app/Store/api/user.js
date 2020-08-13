@@ -1,9 +1,11 @@
 import {BACKEND_URL} from 'react-native-dotenv';
+
 import RNFetchBlob from 'rn-fetch-blob';
 
 import axios from 'axios';
 
 export const getUserWithPhone = async ({phoneNumber, pushNotificationId}) => {
+  console.log(BACKEND_URL);
   return axios.post(`${BACKEND_URL}/api/serviceProviders/verifyPhone`, {
     phone: phoneNumber,
     pushNotificationId,
@@ -13,6 +15,7 @@ export const getUserWithPhone = async ({phoneNumber, pushNotificationId}) => {
 export const registerUser = async (user) => {
   return RNFetchBlob.fetch(
     'POST',
+
     `${BACKEND_URL}/api/serviceProviders/register`,
     {
       'Content-Type': 'multipart/form-data',

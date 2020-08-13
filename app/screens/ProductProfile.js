@@ -1,45 +1,46 @@
-import { Entypo } from '@expo/vector-icons';
-import React, { useRef, useState } from 'react';
+import {Entypo} from '@expo/vector-icons';
+import React, {useRef, useState} from 'react';
 import {
   Dimensions,
   ScrollView,
   StyleSheet,
   Text,
-
-
-  TextInput, TouchableOpacity,
-  View
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { BACKEND_URL } from 'react-native-dotenv';
+import {BACKEND_URL} from 'react-native-dotenv';
 import DropdownAlert from 'react-native-dropdownalert';
 import GallerySwiper from 'react-native-gallery-swiper';
-import RNPickerSelect from 'react-native-picker-select';
-import { useDispatch, useSelector } from 'react-redux';
-import { BackImage, MarketHeader } from '../components';
+import {Picker} from '@react-native-community/picker';
+
+import {useDispatch, useSelector} from 'react-redux';
+import {BackImage, MarketHeader} from '../components';
 import DatePicker from '../components/DatePicker';
-import { addToCart } from '../Store/actions';
+import {addToCart} from '../Store/actions';
 
 const {width, height} = Dimensions.get('window');
-const today = new Date()
+const today = new Date();
 const ProductProfile = ({route, navigation}) => {
   const {product} = route.params;
   const alert = useRef(null);
   const dispatch = useDispatch();
   const {cart} = useSelector((state) => state.cart);
   const [option, setOption] = useState('');
-  const [from, setFrom] = useState(today.toISOString().slice(0,10));
+  const [from, setFrom] = useState(today.toISOString().slice(0, 10));
   const [to, setTo] = useState('');
 
   const rent = product.category.name === 'Location';
-   
+
   const disabled = rent
     ? from === '' || to === '' || (product.options.length > 1 && option === '')
     : product.options.length > 1 && option === '';
-  
+
   function _addToCart() {
-    let myDate
-    if (rent) myDate = new Date(new Date(from).getTime()+(to*24*60*60*1000));
-   
+    let myDate;
+    if (rent)
+      myDate = new Date(new Date(from).getTime() + to * 24 * 60 * 60 * 1000);
+
     const productAdd = {
       product_id: product._id,
       product_name: product.name,
@@ -47,10 +48,10 @@ const ProductProfile = ({route, navigation}) => {
       qty: 1,
       option: option,
       price: product.price,
-      from: rent?from:null,
-      to: rent?myDate.toISOString().slice(0, 10):null,
+      from: rent ? from : null,
+      to: rent ? myDate.toISOString().slice(0, 10) : null,
     };
-    
+
     dispatch(addToCart(productAdd, cart));
     // dispatch(removeProduct(product._id, cart));
     alert.current.alertWithType(
@@ -59,7 +60,6 @@ const ProductProfile = ({route, navigation}) => {
       `${product.name} ajouté au panier.`,
     );
   }
-
 
   return (
     <BackImage source={require('../../assets/bg/bgMarket.png')}>
@@ -147,27 +147,18 @@ const ProductProfile = ({route, navigation}) => {
         {product.options.length > 1 && (
           <View>
             <Text style={styles.brand}>Variation</Text>
-            <RNPickerSelect
-              placeholder={{
-                label: 'Select...',
-                value: '',
-                color: 'blue',
-              }}
-              value={option}
-              useNativeAndroidPickerStyle={false}
+            <Picker
+              selectedValue={option}
               style={{
-                ...pickerSelectStyles,
-                iconContainer: {
-                  top: 10,
-                  right: 12,
-                },
+                backgroundColor: '#efefef',
+                margin: 5,
               }}
-              onValueChange={(value) => setOption(value)}
-              items={product.options.map((x) => ({
-                label: x.option,
-                value: x.option,
-              }))}
-            />
+              onValueChange={(value) => setOption(value)}>
+              <Picker.Item label="Select..." value="" />
+              {product.options.map((o) => (
+                <Picker.Item key={o.option} label={o.option} value={o.option} />
+              ))}
+            </Picker>
           </View>
         )}
 

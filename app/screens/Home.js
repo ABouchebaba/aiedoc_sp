@@ -20,12 +20,11 @@ const colors = [powerOffColor, powerOnColor];
 const Home = (props) => {
   const dispatch = useDispatch();
   const {user, loading} = useSelector((state) => state.user);
-  const {types} = useSelector((state) => state.services);
+  const {services} = useSelector((state) => state.services);
   const powerColor = user.state !== 'notReady' ? colors : colors.reverse();
 
-  console.log();
   useEffect(() => {
-    if (types.length === 0) dispatch(getServices());
+    if (services.length === 0) dispatch(getServices());
   }, []);
 
   const toggleOnline = () => {

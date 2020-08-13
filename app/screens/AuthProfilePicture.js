@@ -1,26 +1,31 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import Button from '../components/Button';
 import {BackImage} from '../components/';
 import * as DocumentPicker from 'expo-document-picker';
 
 const AuthProfilePicture = (props) => {
-  const [selectedPicture, setSelectedPicture] = useState(null);
+  const [files, setFiles] = useState({
+    picture: null,
+    extNaissance: null,
+    residence: null,
+    idCard: null,
+  });
 
-  const pickPicture = async () => {
+  const enabled = Object.keys(files).reduce((p, c) => p && files[c], true);
+
+  const pickFile = (key, type) => async () => {
     let result = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: true,
-      type: 'image/*',
+      type,
     });
 
     if (result.type === 'success') {
-      const picture = {
+      const file = {
         uri: result.uri,
         name: result.name,
       };
-
-      setSelectedPicture(picture);
+      setFiles({...files, [key]: file});
     }
   };
 
@@ -29,17 +34,17 @@ const AuthProfilePicture = (props) => {
 
     props.navigation.navigate('AuthProForm', {
       ...info,
-      picture: selectedPicture,
+      ...files,
     });
   };
 
   return (
     <BackImage source={require('../../assets/bg/bg1.png')}>
       <View style={styles.mainView}>
-        <TouchableOpacity onPress={pickPicture}>
-          {selectedPicture ? (
+        <TouchableOpacity onPress={pickFile('picture', 'image/*')}>
+          {files.picture ? (
             <Image
-              source={{uri: selectedPicture.uri}}
+              source={{uri: files.picture.uri}}
               //   resizeMethod="scale"
               resizeMode="center"
               style={styles.picture}
@@ -52,11 +57,33 @@ const AuthProfilePicture = (props) => {
             </View>
           )}
         </TouchableOpacity>
-        <Button
-          title="Valider"
-          onPress={submit}
-          disabled={!Boolean(selectedPicture)}
-        />
+        <TouchableOpacity onPress={pickFile('extNaissance', '*/*')}>
+          <View style={styles.selectFile}>
+            <Text style={styles.selectFileText}>
+              Extrait de naissance :
+              {files.extNaissance
+                ? files.extNaissance.name
+                : 'Cliquer pour choisir'}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={pickFile('residence', '*/*')}>
+          <View style={styles.selectFile}>
+            <Text style={styles.selectFileText}>
+              Résidence :
+              {files.residence ? files.residence.name : 'Cliquer pour choisir'}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={pickFile('idCard', '*/*')}>
+          <View style={styles.selectFile}>
+            <Text style={styles.selectFileText}>
+              Carte d'identité :
+              {files.idCard ? files.idCard.name : 'Cliquer pour choisir'}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <Button title="Valider" onPress={submit} disabled={!enabled} />
       </View>
     </BackImage>
   );
@@ -97,6 +124,13 @@ const styles = StyleSheet.create({
     color: '#4eaaff',
     textAlign: 'center',
     padding: 10,
+  },
+  selectFile: {
+    margin: 10,
+  },
+  selectFileText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 

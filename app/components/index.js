@@ -14,3 +14,4 @@ export * from './CommandSetModal';
 export * from './CategoriesFilter';
 export * from './ServicesCard';
 export * from './LoadingModal';
+export * from './ServiceFilter';

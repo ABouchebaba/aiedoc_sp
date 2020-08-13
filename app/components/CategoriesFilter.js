@@ -1,7 +1,7 @@
 import {FontAwesome, MaterialCommunityIcons} from '@expo/vector-icons';
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import {Picker} from '@react-native-community/picker';
 
 export const CategoriesFilter = (props) => {
   const categories = props.categories.filter(
@@ -30,30 +30,18 @@ export const CategoriesFilter = (props) => {
   return (
     <View style={styles.container}>
       <View style={{width: '75%'}}>
-        <RNPickerSelect
-          placeholder={{label: 'Catégorie...', value: '', color: 'blue'}}
-          value={category}
-          useNativeAndroidPickerStyle={false}
+        <Picker
+          selectedValue={category}
           style={{
-            ...pickerSelectStyles,
-            iconContainer: {
-              top: '30%',
-              left: '90%',
-            },
+            backgroundColor: '#efefef',
+            margin: 5,
           }}
-          onValueChange={(value) => filter(value)}
-          items={categories.map((x) => ({
-            label: x.name,
-            value: x._id,
-          }))}
-          Icon={() => (
-            <MaterialCommunityIcons
-              name={'filter-variant'}
-              size={24}
-              color="gray"
-            />
-          )}
-        />
+          onValueChange={(value, index) => filter(value)}>
+          <Picker.Item label="Catégorie..." value="" />
+          {categories.map((c) => (
+            <Picker.Item key={c._id} label={c.name} value={c._id} />
+          ))}
+        </Picker>
       </View>
       <View
         style={{

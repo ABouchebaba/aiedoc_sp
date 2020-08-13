@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 
 export const InterventionModel = (props) => {
   const {types} = useSelector((state) => state.services);
-  
+
   const Allservices = types.reduce((p, c) => [...p, ...c.services], []);
 
   return (
@@ -24,16 +24,18 @@ export const InterventionModel = (props) => {
             contentContainerStyle={styles.listStyle}>
             <View style={styles.prd}>
               <Text style={styles.prdTitle}>Service: </Text>
-              <Text style={{width:'50%'}}></Text>
+              <Text style={{width: '50%'}}></Text>
               <Text style={styles.prdTitle}>Prix: </Text>
             </View>
-            {Allservices.map((srv, index) => (
-              props.services.includes(srv.name) &&
-              <View key={index} style={styles.prd}>
-                <Text style={styles.prdText}>{srv.name}</Text>
-                <Text style={styles.total}>{srv.price}</Text>
-              </View>
-            ))}
+            {Allservices.map(
+              (srv, index) =>
+                props.services.includes(srv.name) && (
+                  <View key={index} style={styles.prd}>
+                    <Text style={styles.prdText}>{srv.name}</Text>
+                    <Text style={styles.total}>{srv.price}</Text>
+                  </View>
+                ),
+            )}
           </ScrollView>
         </View>
         <Entypo
@@ -103,16 +105,16 @@ const styles = StyleSheet.create({
     // paddingVertical: 10,
     backgroundColor: 'white',
     // alignItems: "center",
-    borderTopWidth:5,
-    borderBottomWidth:5,
-    borderColor:'#21b9e0',
+    borderTopWidth: 5,
+    borderBottomWidth: 5,
+    borderColor: '#21b9e0',
     justifyContent: 'flex-start',
   },
   prd: {
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderBottomWidth: 3,
-    borderColor:"#4EC7E6",
+    borderColor: '#4EC7E6',
     justifyContent: 'space-around',
     flexDirection: 'row',
   },

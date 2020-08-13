@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {getLocationForCommand} from '../Store/actions';
-import RNPickerSelect from 'react-native-picker-select';
+import {Picker} from '@react-native-community/picker';
 
 const wilayas = require('../helpers/wilayas.json');
 
@@ -67,27 +67,22 @@ export const CartModal = (props) => {
         <View style={styles.inputGroup}>
           <Text style={styles.text}>Wilaya</Text>
           <View style={styles.wilayaInput}>
-            <RNPickerSelect
-              placeholder={{
-                label: 'Wilaya...',
-                value: '',
-                color: 'black',
-              }}
-              value={wilaya}
-              useNativeAndroidPickerStyle={false}
+            <Picker
+              selectedValue={wilaya}
               style={{
-                ...pickerSelectStyles,
-                iconContainer: {
-                  top: 10,
-                  right: 12,
-                },
+                backgroundColor: '#efefef',
+                margin: 5,
               }}
-              onValueChange={(value) => setWilaya(value)}
-              items={wilayas.map((x) => ({
-                label: x.code + '- ' + x.nom,
-                value: x.nom,
-              }))}
-            />
+              onValueChange={(value) => setWilaya(value)}>
+              <Picker.Item label="Wilaya..." value="" />
+              {wilayas.map((w) => (
+                <Picker.Item
+                  key={w.code}
+                  label={w.code + '- ' + w.nom}
+                  value={w.nom}
+                />
+              ))}
+            </Picker>
           </View>
         </View>
         <TouchableOpacity onPress={submit} style={styles.submit}>
