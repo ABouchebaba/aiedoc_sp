@@ -5,7 +5,6 @@ import RNFetchBlob from 'rn-fetch-blob';
 import axios from 'axios';
 
 export const getUserWithPhone = async ({phoneNumber, pushNotificationId}) => {
-  console.log(BACKEND_URL);
   return axios.post(`${BACKEND_URL}/api/serviceProviders/verifyPhone`, {
     phone: phoneNumber,
     pushNotificationId,

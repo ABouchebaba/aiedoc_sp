@@ -39,7 +39,7 @@ const IntCheck = (props) => {
         {intervention.services.map((s, i) => (
           <Text key={i} style={styles.text}>
             {'       '}
-            {`\u2022 ${s}`}
+            {`\u2022 ${s.name}`}
           </Text>
         ))}
       </View>

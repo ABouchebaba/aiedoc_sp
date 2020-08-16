@@ -3,18 +3,20 @@ import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getServices} from '../Store/actions';
 import {initSocket} from '../Store/api';
-import {getAllServices} from '../Store/selectors';
 import {Socket} from '../helpers';
-import {BackImage} from '../components';
+import {BackImage, ServiceFilter} from '../components';
 import {BACKEND_URL} from 'react-native-dotenv';
 
 const IntValidate = (props) => {
   const dispatch = useDispatch();
   const {intervention, loading} = useSelector((state) => state.current);
-  const services = useSelector(getAllServices);
+  // const services = useSelector(getAllServices);
+  const {services} = useSelector((state) => state.services);
   const [selected, setSelected] = useState([]);
 
   let total_price = selected.reduce((p, c) => p + c.price, 0);
+
+  console.log(selected.length);
 
   const socket = Socket.getInstance();
 
@@ -32,7 +34,7 @@ const IntValidate = (props) => {
   const validate = () => {
     socket.emit('validate', {
       int_id: intervention._id,
-      services: selected.map((s) => s.name),
+      services: selected.map((s) => s._id),
       total_price,
     });
   };
@@ -44,28 +46,49 @@ const IntValidate = (props) => {
     setSelected([...selected]);
   };
 
+  const selectService = (service) => {
+    const filtered = selected.filter((s) => s._id !== service._id);
+
+    if (filtered.length === selected.length) {
+      setSelected([...selected, service]);
+    } else {
+      setSelected(filtered);
+    }
+  };
+
+  const clearServices = () => setSelected([]);
+
+  const serviceSelected = (service) =>
+    selected.find((s) => s._id === service._id);
+
   return (
     <BackImage source={require('../../assets/bg/bg1.png')}>
       <Text style={styles.title}>Selectioner les services effectués : </Text>
       <View style={styles.toSelect}>
         <ScrollView contentContainerStyle={styles.scroll}>
-          {services.map((s, i) => (
+          {/* {services.map((s, i) => (
             <TouchableOpacity
-              key={i}
+              key={s._id}
               onPress={() => addService(s)}
               style={styles.element}>
               <Text>
                 {s.name} - ({s.price} DA)
               </Text>
             </TouchableOpacity>
-          ))}
+          ))} */}
+          <ServiceFilter
+            select={addService}
+            clear={clearServices}
+            selected={serviceSelected}
+            nbSelected={selected.length}
+          />
         </ScrollView>
       </View>
       <View style={styles.selected}>
         <ScrollView contentContainerStyle={styles.scroll}>
           {selected.map((s, i) => (
             <TouchableOpacity
-              key={i}
+              key={s._id + i}
               onPress={() => removeService(i)}
               style={styles.element}>
               <Text>
