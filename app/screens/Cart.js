@@ -157,12 +157,12 @@ const Cart = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   header: {
-    height: '15%',
+    height: '10%',
     width: '100%',
     justifyContent: 'center',
   },
   mainView: {
-    height: '85%',
+    height: '90%',
     width: '100%',
     backgroundColor: 'rgba(17, 160, 193, .7)',
     borderTopLeftRadius: 30,
@@ -225,16 +225,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   confirm: {
-    height: 80,
+    height: 50,
     marginVertical: 20,
-    borderRadius: 50,
-    width: '80%',
+    borderRadius: 10,
+    width: '65%',
     backgroundColor: '#D61F2C',
     justifyContent: 'center',
     alignItems: 'center',
   },
   confirmText: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'white',
   },
   scrollContain: {

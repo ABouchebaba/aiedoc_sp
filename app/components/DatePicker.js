@@ -33,6 +33,7 @@ const DatePicker = (props) => {
           value={dateValue}
           onChange={onChange}
           minimumDate={props.minDate}
+          maximumDate={props.maxDate}
         />
       )}
     </React.Fragment>

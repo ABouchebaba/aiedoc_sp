@@ -1,13 +1,9 @@
-import {FontAwesome, MaterialCommunityIcons} from '@expo/vector-icons';
+import {FontAwesome} from '@expo/vector-icons';
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Picker} from '@react-native-community/picker';
+import {CategoriesFilterInput} from './CategoriesFilterInput';
 
 export const CategoriesFilter = (props) => {
-  const categories = props.categories.filter(
-    (cat) => cat.level === 'SubSubFamily',
-  );
-
   const [category, setCategory] = useState('');
   const [sorted, setSorted] = useState(false);
   const [sortedPrice, setSortedPrice] = useState(false);
@@ -23,6 +19,7 @@ export const CategoriesFilter = (props) => {
   }
 
   function filter(value) {
+    console.log('testing : ', value);
     setCategory(value);
     props.filter(value);
   }
@@ -30,18 +27,10 @@ export const CategoriesFilter = (props) => {
   return (
     <View style={styles.container}>
       <View style={{width: '75%'}}>
-        <Picker
-          selectedValue={category}
-          style={{
-            backgroundColor: '#efefef',
-            margin: 5,
-          }}
-          onValueChange={(value, index) => filter(value)}>
-          <Picker.Item label="Catégorie..." value="" />
-          {categories.map((c) => (
-            <Picker.Item key={c._id} label={c.name} value={c._id} />
-          ))}
-        </Picker>
+        <CategoriesFilterInput
+          selected={filter}
+          categories={props.categories}
+        />
       </View>
       <View
         style={{
@@ -51,24 +40,24 @@ export const CategoriesFilter = (props) => {
         }}>
         {!sorted ? (
           <TouchableOpacity style={styles.Icon} onPress={sort}>
-            <FontAwesome name={'sort-alpha-asc'} size={30} color="#11A0C1" />
+            <FontAwesome name={'sort-alpha-asc'} size={26} color="#11A0C1" />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={{...styles.Icon, backgroundColor: '#05596C'}}
             onPress={sort}>
-            <FontAwesome name={'sort-alpha-desc'} size={30} color="white" />
+            <FontAwesome name={'sort-alpha-desc'} size={26} color="white" />
           </TouchableOpacity>
         )}
         {!sortedPrice ? (
           <TouchableOpacity style={styles.Icon} onPress={sortPrice}>
-            <FontAwesome name={'sort-amount-asc'} size={30} color="gold" />
+            <FontAwesome name={'sort-amount-asc'} size={26} color="gold" />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={{...styles.Icon, backgroundColor: 'gold'}}
             onPress={sortPrice}>
-            <FontAwesome name={'sort-amount-desc'} size={30} color="white" />
+            <FontAwesome name={'sort-amount-desc'} size={26} color="white" />
           </TouchableOpacity>
         )}
       </View>
@@ -115,33 +104,9 @@ const styles = StyleSheet.create({
   },
   Icon: {
     backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 5,
+    padding: 5,
     // marginVertical: 10,
-    borderRadius: 10,
-  },
-});
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 18,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    marginVertical: 10,
-    borderRadius: 20,
-    color: '#0F95B9',
-    paddingRight: 100, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    backgroundColor: 'white',
-    fontSize: 18,
-    // width: "100%",
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    marginVertical: 10,
-    // borderWidth: 0.5,
-    borderColor: 'purple',
-    borderRadius: 20,
-    color: '#0F95B9',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    borderRadius: 5,
+    elevation: 5,
   },
 });

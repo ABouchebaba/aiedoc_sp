@@ -5,7 +5,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 
 export const CommandModel = (props) => {
   // const intervention = props.intervention
-  console.log(props.products);
+  console.log('products', props.products);
 
   return (
     <Modal
@@ -21,19 +21,26 @@ export const CommandModel = (props) => {
           <ScrollView
             style={styles.list}
             contentContainerStyle={styles.listStyle}>
-            {props.products.map((prd, index) => (
-              <View key={index} style={styles.prd}>
-                <Text style={styles.prdTitle}>{prd.product.name.trim()}</Text>
-                <Text style={styles.prdText}>
-                  Option: {prd.option.length == 0 ? 'Standard' : prd.option}
-                </Text>
-                <Text style={styles.prdText}>Prix: {prd.product.price} </Text>
-                <Text style={styles.prdText}>Quantité: {prd.qty}</Text>
-                <Text style={styles.total}>
-                  TOTAL:{prd.qty * prd.product.price}
-                </Text>
-              </View>
-            ))}
+            {props.products.map((prd, index) =>
+              prd.product ? (
+                <View key={index} style={styles.prd}>
+                  <Text style={styles.prdTitle}>{prd.product.name.trim()}</Text>
+                  <Text style={styles.prdText}>
+                    Option:{' '}
+                    {prd.option.trim().length == 0 ? 'Standard' : prd.option}
+                  </Text>
+                  <Text style={styles.prdText}>Prix: {prd.product.price}</Text>
+                  <Text style={styles.prdText}>Quantité: {prd.qty}</Text>
+                  <Text style={styles.total}>
+                    TOTAL: {prd.qty * prd.product.price}
+                  </Text>
+                </View>
+              ) : (
+                <View key={index} style={styles.prd}>
+                  <Text style={styles.prdTitle}>Produit indisponible</Text>
+                </View>
+              ),
+            )}
           </ScrollView>
         </View>
         <Entypo

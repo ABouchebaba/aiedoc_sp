@@ -15,3 +15,7 @@ export * from './CategoriesFilter';
 export * from './ServicesCard';
 export * from './LoadingModal';
 export * from './ServiceFilter';
+export * from './CategoriesFilter';
+export * from './CategoryBar';
+export * from './CatFilter';
+

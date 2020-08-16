@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import SelectMultiple from 'react-native-select-multiple';
 import {useDispatch, useSelector} from 'react-redux';
@@ -50,33 +51,33 @@ const AuthServiceForm = (props) => {
   return (
     <BackImage source={require('../../assets/bg/bg1.png')}>
       <View style={styles.container}>
-        <Text style={styles.title}>Selectionez vos services</Text>
+        <View style={styles.header}>
+          <Text style={styles.title}>Selectionez vos services</Text>
+        </View>
         {loading ? (
           <View style={{...styles.mainView, justifyContent: 'center'}}>
             <ActivityIndicator size="large" color="#38B4DD" />
           </View>
         ) : (
-          <View style={styles.mainView}>
-            <ServiceFilter
-              select={selectService}
-              selected={serviceSelected}
-              nbSelected={selectedServices.length}
-              clear={clearServices}
-            />
+          <>
+            <View style={styles.mainView}>
+              <ServiceFilter
+                select={selectService}
+                selected={serviceSelected}
+                nbSelected={selectedServices.length}
+                clear={clearServices}
+              />
+            </View>
             <View style={styles.bottom}>
               {selectedServices.length !== 0 && (
                 <TouchableOpacity
                   onPress={submitServices}
-                  style={{
-                    backgroundColor: '#38B4DD',
-                    borderRadius: 50,
-                    padding: 5,
-                  }}>
+                  style={styles.confirmBtn}>
                   <Entypo name="check" color="white" size={40} />
                 </TouchableOpacity>
               )}
             </View>
-          </View>
+          </>
         )}
       </View>
     </BackImage>
@@ -88,24 +89,21 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     resizeMode: 'contain',
     alignItems: 'stretch',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     paddingHorizontal: 30,
   },
   header: {
     height: '10%',
-    width: '100%',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   mainView: {
-    marginHorizontal: 30,
     alignSelf: 'center',
-    height: '80%',
+    alignItems: 'center',
+    height: '60%',
     width: '100%',
-    borderRadius: 30,
-    backgroundColor: '#D5F0F8',
-    paddingTop: 10,
-    paddingHorizontal: 15,
+    borderRadius: 10,
+    backgroundColor: 'white',
   },
   text: {
     color: '#666666',
@@ -124,6 +122,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // backgroundColor: "red",
   },
+  confirmBtn:{
+    backgroundColor: '#38B4DD',
+    borderRadius: 10,
+    paddingHorizontal:150,
+    padding: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 10,
+  }
 });
 
 export default AuthServiceForm;

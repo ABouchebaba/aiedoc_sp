@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, TouchableHighlight, Image} from 'react-native';
+import {Text, View, StyleSheet, TouchableHighlight, Image, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setServiceFilter, clearServiceFilter} from '../Store/actions';
 import {Ionicons, Entypo} from '@expo/vector-icons';
@@ -32,26 +32,78 @@ export const ServiceFilter = (props) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.actions}>
-        {parents.length > 1 && (
-          <TouchableHighlight onPress={back} underlayColor="#fff">
-            <View style={styles.backButton}>
-              <Ionicons name="ios-arrow-back" size={30} color="black" />
-              <Text style={styles.backText}>Retour</Text>
-            </View>
-          </TouchableHighlight>
-        )}
-        {props.nbSelected > 0 && (
-          <TouchableHighlight onPress={clear} underlayColor="#fff">
-            <View style={styles.clearBtn}>
-              <Text style={styles.backText}>Services({props.nbSelected})</Text>
-              <Entypo name="cross" size={30} color="red" />
-            </View>
-          </TouchableHighlight>
-        )}
-      </View>
+      {(parents.length > 1 || props.nbSelected > 0) && (
+        <View style={styles.actions}>
+          <View style={{width: '50%'}}>
+            {parents.length > 1 && (
+              <TouchableHighlight onPress={back} underlayColor="#fff">
+                <View style={styles.backButton}>
+                  <Ionicons name="ios-arrow-back" size={30} color="black" />
+                  <Text style={styles.backText}>Retour</Text>
+                </View>
+              </TouchableHighlight>
+            )}
+          </View>
+          <View>
+            {props.nbSelected > 0 && (
+              <TouchableHighlight onPress={clear} underlayColor="#fff">
+                <View style={styles.clearBtn}>
+                  <Text style={styles.backText}>
+                    Services({props.nbSelected})
+                  </Text>
+                  <Entypo name="cross" size={30} color="red" />
+                </View>
+              </TouchableHighlight>
+            )}
+          </View>
+        </View>
+      )}
 
-      <View style={styles.viewServices}>
+      <ScrollView 
+      style={{flex:1,height:'60%',width:'100%'}}
+      contentContainerStyle={parents.length > 1 ? styles.viewServices : styles.viewTypes}>
+        {toShow.map((s) => (
+          <TouchableHighlight
+            underlayColor="#fff"
+            key={s._id}
+            style={parents.length > 1 ? {} : {width: '100%'}}
+            onPress={() => onElementPress(s)}>
+            <View
+              style={
+                props.selected(s._id)
+                  ? styles.selectedService
+                  : parents.length > 1
+                  ? styles.service
+                  : styles.type
+              }>
+              {s.image && s.image.length > 0 ? (
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    resizeMode: 'contain',
+                    alignSelf: 'center',
+                  }}
+                  source={{
+                    uri: BACKEND_URL + '/' + s.image,
+                    cache: 'only-if-cached',
+                  }}
+                />
+              ) : (
+                <View style={{width:'10%'}} />
+              )}
+              <Text
+                style={
+                  parents.length > 1 ? styles.serviceName : styles.typeName
+                }>
+                {s.name.trim()}
+              </Text>
+              {/* {s.price > 0 && <Text style={styles.price}>{s.price} DA</Text>} */}
+            </View>
+          </TouchableHighlight>
+        ))}
+      </ScrollView>
+      {/* <View style={styles.viewServices}>
         {toShow.map((s) => (
           <TouchableHighlight
             underlayColor="#fff"
@@ -79,7 +131,7 @@ export const ServiceFilter = (props) => {
             </View>
           </TouchableHighlight>
         ))}
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -90,19 +142,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   viewServices: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    flexWrap: 'wrap',
-    paddingVertical: 10,
-    // backgroundColor:'red'
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    padding:20
   },
   service: {
     width: '100%',
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#efefef',
     borderRadius: 5,
     paddingVertical: 10,
-    margin: 10,
+    marginBottom: 20,
+    paddingHorizontal: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -112,9 +166,11 @@ const styles = StyleSheet.create({
     shadowRadius: 6.27,
     elevation: 10,
   },
-  selectedService: {
-    width: '100%',
-    backgroundColor: '#4EC7E6',
+
+  type: {
+    width: '80%',
+    backgroundColor: '#efefef',
+    alignSelf: 'center',
     borderRadius: 5,
     paddingVertical: 10,
     margin: 10,
@@ -127,28 +183,65 @@ const styles = StyleSheet.create({
     shadowRadius: 6.27,
     elevation: 10,
   },
+  viewTypes: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  selectedService: {
+    width: '100%',
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#4EC7E6',
+    borderRadius: 5,
+    paddingVertical: 10,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 10,
+  },
+
   actions: {
     height: 50,
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
+    marginHorizontal: 20,
+    // marginTop:10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   backButton: {
     flexDirection: 'row',
     alignSelf: 'flex-start',
   },
-  clearBtn: {
-    flexDirection: 'row',
-    alignSelf: 'flex-end',
-  },
   backText: {
     fontSize: 20,
     paddingLeft: 5,
   },
+  clearBtn: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+  },
   serviceName: {
     fontSize: 12,
-    textAlign: 'center',
+    textAlign: 'left',
     fontWeight: 'bold',
+    width: '80%',
+  },
+  price: {
+    fontSize: 15,
+    textAlign: 'center',
+  },
+  typeName: {
+    fontSize: 22,
+    textAlign: 'center',
   },
 });

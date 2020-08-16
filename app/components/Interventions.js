@@ -47,8 +47,7 @@ export const Interventions = (props) => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {interventions.map((inv, i) => (
-        
+      {interventions.reverse().map((inv, i) => (
         inv.state === "validated" &&
         <TouchableOpacity
           key={i}

@@ -101,9 +101,10 @@ const AuthForm = (props) => {
                 onChange={setBirthdate}
                 value={birthdate}
                 style={styles.TextInput}
+                maxDate={new Date()}
               />
             </View>
-            <View style={{flex: 0.45}}>
+            <View style={{flex: 0.48}}>
               <Text style={styles.label}>Sexe</Text>
               <View style={styles.buttonWhite}>
                 <Picker
@@ -163,15 +164,18 @@ const AuthForm = (props) => {
               </View>
             </View>
           </View>
-          <TextInput
-            placeholder="Email"
-            onChangeText={setEmail}
-            autoCompleteType="email"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            style={{...styles.TextInput, width: '90%'}}
-          />
-          <Button title="Register" onPress={submit} disabled={disabled} />
+          <View style={{...styles.row, flexDirection:'column'}}>
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+              placeholder="Email"
+              onChangeText={setEmail}
+              autoCompleteType="email"
+              keyboardType="email-address"
+              textContentType="emailAddress"
+              style={{...styles.TextInput, width: '100%'}}
+            />
+          </View>
+          <Button title="Confirmer" onPress={submit} disabled={disabled} />
         </View>
       )}
     </BackImage>
@@ -185,34 +189,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     color: 'white',
     marginBottom: 15,
   },
   TextInput: {
     backgroundColor: '#F2F2F2',
-    width: '100%',
-    borderRadius: 50,
+    width: '96%',
+    borderRadius: 10,
     paddingLeft: 20,
     fontSize: 15,
     paddingVertical: 15,
-    marginBottom: 40,
+    marginBottom: 20,
   },
   RowTextInput: {
     backgroundColor: '#F2F2F2',
     width: '100%',
-    borderRadius: 50,
+    borderRadius: 10,
     paddingLeft: 20,
     fontSize: 15,
     paddingVertical: 10,
-    marginBottom: 40,
+    marginBottom: 20,
   },
   buttonWhite: {
     backgroundColor: '#F2F2F2',
-    borderRadius: 50,
+    borderRadius: 10,
     paddingLeft: 20,
     fontSize: 15,
-    marginBottom: 40,
+    marginBottom: 20,
   },
   row: {
     flexDirection: 'row',
@@ -221,8 +225,9 @@ const styles = StyleSheet.create({
   },
   label: {
     color: 'white',
-    fontSize: 15,
+    fontSize: 16,
     marginLeft: 10,
+    marginBottom: 5,
   },
 });
 

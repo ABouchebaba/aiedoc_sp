@@ -13,7 +13,6 @@ import {BACKEND_URL} from 'react-native-dotenv';
 import DropdownAlert from 'react-native-dropdownalert';
 import GallerySwiper from 'react-native-gallery-swiper';
 import {Picker} from '@react-native-community/picker';
-
 import {useDispatch, useSelector} from 'react-redux';
 import {BackImage, MarketHeader} from '../components';
 import DatePicker from '../components/DatePicker';
@@ -26,11 +25,21 @@ const ProductProfile = ({route, navigation}) => {
   const alert = useRef(null);
   const dispatch = useDispatch();
   const {cart} = useSelector((state) => state.cart);
+  const categories = useSelector((state) => state.store.categories);
   const [option, setOption] = useState('');
   const [from, setFrom] = useState(today.toISOString().slice(0, 10));
   const [to, setTo] = useState('');
 
-  const rent = product.category.name === 'Location';
+  const isRentable = (cat, rentKey = 'Locations') => {
+    // deep copy of cat
+    let category = JSON.parse(JSON.stringify(cat));
+    while (category.parent != null) {
+      category = categories.find((c) => c._id === category.parent);
+    }
+    return category.name === rentKey;
+  };
+
+  const rent = isRentable(product.category);
 
   const disabled = rent
     ? from === '' || to === '' || (product.options.length > 1 && option === '')
@@ -38,8 +47,9 @@ const ProductProfile = ({route, navigation}) => {
 
   function _addToCart() {
     let myDate;
-    if (rent)
+    if (rent) {
       myDate = new Date(new Date(from).getTime() + to * 24 * 60 * 60 * 1000);
+    }
 
     const productAdd = {
       product_id: product._id,
@@ -47,7 +57,7 @@ const ProductProfile = ({route, navigation}) => {
       brand: product.brand,
       qty: 1,
       option: option,
-      price: product.price,
+      price: product.price * (1 - product.discount / 100),
       from: rent ? from : null,
       to: rent ? myDate.toISOString().slice(0, 10) : null,
     };
@@ -74,7 +84,7 @@ const ProductProfile = ({route, navigation}) => {
               product.images.length > 0
                 ? product.images.map((image) => ({
                     uri: BACKEND_URL + '/' + image,
-                    dimensions: {width: 1000, height: 1000},
+                    dimensions: {width: 200, height: 200},
                   }))
                 : [
                     {
@@ -87,7 +97,7 @@ const ProductProfile = ({route, navigation}) => {
             // Turning this off will make it feel faster
             // and prevent the scroller to slow down
             // on fast swipes.
-            sensitiveScroll={false}
+            sensitiveScroll={true}
           />
         </View>
         <Text style={styles.name}>
@@ -111,7 +121,9 @@ const ProductProfile = ({route, navigation}) => {
           </View>
         )}
         <View style={styles.buy}>
-          <Text style={styles.name}>{product.price} DA</Text>
+          <Text style={styles.name}>
+            {product.price * (1 - product.discount / 100)} DA
+          </Text>
           <TouchableOpacity
             style={disabled ? styles.disabledbuyButton : styles.buyButton}
             onPress={_addToCart}
@@ -121,7 +133,7 @@ const ProductProfile = ({route, navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        {product.category.name === 'Location' && (
+        {rent && (
           <View style={styles.buy}>
             <View style={{width: '45%'}}>
               <Text style={styles.brand}>Date du début</Text>
@@ -149,12 +161,12 @@ const ProductProfile = ({route, navigation}) => {
             <Text style={styles.brand}>Variation</Text>
             <Picker
               selectedValue={option}
+              onValueChange={(value) => setOption(value)}
               style={{
                 backgroundColor: '#efefef',
                 margin: 5,
-              }}
-              onValueChange={(value) => setOption(value)}>
-              <Picker.Item label="Select..." value="" />
+              }}>
+              <Picker.Item label="Select ..." value="" />
               {product.options.map((o) => (
                 <Picker.Item key={o.option} label={o.option} value={o.option} />
               ))}
@@ -163,9 +175,7 @@ const ProductProfile = ({route, navigation}) => {
         )}
 
         <Text style={styles.brand}>Desciption</Text>
-        <Text style={styles.description}>
-        {product.description}
-        </Text>
+        <Text style={styles.description}>{product.description}</Text>
         <View style={{paddingBottom: 30}} />
       </ScrollView>
       <DropdownAlert
@@ -182,14 +192,14 @@ export default ProductProfile;
 
 const styles = StyleSheet.create({
   header: {
-    height: '15%',
+    height: '10%',
     width: '100%',
     justifyContent: 'center',
   },
   mainView: {
-    height: '85%',
+    height: '90%',
     width: '100%',
-    backgroundColor: 'rgba(17, 160, 193, .7)',
+    backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
@@ -215,11 +225,11 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 25,
-    color: 'white',
+    color: 'black',
   },
   brand: {
     fontSize: 20,
-    color: 'white',
+    color: 'black',
   },
   ratingView: {
     flexDirection: 'row',
@@ -229,21 +239,20 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    //backgroundColor:'red',
     justifyContent: 'space-between',
   },
   buyButton: {
     backgroundColor: '#D61F2C',
-    width: '65%',
-    borderRadius: 30,
+    width: '50%',
+    borderRadius: 5,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },
   disabledbuyButton: {
     backgroundColor: '#A0A0A0',
-    width: '65%',
-    borderRadius: 30,
+    width: '50%',
+    borderRadius: 5,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
@@ -251,48 +260,24 @@ const styles = StyleSheet.create({
   TextInput: {
     backgroundColor: '#F2F2F2',
     width: '100%',
-    borderRadius: 50,
+    borderRadius: 10,
     paddingLeft: 20,
     fontSize: 15,
-    paddingVertical: 15,
+    paddingVertical: 10,
     marginTop: 10,
     marginBottom: 10,
   },
   buyText: {
     color: 'white',
-    fontSize: 30,
+    fontSize: 25,
   },
   disabledbuyText: {
     color: 'black',
-    fontSize: 30,
+    fontSize: 25,
   },
   description: {
-    color: 'white',
+    color: 'black',
     fontSize: 15,
     textAlign: 'justify',
-  },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 18,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    marginVertical: 10,
-    borderRadius: 20,
-    color: '#0F95B9',
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    backgroundColor: 'white',
-    fontSize: 18,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    marginVertical: 10,
-    // borderWidth: 0.5,
-    borderColor: 'purple',
-    borderRadius: 20,
-    color: '#0F95B9',
-    paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
