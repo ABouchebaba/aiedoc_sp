@@ -10,7 +10,7 @@ export const Header = (props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={navigation.openDrawer}>
-        <Entypo name="menu" size={60} color="white" />
+        <Entypo name="menu" size={50} color="white" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('Boutique')}>
         <Image
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   tinyLogo: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
   },
 });

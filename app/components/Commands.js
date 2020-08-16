@@ -21,7 +21,7 @@ export const Commands = (props) => {
     open: false,
     products: [],
   });
-
+  // console.log(JSON.stringify(command.))
   function close() {
     setCommand({ open: false, products: [] });
   }
@@ -41,7 +41,7 @@ export const Commands = (props) => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {commands.map((cmd, i) => (
+      {commands.reverse().map((cmd, i) => (
         <TouchableOpacity
           key={i}
           style={styles.card}

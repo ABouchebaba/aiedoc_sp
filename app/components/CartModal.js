@@ -69,11 +69,11 @@ export const CartModal = (props) => {
           <View style={styles.wilayaInput}>
             <Picker
               selectedValue={wilaya}
+              onValueChange={(value) => setWilaya(value)}
               style={{
                 backgroundColor: '#efefef',
-                margin: 5,
-              }}
-              onValueChange={(value) => setWilaya(value)}>
+                // margin: 5,
+              }}>
               <Picker.Item label="Wilaya..." value="" />
               {wilayas.map((w) => (
                 <Picker.Item
@@ -129,22 +129,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
     alignSelf: 'center',
     width: '100%',
-    borderRadius: 50,
-    paddingLeft: 20,
+    borderRadius: 10,
+    paddingHorizontal: 20,
     fontSize: 15,
-    paddingVertical: 10,
-    marginBottom: 40,
     color: '#0F95B9',
   },
   wilayaInput: {
     backgroundColor: '#F2F2F2',
     alignSelf: 'center',
     width: '100%',
-    borderRadius: 50,
-    paddingLeft: 20,
+    borderRadius: 10,
+    paddingHorizontal: 8,
     fontSize: 15,
-    paddingVertical: 10,
-    marginBottom: 40,
   },
   submit: {
     backgroundColor: '#09748D',
@@ -163,20 +159,5 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: '30%',
     alignSelf: 'center',
-  },
-});
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 18,
-    borderRadius: 20,
-    color: '#0F95B9',
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    // backgroundColor: "white",
-    fontSize: 18,
-    borderColor: 'purple',
-    color: '#0F95B9',
-    // paddingRight: 30, // to ensure the text is never behind the icon
   },
 });

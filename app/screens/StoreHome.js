@@ -1,26 +1,27 @@
-import {FontAwesome, AntDesign} from '@expo/vector-icons';
+import {AntDesign, Entypo} from '@expo/vector-icons';
 import _ from 'lodash';
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
+  RefreshControl,
   StyleSheet,
-  TextInput,
-  View,
-  TouchableOpacity,
   Text,
-  RefreshControl
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   BackImage,
   CategoriesFilter,
+  CategoryBar,
   MarketHeader,
   ProductCard,
 } from '../components';
 import {getCategories, getProducts} from '../Store/actions';
-const {width, height} = Dimensions.get('window');
+
+// const {width, height} = Dimensions.get('window');
 
 const StoreHome = (props) => {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const StoreHome = (props) => {
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getProducts());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setFilteredData(products);
@@ -47,7 +48,7 @@ const StoreHome = (props) => {
     dispatch(getCategories());
     dispatch(getProducts());
     setRefreshing(false);
-  }, [refreshing, products]);
+  }, [dispatch]);
 
   function searchByCategory(cat) {
     let data = products;
@@ -82,16 +83,24 @@ const StoreHome = (props) => {
         <View style={styles.search}>
           <View style={styles.inputView}>
             <TextInput
-              placeholder="Omron"
+              placeholder="Recherche sur AieDoc boutique"
+              value={searchText}
               style={styles.TextInput}
               onChangeText={(e) => setSearchText(e)}
             />
             <View style={styles.icon}>
-              <FontAwesome name="search" size={25} color="black" />
+              {searchText.length > 0 && (
+                <Entypo
+                  name="squared-cross"
+                  size={30}
+                  color="black"
+                  onPress={() => setSearchText('')}
+                />
+              )}
             </View>
           </View>
           {loadingCat ? (
-            <ActivityIndicator size="large" color="white" />
+            <ActivityIndicator size="large" color="black" />
           ) : (
             <CategoriesFilter
               categories={categories}
@@ -99,42 +108,45 @@ const StoreHome = (props) => {
               sortAZ={sortAZ}
               sortPrice={sortPrice}
             />
-            // <></>
           )}
         </View>
-        {loadingProd ? (
-          <View style={styles.scrollContain}>
-            <ActivityIndicator size="large" color="white" />
-          </View>
-        ) : (
-          <ScrollView
-            style={styles.list}
-            contentContainerStyle={styles.listStyle}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            >
-            {filteredData
-              .filter((product) =>
-                product.name.toUpperCase().includes(searchText.toUpperCase()),
-              )
-              .map((product, i) => {
-                // console.log(product)
-                return (
-                  <ProductCard
-                    key={i}
-                    navigation={props.navigation}
-                    product={product}
-                    category={''}
-                  />
-                );
-              })}
-          </ScrollView>
-        )}
+        <View style={styles.categoryBar}>
+          {!loadingCat && (
+            <CategoryBar categories={categories} filter={searchByCategory} />
+          )}
+        </View>
+        <View style={styles.scrollContain}>
+          {loadingProd ? (
+            <ActivityIndicator size="large" color="black" />
+          ) : (
+            <ScrollView
+              style={styles.list}
+              contentContainerStyle={styles.listStyle}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
+              {filteredData
+                .filter((product) =>
+                  product.name.toUpperCase().includes(searchText.toUpperCase()),
+                )
+                .map((product, i) => {
+                  // console.log(product)
+                  return (
+                    <ProductCard
+                      key={i}
+                      navigation={props.navigation}
+                      product={product}
+                      category={''}
+                    />
+                  );
+                })}
+            </ScrollView>
+          )}
+        </View>
       </View>
       <TouchableOpacity
         style={styles.command}
-        onPress={() => props.navigation.navigate("Mes achats")}>
+        onPress={() => props.navigation.navigate('Mes achats')}>
         <AntDesign name="CodeSandbox" size={30} color="#11A0C1" />
         <Text
           style={{
@@ -154,15 +166,15 @@ export default StoreHome;
 
 const styles = StyleSheet.create({
   header: {
-    height: '15%',
+    height: '10%',
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   mainView: {
-    height: '86%',
+    height: '90%',
     width: '100%',
-    backgroundColor: 'rgba(17, 160, 193, .7)',
+    backgroundColor: '#F5F5F5',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
@@ -171,6 +183,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 10,
     alignItems: 'center',
+    zIndex: 9999,
     justifyContent: 'space-between',
     // backgroundColor: "blue",
   },
@@ -195,27 +208,36 @@ const styles = StyleSheet.create({
   },
   inputView: {
     flexDirection: 'row',
-    height: 50,
+    height: 45,
   },
   TextInput: {
-    backgroundColor: '#F2F2F2',
+    backgroundColor: '#fff',
     flex: 1,
-    borderBottomLeftRadius: 50,
-    borderTopLeftRadius: 50,
-    paddingLeft: 20,
-    fontSize: 18,
+    borderBottomLeftRadius: 5,
+    borderTopLeftRadius: 5,
+    elevation: 5,
+    paddingLeft: 10,
+    fontSize: 15,
+    color: 'grey',
   },
   icon: {
-    borderBottomRightRadius: 50,
-    borderTopRightRadius: 50,
-    backgroundColor: '#F2F2F2',
+    borderBottomRightRadius: 5,
+    borderTopRightRadius: 5,
+    elevation: 5,
+    backgroundColor: '#Fff',
     alignItems: 'center',
     height: '100%',
     justifyContent: 'center',
-    padding: 10,
+    padding: 5,
+  },
+  categoryBar: {
+    height: '12%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightWidth: 4,
   },
   scrollContain: {
-    height: '100%',
+    height: '75%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRightWidth: 4,

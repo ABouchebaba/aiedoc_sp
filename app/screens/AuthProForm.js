@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   View,
+  Keyboard
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -14,6 +15,27 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {useDispatch, useSelector} from 'react-redux';
 import {BackImage} from '../components/';
 import Button from '../components/Button';
+import {Picker} from '@react-native-community/picker';
+
+const jobsList = [
+  '---',
+  'medecin generaliste',
+  'pediatre',
+  'diabetologue',
+  'endocrinologue',
+  'dermatologue',
+  'rhumatologue',
+  'cardiologue',
+  'neurologue',
+  'psychiatre',
+  'psychologue',
+  'ortophoniste',
+  'infirmier',
+  'auxilliaire de vie',
+  'puericultrice',
+  'sage femme',
+  'soin des ongles et cheveux',
+];
 
 const AuthProForm = (props) => {
   const dispatch = useDispatch();
@@ -30,11 +52,12 @@ const AuthProForm = (props) => {
     diplome.file !== '' &&
     diplome.description !== ''
   );
-  const disabledValidation = !(job !== '' && diplomes.length !== 0);
+  const disabledValidation = !(job !== '---' && diplomes.length !== 0);
 
   async function addDiplome() {
     diplomes.push(diplome);
     setDiplome({type: '', file: '', description: ''});
+    Keyboard.dismiss()
   }
 
   function _deleteDocument(file) {
@@ -88,12 +111,17 @@ const AuthProForm = (props) => {
           <Text style={styles.title}>Informations personnelle</Text>
           <View style={{width: '90%'}}>
             <Text style={styles.label}>Profession</Text>
-            <TextInput
-              placeholder="Médecin, infirmière"
-              onChangeText={setJob}
-              style={styles.TextInput}
-              maxLength={30}
-            />
+            <View style={styles.buttonWhite}>
+              <Picker
+                selectedValue={job}
+                itemStyle={{fontSize: 20}}
+                style={{fontSize: 20}}
+                onValueChange={(itemValue) => setJob(itemValue)}>
+                {jobsList.map((job, i) => (
+                  <Picker.Item key={i} label={job.toUpperCase()} value={job} />
+                ))}
+              </Picker>
+            </View>
           </View>
           <View style={{width: '90%'}}>
             <Text style={styles.label}>Diplômes</Text>
@@ -145,24 +173,14 @@ const AuthProForm = (props) => {
           {diplomes.length > 0 && (
             <ScrollView style={styles.scrollView}>
               {diplomes.map((x, i) => (
-                <View style={styles.row} key={i}>
-                  <TextInput
-                    value={x.type}
-                    editable={false}
-                    style={{
-                      ...styles.TextInput,
-                      width: '80%',
-                      borderRadius: 10,
-                      backgroundColor: '#11A0C1',
-                      color: 'white',
-                    }}
-                  />
+                <View style={{...styles.row,justifyContent: 'center'}} key={i}>
+                  <Text style={styles.diplomeRow}>{x.type.slice(0,20)}</Text>
                   <TouchableOpacity
-                    style={{...styles.icon, backgroundColor: 'red'}}
+                    style={styles.diplomeIcon}
                     onPress={() => _deleteDocument(x)}>
                     <MaterialCommunityIcons
                       name="delete"
-                      size={30}
+                      size={25}
                       color="white"
                     />
                   </TouchableOpacity>
@@ -174,7 +192,7 @@ const AuthProForm = (props) => {
             title="S'INSCRIRE"
             onPress={submit}
             disabled={disabledValidation}
-            style={{marginVertical: 10}}
+            style={{marginVertical: 10, height:'8%'}}
           />
         </View>
       )}
@@ -197,18 +215,39 @@ const styles = StyleSheet.create({
   TextInput: {
     backgroundColor: '#F2F2F2',
     width: '100%',
-    borderRadius: 50,
+    borderRadius: 10,
     paddingLeft: 20,
     fontSize: 20,
-    paddingVertical: 10,
-    marginVertical: 10,
+    marginBottom: 10,
+  },
+  diplomeRow: {
+    backgroundColor: '#F2F2F2',
+    paddingLeft: 10,
+    borderTopLeftRadius:10,
+    borderBottomLeftRadius:10,
+    fontSize: 20,
+    height: 35,
+    marginBottom: 10,
+    width: '80%',
+    color: 'black',
+    alignSelf:'center',
+  },
+  diplomeIcon: {
+    backgroundColor: 'red',
+    width: '100%',
+    height: 35,
+    paddingHorizontal:10,
+    justifyContent:'center',
+    borderBottomRightRadius:10,
+    borderTopRightRadius:10,
+    marginBottom: 10,
   },
   buttonWhite: {
     backgroundColor: '#F2F2F2',
-    borderRadius: 50,
-    paddingLeft: 20,
+    borderRadius: 10,
+    paddingLeft: 10,
     fontSize: 20,
-    marginVertical: 20,
+    marginBottom: 25,
   },
   row: {
     flexDirection: 'row',
@@ -219,21 +258,24 @@ const styles = StyleSheet.create({
   },
   label: {
     color: 'white',
-    fontSize: 30,
-    textAlign: 'center',
+    fontSize: 22,
+    textAlign: 'left',
+    paddingLeft: 10,
     marginBottom: 10,
   },
   icon: {
     backgroundColor: '#11A0C1',
     width: '100%',
-    borderRadius: 50,
+    borderRadius: 10,
     fontSize: 20,
     padding: 10,
+    marginBottom: 10,
   },
+
   scrollView: {
     backgroundColor: '#cadce6',
     width: '90%',
-    paddingHorizontal: 10,
+    padding: 10,
     marginVertical: 15,
   },
 });

@@ -32,7 +32,7 @@ const AuthPhone = (props) => {
   const textinput = React.createRef();
 
   const loading = useSelector((state) => state.user.loading);
-
+  console.log(loading)
   const onPressSendVerificationCode = () => {
     const tempNumber =
       phoneNumber.charAt(0) == 0 && phoneNumber.length == 10
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   inputView: {
     flexDirection: 'row',
     backgroundColor: 'white',
-    borderRadius: 50,
+    borderRadius: 10,
   },
   logo: {
     alignSelf: 'center',
@@ -202,13 +202,14 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: 'contain',
     marginBottom: 20,
+    borderRadius:10
     // backgroundColor:'red'
   },
   TextInput: {
     backgroundColor: '#F2F2F2',
     flex: 1,
-    borderBottomRightRadius: 50,
-    borderTopRightRadius: 50,
+    borderBottomRightRadius: 10,
+    borderTopRightRadius: 10,
     paddingLeft: 10,
     fontSize: 27,
   },
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     paddingVertical: 10,
     alignItems: 'center',
-    borderRadius: 50,
+    borderRadius: 10,
     width: '80%',
     alignSelf: 'center',
   },
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     paddingVertical: 6,
     alignItems: 'center',
-    borderRadius: 50,
+    borderRadius: 10,
     width: '30%',
     alignSelf: 'center',
   },

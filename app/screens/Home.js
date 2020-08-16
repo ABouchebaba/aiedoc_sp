@@ -64,12 +64,12 @@ const Home = (props) => {
         <Text style={{fontSize: 20, color: 'white'}}>
           {user.state !== 'notReady' ? 'VOUS ETES EN SERVICE' : ''}
         </Text>
-        <Switch
+        {/* <Switch
           loading={loading}
           state={user.state}
           enable={enableEmergency}
           disable={disableEmergency}
-        />
+        /> */}
       </View>
     </BackImage>
   );

@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Button from '../components/Button';
 import {BackImage} from '../components/';
 import * as DocumentPicker from 'expo-document-picker';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const AuthProfilePicture = (props) => {
   const [files, setFiles] = useState({
@@ -57,32 +58,40 @@ const AuthProfilePicture = (props) => {
             </View>
           )}
         </TouchableOpacity>
-        <TouchableOpacity onPress={pickFile('extNaissance', '*/*')}>
-          <View style={styles.selectFile}>
-            <Text style={styles.selectFileText}>
-              Extrait de naissance :
-              {files.extNaissance
-                ? files.extNaissance.name
-                : 'Cliquer pour choisir'}
-            </Text>
-          </View>
+
+        <TouchableOpacity
+          style={files.extNaissance ? styles.selected : styles.notSelected}
+          onPress={pickFile('extNaissance', '*/*')}>
+          <Text style={styles.selectFileText}>Extrait de naissance</Text>
+          {files.extNaissance ? (
+            <AntDesign name="check" size={30} color="white" />
+          ) : (
+            <AntDesign name="addfile" size={30} color="white" />
+          )}
         </TouchableOpacity>
-        <TouchableOpacity onPress={pickFile('residence', '*/*')}>
-          <View style={styles.selectFile}>
-            <Text style={styles.selectFileText}>
-              Résidence :
-              {files.residence ? files.residence.name : 'Cliquer pour choisir'}
-            </Text>
-          </View>
+
+        <TouchableOpacity
+          style={files.residence ? styles.selected : styles.notSelected}
+          onPress={pickFile('residence', '*/*')}>
+          <Text style={styles.selectFileText}>Résidence</Text>
+          {files.residence ? (
+            <AntDesign name="check" size={30} color="white" />
+          ) : (
+            <AntDesign name="addfile" size={30} color="white" />
+          )}
         </TouchableOpacity>
-        <TouchableOpacity onPress={pickFile('idCard', '*/*')}>
-          <View style={styles.selectFile}>
-            <Text style={styles.selectFileText}>
-              Carte d'identité :
-              {files.idCard ? files.idCard.name : 'Cliquer pour choisir'}
-            </Text>
-          </View>
+
+        <TouchableOpacity
+          style={files.idCard ? styles.selected : styles.notSelected}
+          onPress={pickFile('idCard', '*/*')}>
+          <Text style={styles.selectFileText}>Carte d'identité</Text>
+          {files.idCard ? (
+            <AntDesign name="check" size={30} color="white" />
+          ) : (
+            <AntDesign name="addfile" size={30} color="white" />
+          )}
         </TouchableOpacity>
+        
         <Button title="Valider" onPress={submit} disabled={!enabled} />
       </View>
     </BackImage>
@@ -130,7 +139,29 @@ const styles = StyleSheet.create({
   },
   selectFileText: {
     color: 'white',
-    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  notSelected: {
+    backgroundColor: '#11A0C1',
+    height: 50,
+    width: '70%',
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal:20,
+    borderRadius:10
+  },
+  selected: {
+    backgroundColor: 'green',
+    height: 50,
+    width: '70%',
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal:20,
+    borderRadius:10
   },
 });
 
