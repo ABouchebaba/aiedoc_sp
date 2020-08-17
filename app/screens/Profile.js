@@ -100,6 +100,19 @@ const Profile = (props) => {
               style={styles.TextInput}
             />
           </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.text}>Services</Text>
+            <View style={styles.servicesContainer}>
+              {user.services.map((s) => (
+                <View key={s._id}>
+                  <Text style={styles.services}>
+                    {'  '}
+                    {`\u2022 ${s.name}`}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
           {/* <View style={styles.inputGroup}>
             <Button
               title={"changer le numéro de téléphone"}
@@ -142,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
     alignSelf: 'center',
     width: '100%',
-    borderRadius: 50,
+    borderRadius: 10,
     paddingLeft: 20,
     fontSize: 15,
     paddingVertical: 10,
@@ -165,6 +178,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     top: 150,
+  },
+  servicesContainer: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+  },
+  services: {
+    textAlign: 'left',
+    fontSize: 15,
+    color: '#c0c0c0',
+    paddingBottom: 10,
   },
 });
 
