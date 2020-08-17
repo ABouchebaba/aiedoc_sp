@@ -38,8 +38,12 @@ export class Socket {
     }
 
     this.initCallback = () => callback(Socket.instance);
-    this.socket = socketIOClient(url, {reconnection: false});
+    this.socket = socketIOClient(url);
     this.socket.on('connect', this.initCallback);
+    this.socket.on('reconnect_error', (err) =>
+      console.log('reconnect error', err),
+    );
+    this.socket.on('connect_error', () => console.log('connect error', err));
   }
 
   // TODO: ADD on connect_error event.

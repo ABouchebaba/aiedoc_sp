@@ -10,13 +10,10 @@ import {BACKEND_URL} from 'react-native-dotenv';
 const IntValidate = (props) => {
   const dispatch = useDispatch();
   const {intervention, loading} = useSelector((state) => state.current);
-  // const services = useSelector(getAllServices);
   const {services} = useSelector((state) => state.services);
   const [selected, setSelected] = useState([]);
 
   let total_price = selected.reduce((p, c) => p + c.price, 0);
-
-  console.log(selected.length);
 
   const socket = Socket.getInstance();
 
@@ -46,16 +43,6 @@ const IntValidate = (props) => {
     setSelected([...selected]);
   };
 
-  const selectService = (service) => {
-    const filtered = selected.filter((s) => s._id !== service._id);
-
-    if (filtered.length === selected.length) {
-      setSelected([...selected, service]);
-    } else {
-      setSelected(filtered);
-    }
-  };
-
   const clearServices = () => setSelected([]);
 
   const serviceSelected = (service) =>
@@ -66,16 +53,6 @@ const IntValidate = (props) => {
       <Text style={styles.title}>Selectioner les services effectués : </Text>
       <View style={styles.toSelect}>
         <ScrollView contentContainerStyle={styles.scroll}>
-          {/* {services.map((s, i) => (
-            <TouchableOpacity
-              key={s._id}
-              onPress={() => addService(s)}
-              style={styles.element}>
-              <Text>
-                {s.name} - ({s.price} DA)
-              </Text>
-            </TouchableOpacity>
-          ))} */}
           <ServiceFilter
             select={addService}
             clear={clearServices}

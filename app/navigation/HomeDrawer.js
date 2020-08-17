@@ -4,7 +4,7 @@ import {CustomDrawerContent} from '../components';
 import About from '../screens/About';
 import History from '../screens/History';
 import AuthServiceForm from '../screens/AuthServiceForm';
-// import Services from "../screens/Services";
+import IntCheck from '../screens/IntCheck';
 import Home from '../screens/Home';
 import ProfileStack from './ProfileStack';
 import Commands from '../screens/Commands';
@@ -22,7 +22,6 @@ function HomeDrawerScreen() {
       // drawerStyle={{height:"100%"}}
     >
       <HomeDrawer.Screen name="Accueil" component={Home} />
-      {/* <HomeDrawer.Screen name="auth" component={AuthServiceForm} /> */}
       <HomeDrawer.Screen name="Boutique" component={StoreStack} />
       <HomeDrawer.Screen name="Mes prestations" component={History} />
       <HomeDrawer.Screen name="Mes achats" component={Commands} />
