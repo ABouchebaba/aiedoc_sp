@@ -1,11 +1,8 @@
 import React, {useEffect} from 'react';
 import {Modal, ScrollView, StyleSheet, Text, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {useSelector} from 'react-redux';
 
 export const InterventionModel = (props) => {
-  const {services} = useSelector((state) => state.services);
-
   return (
     <Modal
       animationType="slide"
@@ -22,11 +19,10 @@ export const InterventionModel = (props) => {
             contentContainerStyle={styles.listStyle}>
             <View style={styles.prd}>
               <Text style={styles.prdTitle}>Service: </Text>
-              <Text style={{width:'50%'}}></Text>
+              <Text style={{width: '50%'}}></Text>
               <Text style={styles.prdTitle}>Prix: </Text>
             </View>
-            {services.map((srv, index) => (
-              props.services.includes(srv.name) &&
+            {props.services.map((srv, index) => (
               <View key={index} style={styles.prd}>
                 <Text style={styles.prdText}>{srv.name}</Text>
                 <Text style={styles.total}>{srv.price}</Text>
@@ -101,16 +97,16 @@ const styles = StyleSheet.create({
     // paddingVertical: 10,
     backgroundColor: 'white',
     // alignItems: "center",
-    borderTopWidth:5,
-    borderBottomWidth:5,
-    borderColor:'#21b9e0',
+    borderTopWidth: 5,
+    borderBottomWidth: 5,
+    borderColor: '#21b9e0',
     justifyContent: 'flex-start',
   },
   prd: {
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderBottomWidth: 3,
-    borderColor:"#4EC7E6",
+    borderColor: '#4EC7E6',
     justifyContent: 'space-around',
     flexDirection: 'row',
   },

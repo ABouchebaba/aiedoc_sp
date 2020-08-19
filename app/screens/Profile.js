@@ -14,6 +14,7 @@ import {BackImage} from '../components';
 import {BACKEND_URL} from 'react-native-dotenv';
 import * as DocumentPicker from 'expo-document-picker';
 import {updatePicture} from '../Store/actions';
+import FastImage from 'react-native-fast-image';
 
 const Profile = (props) => {
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const Profile = (props) => {
   });
 
   const picture_uri = selectedPicture.uri;
+
+  // console.log(picture_uri);
 
   const changeProfilePicture = async () => {
     let result = await DocumentPicker.getDocumentAsync({
@@ -55,7 +58,11 @@ const Profile = (props) => {
           <TouchableOpacity
             onPress={changeProfilePicture}
             style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Image source={{uri: picture_uri}} style={styles.picture} />
+            <FastImage
+              source={{uri: picture_uri, priority: FastImage.priority.high}}
+              style={styles.picture}
+            />
+            {/* <Image source={{uri: picture_uri}} style={styles.picture} /> */}
           </TouchableOpacity>
           <TouchableOpacity onPress={save_picture} style={styles.save_picture}>
             <Entypo name="save" size={40} color="white" />
