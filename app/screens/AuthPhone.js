@@ -32,7 +32,7 @@ const AuthPhone = (props) => {
   const textinput = React.createRef();
 
   const loading = useSelector((state) => state.user.loading);
-  console.log(loading)
+
   const onPressSendVerificationCode = () => {
     const tempNumber =
       phoneNumber.charAt(0) == 0 && phoneNumber.length == 10
