@@ -14,6 +14,7 @@ import {BackImage} from '../components';
 import {BACKEND_URL} from 'react-native-dotenv';
 import * as DocumentPicker from 'expo-document-picker';
 import {updatePicture} from '../Store/actions';
+import FastImage from 'react-native-fast-image';
 
 const Profile = (props) => {
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const Profile = (props) => {
   });
 
   const picture_uri = selectedPicture.uri;
+
+  // console.log(picture_uri);
 
   const changeProfilePicture = async () => {
     let result = await DocumentPicker.getDocumentAsync({
@@ -55,7 +58,11 @@ const Profile = (props) => {
           <TouchableOpacity
             onPress={changeProfilePicture}
             style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Image source={{uri: picture_uri}} style={styles.picture} />
+            <FastImage
+              source={{uri: picture_uri, priority: FastImage.priority.high}}
+              style={styles.picture}
+            />
+            {/* <Image source={{uri: picture_uri}} style={styles.picture} /> */}
           </TouchableOpacity>
           <TouchableOpacity onPress={save_picture} style={styles.save_picture}>
             <Entypo name="save" size={40} color="white" />
@@ -100,6 +107,19 @@ const Profile = (props) => {
               style={styles.TextInput}
             />
           </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.text}>Services</Text>
+            <View style={styles.servicesContainer}>
+              {user.services.map((s) => (
+                <View key={s._id}>
+                  <Text style={styles.services}>
+                    {'  '}
+                    {`\u2022 ${s.name}`}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
           {/* <View style={styles.inputGroup}>
             <Button
               title={"changer le numéro de téléphone"}
@@ -142,7 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
     alignSelf: 'center',
     width: '100%',
-    borderRadius: 50,
+    borderRadius: 10,
     paddingLeft: 20,
     fontSize: 15,
     paddingVertical: 10,
@@ -165,6 +185,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     top: 150,
+  },
+  servicesContainer: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+  },
+  services: {
+    textAlign: 'left',
+    fontSize: 15,
+    color: '#c0c0c0',
+    paddingBottom: 10,
   },
 });
 

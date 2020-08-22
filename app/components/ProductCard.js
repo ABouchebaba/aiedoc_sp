@@ -6,12 +6,12 @@ import FastImage from 'react-native-fast-image';
 
 export const ProductCard = (props) => {
   const product = props.product;
-  // console.log(product.images[0])
-  // console.log(BACKEND_URL)
+  const isNotAvailable = product.options.reduce((a, cV) => a + cV.qty, 0);
   return (
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.6}
+      disabled={isNotAvailable < 1}
       onPress={() => props.navigation.navigate('ProductProfile', {product})}>
       <View style={styles.imageSide}>
         {product.images.length > 0 ? (
@@ -19,7 +19,7 @@ export const ProductCard = (props) => {
             style={{width: 100, height: 100}}
             source={{
               uri: BACKEND_URL + '/' + product.images[0],
-              priority: FastImage.priority.normal,
+              priority: FastImage.priority.high,
             }}
             // resizeMode={FastImage.resizeMode.contain}
           />
@@ -50,7 +50,16 @@ export const ProductCard = (props) => {
             ),
           )}
         </View>
-        {product.discount === 0 ? (
+        {!isNotAvailable ? (
+          <Text
+            style={{
+              color: 'red',
+              textAlign: 'center',
+              textTransform: 'uppercase',
+            }}>
+            rupture de stock
+          </Text>
+        ) : product.discount === 0 ? (
           <Text style={styles.price}>{product.price} DA</Text>
         ) : (
           <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>

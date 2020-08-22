@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, TouchableHighlight, Image, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+  Image,
+  ScrollView,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setServiceFilter, clearServiceFilter} from '../Store/actions';
 import {Ionicons, Entypo} from '@expo/vector-icons';
@@ -59,9 +66,11 @@ export const ServiceFilter = (props) => {
         </View>
       )}
 
-      <ScrollView 
-      style={{flex:1,height:'60%',width:'100%'}}
-      contentContainerStyle={parents.length > 1 ? styles.viewServices : styles.viewTypes}>
+      <ScrollView
+        style={{flex: 1, height: '60%', width: '100%'}}
+        contentContainerStyle={
+          parents.length > 1 ? styles.viewServices : styles.viewTypes
+        }>
         {toShow.map((s) => (
           <TouchableHighlight
             underlayColor="#fff"
@@ -79,8 +88,8 @@ export const ServiceFilter = (props) => {
               {s.image && s.image.length > 0 ? (
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 30,
+                    height: 30,
                     resizeMode: 'contain',
                     alignSelf: 'center',
                   }}
@@ -90,7 +99,7 @@ export const ServiceFilter = (props) => {
                   }}
                 />
               ) : (
-                <View style={{width:'10%'}} />
+                <View style={{width: '10%'}} />
               )}
               <Text
                 style={
@@ -145,7 +154,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    padding:20
+    padding: 20,
   },
   service: {
     width: '100%',

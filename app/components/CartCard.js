@@ -42,7 +42,7 @@ export const CartCard = (props) => {
         </Text>
         <Text style={styles.brand}>{product.brand}</Text>
         <Text style={styles.brand}>
-          option: {product.option ? product.option : 'standard'}
+          option: {product.option.trim() !== '' ? product.option : 'Standard'}
         </Text>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={styles.price}>{product.price} DA </Text>
@@ -63,19 +63,21 @@ export const CartCard = (props) => {
         <TouchableOpacity onPress={deleteProduct}>
           <MaterialIcons name="delete" color="red" size={30} />
         </TouchableOpacity>
-        {!isRent && <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity onPress={minus}>
-            <Entypo
-              name="circle-with-minus"
-              color="rgba(214,31,44,.6)"
-              size={25}
-            />
-          </TouchableOpacity>
-          <Text style={styles.qty}>{product.qty}</Text>
-          <TouchableOpacity onPress={plus}>
-            <Entypo name="circle-with-plus" color="#11A0C1" size={25} />
-          </TouchableOpacity>
-        </View>}
+        {!isRent && (
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity onPress={minus}>
+              <Entypo
+                name="circle-with-minus"
+                color="rgba(214,31,44,.6)"
+                size={25}
+              />
+            </TouchableOpacity>
+            <Text style={styles.qty}>{product.qty}</Text>
+            <TouchableOpacity onPress={plus}>
+              <Entypo name="circle-with-plus" color="#11A0C1" size={25} />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );

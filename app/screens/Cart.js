@@ -61,8 +61,11 @@ const Cart = ({route, navigation}) => {
 
   const total = cart.reduce((accumulator, currentValue) => {
     if (currentValue.from !== null && currentValue.to !== null) {
-      const diff = new Date(currentValue.to) - new Date(currentValue.from)
-      return accumulator + (currentValue.qty * currentValue.price*(diff/(1000*60*60*24)));
+      const diff = new Date(currentValue.to) - new Date(currentValue.from);
+      return (
+        accumulator +
+        currentValue.qty * currentValue.price * (diff / (1000 * 60 * 60 * 24))
+      );
     } else {
       return accumulator + currentValue.qty * currentValue.price;
     }
@@ -83,7 +86,7 @@ const Cart = ({route, navigation}) => {
         const prd = {
           product: product.product_id,
           qty: product.qty,
-          option: product.option + ' ',
+          option: product.option,
         };
         if (product.from !== null && product.to !== null) {
           prd.from = product.from;
@@ -96,7 +99,6 @@ const Cart = ({route, navigation}) => {
       }),
       type: isBuy && isRent ? 'both' : isRent ? 'rent' : 'buy',
     };
-    console.log(data);
     dispatch(addCommand(data, doneModal));
     close();
   }

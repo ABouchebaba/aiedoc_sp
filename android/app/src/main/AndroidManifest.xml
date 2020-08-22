@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.aiedoc_sp">
+  package="com.aiedoc.aiedocpro">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

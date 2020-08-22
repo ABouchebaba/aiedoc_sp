@@ -56,12 +56,11 @@ const ProductProfile = ({route, navigation}) => {
       product_name: product.name,
       brand: product.brand,
       qty: 1,
-      option: option,
+      option: product.options.length > 1 ? option : product.options[0].option,
       price: product.price * (1 - product.discount / 100),
       from: rent ? from : null,
       to: rent ? myDate.toISOString().slice(0, 10) : null,
     };
-
     dispatch(addToCart(productAdd, cart));
     // dispatch(removeProduct(product._id, cart));
     alert.current.alertWithType(

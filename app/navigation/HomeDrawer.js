@@ -4,7 +4,7 @@ import {CustomDrawerContent} from '../components';
 import About from '../screens/About';
 import History from '../screens/History';
 import AuthServiceForm from '../screens/AuthServiceForm';
-import IntCheck from '../screens/IntCheck';
+import IntValidate from '../screens/IntValidate';
 import Home from '../screens/Home';
 import ProfileStack from './ProfileStack';
 import Commands from '../screens/Commands';
@@ -26,7 +26,7 @@ function HomeDrawerScreen() {
       <HomeDrawer.Screen name="Mes prestations" component={History} />
       <HomeDrawer.Screen name="Mes achats" component={Commands} />
       <HomeDrawer.Screen name="Profile" component={ProfileStack} />
-      {/* <HomeDrawer.Screen name="Services" component={Services} /> */}
+      {/* <HomeDrawer.Screen name="IntValidate" component={IntValidate} /> */}
       <HomeDrawer.Screen name="A propos" component={About} />
     </HomeDrawer.Navigator>
   );
