@@ -21,7 +21,7 @@ const AuthServiceForm = (props) => {
 
   async function submitServices() {
     const data = {...infos, services: selectedServices.map((s) => s._id)};
-    dispatch(register(data));
+    props.navigation.navigate('AuthTermsAndConditions', data);
   }
 
   useEffect(() => {
@@ -122,10 +122,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // backgroundColor: "red",
   },
-  confirmBtn:{
+  confirmBtn: {
     backgroundColor: '#38B4DD',
     borderRadius: 10,
-    paddingHorizontal:150,
+    paddingHorizontal: 150,
     padding: 5,
     shadowColor: '#000',
     shadowOffset: {
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
     elevation: 10,
-  }
+  },
 });
 
 export default AuthServiceForm;

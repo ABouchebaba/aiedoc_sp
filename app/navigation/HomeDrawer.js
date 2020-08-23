@@ -3,8 +3,7 @@ import React from 'react';
 import {CustomDrawerContent} from '../components';
 import About from '../screens/About';
 import History from '../screens/History';
-import AuthServiceForm from '../screens/AuthServiceForm';
-import IntValidate from '../screens/IntValidate';
+// import AuthTermsAndConditions from '../screens/AuthTermsAndConditions';
 import Home from '../screens/Home';
 import ProfileStack from './ProfileStack';
 import Commands from '../screens/Commands';
@@ -26,7 +25,10 @@ function HomeDrawerScreen() {
       <HomeDrawer.Screen name="Mes prestations" component={History} />
       <HomeDrawer.Screen name="Mes achats" component={Commands} />
       <HomeDrawer.Screen name="Profile" component={ProfileStack} />
-      {/* <HomeDrawer.Screen name="IntValidate" component={IntValidate} /> */}
+      {/* <HomeDrawer.Screen
+        name="AuthTermsAndConditions"
+        component={AuthTermsAndConditions}
+      /> */}
       <HomeDrawer.Screen name="A propos" component={About} />
     </HomeDrawer.Navigator>
   );

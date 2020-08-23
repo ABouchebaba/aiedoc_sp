@@ -9,7 +9,7 @@ project(':rn-fetch-blob').projectDir = new File(rootProject.projectDir, '../node
 include ':react-native-fs'
 project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
 includeUnimodulesProjects()
-rootProject.name = 'aiedoc_sp'
+rootProject.name = 'aiedoc.aiedocpro'
 include ':react-native-onesignal'
 project(':react-native-onesignal').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-onesignal/android')
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)

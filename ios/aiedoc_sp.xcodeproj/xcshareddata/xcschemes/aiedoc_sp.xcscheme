@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "aiedoc_sp.app"
-               BlueprintName = "aiedoc_sp"
-               ReferencedContainer = "container:aiedoc_sp.xcodeproj">
+               BuildableName = "aiedoc.aiedocpro.app"
+               BlueprintName = "aiedoc.aiedocpro"
+               ReferencedContainer = "container:aiedoc.aiedocpro.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "aiedoc_spTests.xctest"
-               BlueprintName = "aiedoc_spTests"
-               ReferencedContainer = "container:aiedoc_sp.xcodeproj">
+               BuildableName = "aiedoc.aiedocproTests.xctest"
+               BlueprintName = "aiedoc.aiedocproTests"
+               ReferencedContainer = "container:aiedoc.aiedocpro.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "aiedoc_sp.app"
-            BlueprintName = "aiedoc_sp"
-            ReferencedContainer = "container:aiedoc_sp.xcodeproj">
+            BuildableName = "aiedoc.aiedocpro.app"
+            BlueprintName = "aiedoc.aiedocpro"
+            ReferencedContainer = "container:aiedoc.aiedocpro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "aiedoc_sp.app"
-            BlueprintName = "aiedoc_sp"
-            ReferencedContainer = "container:aiedoc_sp.xcodeproj">
+            BuildableName = "aiedoc.aiedocpro.app"
+            BlueprintName = "aiedoc.aiedocpro"
+            ReferencedContainer = "container:aiedoc.aiedocpro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

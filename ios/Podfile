@@ -44,8 +44,8 @@ def flipper_post_install(installer)
   end
 end
 
-target 'aiedoc_sp' do
-  # Pods for aiedoc_sp
+target 'aiedoc.aiedocpro' do
+  # Pods for aiedoc.aiedocpro
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -85,7 +85,7 @@ target 'aiedoc_sp' do
 
   pod 'react-native-blur', :path => '../node_modules/@react-native-community/blur'
 
-  target 'aiedoc_spTests' do
+  target 'aiedoc.aiedocproTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -102,10 +102,10 @@ target 'aiedoc_sp' do
   end
 end
 
-target 'aiedoc_sp-tvOS' do
-  # Pods for aiedoc_sp-tvOS
+target 'aiedoc.aiedocpro-tvOS' do
+  # Pods for aiedoc.aiedocpro-tvOS
 
-  target 'aiedoc_sp-tvOSTests' do
+  target 'aiedoc.aiedocpro-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

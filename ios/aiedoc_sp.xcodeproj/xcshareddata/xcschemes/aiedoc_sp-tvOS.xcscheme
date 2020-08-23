@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "aiedoc_sp-tvOS.app"
-               BlueprintName = "aiedoc_sp-tvOS"
-               ReferencedContainer = "container:aiedoc_sp.xcodeproj">
+               BuildableName = "aiedoc.aiedocpro-tvOS.app"
+               BlueprintName = "aiedoc.aiedocpro-tvOS"
+               ReferencedContainer = "container:aiedoc.aiedocpro.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "aiedoc_sp-tvOSTests.xctest"
-               BlueprintName = "aiedoc_sp-tvOSTests"
-               ReferencedContainer = "container:aiedoc_sp.xcodeproj">
+               BuildableName = "aiedoc.aiedocpro-tvOSTests.xctest"
+               BlueprintName = "aiedoc.aiedocpro-tvOSTests"
+               ReferencedContainer = "container:aiedoc.aiedocpro.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "aiedoc_sp-tvOS.app"
-            BlueprintName = "aiedoc_sp-tvOS"
-            ReferencedContainer = "container:aiedoc_sp.xcodeproj">
+            BuildableName = "aiedoc.aiedocpro-tvOS.app"
+            BlueprintName = "aiedoc.aiedocpro-tvOS"
+            ReferencedContainer = "container:aiedoc.aiedocpro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "aiedoc_sp-tvOS.app"
-            BlueprintName = "aiedoc_sp-tvOS"
-            ReferencedContainer = "container:aiedoc_sp.xcodeproj">
+            BuildableName = "aiedoc.aiedocpro-tvOS.app"
+            BlueprintName = "aiedoc.aiedocpro-tvOS"
+            ReferencedContainer = "container:aiedoc.aiedocpro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

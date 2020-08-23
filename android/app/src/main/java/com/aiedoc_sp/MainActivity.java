@@ -1,4 +1,4 @@
-package com.aiedoc_sp;
+package com.aiedoc.aiedocpro;
 
 import android.os.Bundle; // here
 
@@ -20,6 +20,6 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "aiedoc_sp";
+    return "aiedoc.aiedocpro";
   }
 }

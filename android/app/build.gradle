@@ -142,7 +142,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.aiedoc_sp"
+        applicationId "com.aiedoc.aiedocpro"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
