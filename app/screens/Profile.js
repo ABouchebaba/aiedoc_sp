@@ -23,6 +23,8 @@ const Profile = (props) => {
     uri: BACKEND_URL + '/' + user.picture,
   });
 
+  console.log(user.services);
+
   const picture_uri = selectedPicture.uri;
 
   // console.log(picture_uri);

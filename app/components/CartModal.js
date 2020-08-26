@@ -37,8 +37,8 @@ export const CartModal = (props) => {
       transparent={true}
       visible={props.showModel}
       onRequestClose={props.close}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      <View
+        // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={styles.modelCard}>
         <Text style={styles.title}>Veuillez entrer votre addresse</Text>
         <View style={styles.inputGroup}>
@@ -81,34 +81,13 @@ export const CartModal = (props) => {
             currentLocationLabel="Postion actuelle"
           />
         </View>
-        {/* <View style={styles.inputGroup}>
-          <Text style={styles.text}>Wilaya</Text>
-          <View style={styles.wilayaInput}>
-            <Picker
-              selectedValue={wilaya}
-              onValueChange={(value) => setWilaya(value)}
-              style={{
-                backgroundColor: '#efefef',
-                // margin: 5,
-              }}>
-              <Picker.Item label="Wilaya..." value="" />
-              {wilayas.map((w) => (
-                <Picker.Item
-                  key={w.code}
-                  label={w.code + '- ' + w.nom}
-                  value={w.nom}
-                />
-              ))}
-            </Picker>
-          </View>
-        </View> */}
         <TouchableOpacity onPress={submit} style={styles.submit}>
           <Text style={{fontSize: 27, color: 'white'}}>Vérifier</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={props.close} style={styles.resend}>
           <Text style={{fontSize: 15, color: 'black'}}>Annuler</Text>
         </TouchableOpacity>
-      </KeyboardAvoidingView>
+      </View>
     </Modal>
   );
 };
@@ -162,21 +141,21 @@ const styles = StyleSheet.create({
   },
   submit: {
     backgroundColor: '#09748D',
-    marginTop: 30,
+    // marginTop: 10,
     paddingVertical: 10,
     alignItems: 'center',
-    borderRadius: 50,
+    borderRadius: 10,
     width: '80%',
     alignSelf: 'center',
   },
   resend: {
     backgroundColor: 'white',
-    marginTop: 30,
+    // marginTop: 30,
     paddingVertical: 6,
     alignItems: 'center',
-    borderRadius: 50,
+    borderRadius: 10,
     width: '30%',
     alignSelf: 'center',
-    marginBottom: 50,
+    marginBottom: 20,
   },
 });

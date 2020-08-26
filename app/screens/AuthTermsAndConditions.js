@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {register} from '../Store/actions';
@@ -14,43 +15,53 @@ import TermsAndConditionsText from '../constants/TermsAndConditions';
 
 const AuthTermsAndConditions = (props) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const [accepted, setAccepted] = useState(false);
 
   const submit = () => {
-    dispatch(register(data));
+    setLoading(true);
+    dispatch(register(props.route.params, setLoading));
   };
 
   return (
     <BackImage source={require('../../assets/bg/bg1.png')}>
-      <Text style={styles.title}>Conditions d'utilisation</Text>
+      {!loading ? (
+        <Text style={styles.title}>Conditions d'utilisation</Text>
+      ) : (
+        <></>
+      )}
 
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.terms}>{TermsAndConditionsText}</Text>
+      {!loading ? (
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.terms}>{TermsAndConditionsText}</Text>
 
-        <View style={styles.checkContainer}>
-          <CheckBox
-            tintColors={{
-              true: 'black',
-              false: 'black',
-            }}
-            style={styles.check}
-            value={accepted}
-            onValueChange={setAccepted}
-          />
-          <Text style={styles.text}>
-            J'accepte les conditions générales et la politique de
-            confidentialité
-          </Text>
-        </View>
+          <View style={styles.checkContainer}>
+            <CheckBox
+              tintColors={{
+                true: 'black',
+                false: 'black',
+              }}
+              style={styles.check}
+              value={accepted}
+              onValueChange={setAccepted}
+            />
+            <Text style={styles.text}>
+              J'accepte les conditions générales et la politique de
+              confidentialité
+            </Text>
+          </View>
 
-        <TouchableOpacity
-          style={[styles.btn, styles.validate]}
-          disabled={!accepted}
-          onPress={submit}>
-          <Text style={[styles.btnText]}>S'inscrire</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          <TouchableOpacity
+            style={[styles.btn, styles.validate]}
+            disabled={!accepted}
+            onPress={submit}>
+            <Text style={[styles.btnText]}>S'inscrire</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      ) : (
+        <ActivityIndicator size="large" color="white" />
+      )}
     </BackImage>
   );
 };

@@ -107,7 +107,7 @@ export const updatePicture = (id, picture, token) => (dispatch) => {
     });
 };
 
-export const register = (user) => (dispatch) => {
+export const register = (user, setLoading) => (dispatch) => {
   dispatch({type: USER_LOADING});
 
   let data = [
@@ -168,6 +168,7 @@ export const register = (user) => (dispatch) => {
         if (res.info().status == 200) {
           const headers = res.info().headers;
           const token = headers['X-Auth-Token'] || headers['x-auth-token'];
+          setLoading(false);
           dispatch({
             type: SET_USER,
             data: res.json(),
@@ -180,6 +181,7 @@ export const register = (user) => (dispatch) => {
         }
       })
       .catch((err) => {
+        setLoading(false);
         dispatch({
           type: UNSET_USER,
         });

@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   confirmBtn: {
     backgroundColor: '#38B4DD',
     borderRadius: 10,
-    paddingHorizontal: 150,
+    paddingHorizontal: 50,
     padding: 5,
     shadowColor: '#000',
     shadowOffset: {
