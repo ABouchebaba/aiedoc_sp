@@ -24,7 +24,7 @@ function HomeDrawerScreen() {
       <HomeDrawer.Screen name="Boutique" component={StoreStack} />
       <HomeDrawer.Screen name="Mes prestations" component={History} />
       <HomeDrawer.Screen name="Mes achats" component={Commands} />
-      <HomeDrawer.Screen name="Profile" component={ProfileStack} />
+      <HomeDrawer.Screen name="Profil" component={ProfileStack} />
       {/* <HomeDrawer.Screen
         name="AuthTermsAndConditions"
         component={AuthTermsAndConditions}

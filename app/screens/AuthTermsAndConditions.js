@@ -33,34 +33,40 @@ const AuthTermsAndConditions = (props) => {
       )}
 
       {!loading ? (
-        <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.terms}>{TermsAndConditionsText}</Text>
+        <>
+          <ScrollView contentContainerStyle={styles.container}>
+            <Text style={styles.terms}>{TermsAndConditionsText}</Text>
 
-          <View style={styles.checkContainer}>
-            <CheckBox
-              tintColors={{
-                true: 'black',
-                false: 'black',
-              }}
-              style={styles.check}
-              value={accepted}
-              onValueChange={setAccepted}
-            />
-            <Text style={styles.text}>
-              J'accepte les conditions générales et la politique de
-              confidentialité
-            </Text>
-          </View>
-
+            <View style={styles.checkContainer}>
+              <CheckBox
+                tintColors={{
+                  true: 'black',
+                  false: 'black',
+                }}
+                style={styles.check}
+                value={accepted}
+                onValueChange={setAccepted}
+              />
+              <Text style={styles.text}>
+                J'accepte les conditions générales et la politique de
+                confidentialité
+              </Text>
+            </View>
+          </ScrollView>
           <TouchableOpacity
             style={[styles.btn, styles.validate]}
             disabled={!accepted}
             onPress={submit}>
             <Text style={[styles.btnText]}>S'inscrire</Text>
           </TouchableOpacity>
-        </ScrollView>
+        </>
       ) : (
-        <ActivityIndicator size="large" color="white" />
+        <View style={styles.viewLoading}>
+          <ActivityIndicator size="large" color="white" />
+          <Text style={styles.textLoading}>
+            Votre demande est en cours de traitement
+          </Text>
+        </View>
       )}
     </BackImage>
   );
@@ -78,7 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   btnText: {
-    fontSize: 20,
+    fontSize: 22,
     color: 'white',
     textAlign: 'center',
   },
@@ -97,8 +103,9 @@ const styles = StyleSheet.create({
   validate: {
     width: '50%',
     alignSelf: 'center',
-    padding: 10,
-    marginBottom: 20,
+    padding: 15,
+    margin:15,
+    marginBottom: 30,
   },
   bigBtn: {
     width: '75%',
@@ -114,6 +121,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     padding: 10,
     borderRadius: 5,
+  },
+  viewLoading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textLoading: {
+    fontSize: 22,
+    width: '80%',
+    textAlign: 'center',
+    color: 'white',
+    paddingTop: 40,
   },
 });
 

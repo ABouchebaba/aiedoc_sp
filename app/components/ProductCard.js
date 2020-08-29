@@ -6,13 +6,17 @@ import FastImage from 'react-native-fast-image';
 
 export const ProductCard = (props) => {
   const product = props.product;
+
+  const onPress = () => {
+    props.navigation.navigate('ProductProfile', {product});
+  };
   const isNotAvailable = product.options.reduce((a, cV) => a + cV.qty, 0);
   return (
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.6}
       disabled={isNotAvailable < 1}
-      onPress={() => props.navigation.navigate('ProductProfile', {product})}>
+      onPress={onPress}>
       <View style={styles.imageSide}>
         {product.images.length > 0 ? (
           <FastImage
@@ -39,7 +43,7 @@ export const ProductCard = (props) => {
             : product.name.replace(/(\r\n|\n|\r)/gm, '')}
         </Text>
         <Text style={styles.brand}>
-          Marque: {product.brand.replace(/(\r\n|\n|\r)/gm, '')}
+          Marque: {product.brand.slice(0, 15).replace(/(\r\n|\n|\r)/gm, '')}
         </Text>
         <View style={styles.ratingView}>
           {[...Array(5)].map((x, i) =>
@@ -76,9 +80,10 @@ export const ProductCard = (props) => {
 
 const styles = StyleSheet.create({
   card: {
-    height: 230,
+    height: 250,
     backgroundColor: 'white',
-    width: '46%',
+    width: '49%',
+    minWidth: 150,
     borderWidth: 1,
     borderColor: 'white',
     // borderRadius:10,

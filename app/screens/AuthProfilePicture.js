@@ -61,7 +61,7 @@ const AuthProfilePicture = (props) => {
 
         <TouchableOpacity
           style={files.extNaissance ? styles.selected : styles.notSelected}
-          onPress={pickFile('extNaissance', '*/*')}>
+          onPress={pickFile('extNaissance', 'image/*')}>
           <Text style={styles.selectFileText}>Extrait de naissance</Text>
           {files.extNaissance ? (
             <AntDesign name="check" size={30} color="white" />
@@ -72,7 +72,7 @@ const AuthProfilePicture = (props) => {
 
         <TouchableOpacity
           style={files.residence ? styles.selected : styles.notSelected}
-          onPress={pickFile('residence', '*/*')}>
+          onPress={pickFile('residence', 'image/*')}>
           <Text style={styles.selectFileText}>Résidence</Text>
           {files.residence ? (
             <AntDesign name="check" size={30} color="white" />
@@ -83,7 +83,7 @@ const AuthProfilePicture = (props) => {
 
         <TouchableOpacity
           style={files.idCard ? styles.selected : styles.notSelected}
-          onPress={pickFile('idCard', '*/*')}>
+          onPress={pickFile('idCard', 'image/*')}>
           <Text style={styles.selectFileText}>Carte d'identité</Text>
           {files.idCard ? (
             <AntDesign name="check" size={30} color="white" />
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   selectPictureText: {
     fontSize: 18,
-    color: '#4eaaff',
+    color: '#11A0C1',
     textAlign: 'center',
     padding: 10,
   },

@@ -3,14 +3,14 @@ import _ from 'lodash';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  RefreshControl,
+  FlatList,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   BackImage,
@@ -22,6 +22,7 @@ import {
 import {getCategories, getProducts} from '../Store/actions';
 
 // const {width, height} = Dimensions.get('window');
+const ITEM_HEIGHT = 250;
 
 const StoreHome = (props) => {
   const dispatch = useDispatch();
@@ -31,6 +32,8 @@ const StoreHome = (props) => {
 
   const [filteredData, setFilteredData] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [nbLoad, setNbLoad] = useState(5);
 
   useEffect(() => {
     dispatch(getCategories());
@@ -51,11 +54,16 @@ const StoreHome = (props) => {
   }, [dispatch]);
 
   function searchByCategory(cat) {
-    let data = products;
+    console.log('The CAT ', cat)
     if (cat !== '') {
-      data = data.filter((product) => product.category._id === cat);
+      setSelectedCategory(cat);
+      setFilteredData(
+        products.filter((product) => product.category._id === cat),
+      );
+    } else {
+      setSelectedCategory('');
+      setFilteredData(products);
     }
-    setFilteredData(data);
   }
 
   function sortAZ(sorted) {
@@ -66,6 +74,22 @@ const StoreHome = (props) => {
     }
   }
 
+  const renderItem = useCallback(
+    ({item}) => <ProductCard navigation={props.navigation} product={item} />,
+    [],
+  );
+
+  const keyExtractor = useCallback((product) => product._id, []);
+
+  const getItemHeight = useCallback(
+    (data, index) => ({
+      length: ITEM_HEIGHT,
+      offset: ITEM_HEIGHT * index,
+      index,
+    }),
+    [],
+  );
+
   function sortPrice(sorted) {
     if (sorted) {
       setFilteredData(_.orderBy(filteredData, ['price'], ['asc']));
@@ -73,6 +97,14 @@ const StoreHome = (props) => {
       setFilteredData(_.orderBy(filteredData, ['price'], ['desc']));
     }
   }
+  // let finalData = filteredData;
+
+  /* if (searchText.legth > 0)
+    finalData = filteredData.filter((product) =>
+      product.name.toUpperCase().includes(searchText.toUpperCase()),
+    ); */
+
+  //finalData = filteredData.slice(0, nbLoad);
 
   return (
     <BackImage source={require('../../assets/bg/bgMarket.png')}>
@@ -110,37 +142,49 @@ const StoreHome = (props) => {
             />
           )}
         </View>
-        <View style={styles.categoryBar}>
-          {!loadingCat && (
-            <CategoryBar categories={categories} filter={searchByCategory} />
-          )}
-        </View>
+        {selectedCategory.length > 0 && (
+          <View style={styles.categoryBar}>
+            {!loadingCat && (
+              <CategoryBar
+                categories={categories}
+                selected={selectedCategory}
+                filter={searchByCategory}
+              />
+            )}
+          </View>
+        )}
         <View style={styles.scrollContain}>
           {loadingProd ? (
             <ActivityIndicator size="large" color="black" />
-          ) : (
-            <ScrollView
+          ) : filteredData.length > 0 ? (
+            <FlatList
               style={styles.list}
               contentContainerStyle={styles.listStyle}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }>
-              {filteredData
-                .filter((product) =>
-                  product.name.toUpperCase().includes(searchText.toUpperCase()),
-                )
-                .map((product, i) => {
-                  // console.log(product)
-                  return (
-                    <ProductCard
-                      key={i}
-                      navigation={props.navigation}
-                      product={product}
-                      category={''}
-                    />
-                  );
-                })}
-            </ScrollView>
+              numColumns={2}
+              refreshing={refreshing}
+              initialNumToRender={10}
+              maxToRenderPerBatch={8}
+              windowSize={5}
+              removeClippedSubviews
+              columnWrapperStyle={{justifyContent: 'space-between'}}
+              onRefresh={onRefresh}
+              data={filteredData.filter((product) =>
+                product.name.toUpperCase().includes(searchText.toUpperCase()),
+              )}
+              getItemHeight={getItemHeight}
+              renderItem={renderItem}
+              keyExtractor={keyExtractor}
+            />
+          ) : (
+            <>
+              <Text style={{color: '#11A0C1', fontSize: 30, paddingBottom:50}}>
+                Aucun produit trouvé
+              </Text>
+              <Image
+                source={require('../../assets/empty_store.png')}
+                style={{width: 100, height: 100, resizeMode: 'contain'}}
+              />
+            </>
           )}
         </View>
       </View>
@@ -194,17 +238,18 @@ const styles = StyleSheet.create({
     // alignItems:'baseline'
   },
   list: {
-    height: '80%',
     flex: 1,
     margin: 10,
     marginBottom: 10,
+    // minHeight: 100,
   },
   listStyle: {
+    // height: 500,
     alignItems: 'center',
-    justifyContent: 'space-around',
-    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'column',
+    // backgroundColor:'red'
   },
   inputView: {
     flexDirection: 'row',
@@ -238,6 +283,7 @@ const styles = StyleSheet.create({
   },
   scrollContain: {
     height: '75%',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     borderRightWidth: 4,

@@ -17,12 +17,18 @@ export const setOnlineState = (id, state) => async (dispatch) => {
     if (status !== 'granted') {
       // throw new Error("Permission to access location was denied");
       alert("La permission d'accés à la localisation non-accordée");
-      return;
+      return dispatch({
+        type: ERROR_USER,
+        data: err.message,
+      });;
     }
   } catch (err) {
     console.log(err.message);
-    alert('Une erreur est survenue.');
-    return;
+    alert("La permission d'accés à la localisation est nécessaire.");
+    return dispatch({
+      type: ERROR_USER,
+      data: err.message,
+    });;
   }
 
   let {coords} = await Location.getCurrentPositionAsync({

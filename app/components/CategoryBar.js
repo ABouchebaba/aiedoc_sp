@@ -9,10 +9,14 @@ import {
 import {BACKEND_URL} from 'react-native-dotenv';
 
 export const CategoryBar = (props) => {
-  const categories = props.categories
-    .filter((s) => s.level === 'SubSubFamily')
-    .slice(0, 10);
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(props.selected);
+
+  console.log('the SELECTED', selected);
+  const parent =
+    selected.length > 0
+      ? props.categories.find((s) => s._id === selected).parent
+      : '';
+  const categories = props.categories.filter((s) => s.parent === parent);
 
   function select(value) {
     const toSelect = value._id === selected ? '' : value._id;
@@ -26,7 +30,6 @@ export const CategoryBar = (props) => {
       style={styles.container}
       contentContainerStyle={styles.scrollView}>
       {categories.map((s) => {
-        console.log("url: ",s)
         return (
           <TouchableOpacity
             key={s._id}
@@ -90,8 +93,10 @@ const styles = StyleSheet.create({
   selectedService: {
     // width: '100%',
     backgroundColor: '#4EC7E6',
-    padding: 10,
-    marginHorizontal: 10,
+    borderRadius: 3,
+    margin: 5,
+    padding: 5,
+    // marginRight: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

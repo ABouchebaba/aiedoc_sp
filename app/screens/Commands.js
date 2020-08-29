@@ -25,7 +25,7 @@ const CommandsHistory = (props) => {
     <BackImage source={require("../../assets/bg/bgHome.png")}>
       <View style={styles.header}>
         <TouchableOpacity onPress={props.navigation.openDrawer}>
-          <Entypo name="menu" size={60} color="white" />
+          <Entypo name="menu" size={50} color="white" />
         </TouchableOpacity>
       </View>
       <View style={styles.mainView}>
@@ -44,13 +44,13 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   header: {
-    height: "15%",
+    height: "10%",
     width: "100%",
     justifyContent: "center",
     paddingLeft: 30,
   },
   mainView: {
-    height: "85%",
+    height: "90%",
     width: "100%",
   },
   tabView: {

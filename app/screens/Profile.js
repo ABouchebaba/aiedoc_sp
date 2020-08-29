@@ -53,7 +53,7 @@ const Profile = (props) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={props.navigation.openDrawer}>
-            <Entypo name="menu" size={60} color="white" />
+            <Entypo name="menu" size={50} color="white" />
           </TouchableOpacity>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   header: {
-    height: '15%',
+    height: '10%',
     width: '100%',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   mainView: {
-    height: '85%',
+    height: '90%',
     justifyContent: 'flex-start',
   },
   picture: {
