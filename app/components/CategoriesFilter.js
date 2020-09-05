@@ -1,12 +1,29 @@
-import {FontAwesome} from '@expo/vector-icons';
+import {FontAwesome, AntDesign} from '@expo/vector-icons';
 import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {CategoriesFilterInput} from './CategoriesFilterInput';
+import {StyleSheet, TouchableOpacity, View, Modal, Text} from 'react-native';
+import {CatFilter} from './CatFilter';
 
 export const CategoriesFilter = (props) => {
+  const {service, modalOpen} = props.data;
+  const levels = props.categories
   const [category, setCategory] = useState('');
   const [sorted, setSorted] = useState(false);
   const [sortedPrice, setSortedPrice] = useState(false);
+  const [nameSelected, setNameSelected] = useState('');
+
+  const selectOne = (value) => {
+    closeModal();
+    setNameSelected(value.name);
+    props.setData({modalOpen: false, service: value});
+    props.filter(value._id);
+  };
+
+  const clear = () => {
+    closeModal();
+    setNameSelected('');
+    props.setData({modalOpen: false, service: null});
+    props.filter('');
+  };
 
   function sort() {
     props.sortAZ(!sorted);
@@ -18,19 +35,32 @@ export const CategoriesFilter = (props) => {
     setSortedPrice(!sortedPrice);
   }
 
-  function filter(value) {
-    console.log('testing : ', value);
-    setCategory(value);
-    props.filter(value);
+  function closeModal() {
+    props.setData({modalOpen: false});
+  }
+
+  function openFromInput() {
+    props.setData({modalOpen: true});
   }
 
   return (
     <View style={styles.container}>
       <View style={{width: '75%'}}>
-        <CategoriesFilterInput
-          selected={filter}
-          categories={props.categories}
-        />
+        <TouchableOpacity
+          underlayColor={'#fff'}
+          onPress={openFromInput}
+          style={styles.rootSelect}>
+          <View style={styles.input}>
+            <Text style={{color: 'gray', margin: 3, fontSize: 15}}>
+              {nameSelected.length > 0
+                ? nameSelected
+                : 'Sélectionner une catégorie'}
+            </Text>
+            {nameSelected.length > 0 && (
+              <AntDesign name="close" size={24} color="black" onPress={clear} />
+            )}
+          </View>
+        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -61,6 +91,28 @@ export const CategoriesFilter = (props) => {
           </TouchableOpacity>
         )}
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalOpen}
+        onRequestClose={closeModal}>
+        <View style={styles.modal}>
+          <View style={styles.modalInside}>
+            <Text style={styles.text}>Sélectionner une catégorie</Text>
+            <CatFilter
+              levels={levels}
+              selectOne={selectOne}
+              selectedParent={service}
+            />
+          </View>
+          <AntDesign
+            name="closecircle"
+            size={50}
+            color="#4EC7E6"
+            onPress={closeModal}
+          />
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -108,5 +160,43 @@ const styles = StyleSheet.create({
     // marginVertical: 10,
     borderRadius: 5,
     elevation: 5,
+  },
+  modal: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba( 250, 250, 250, 0.8 )',
+  },
+  modalInside: {
+    borderColor: '#4EC7E6',
+    borderWidth: 4,
+    backgroundColor: 'white',
+    width: '90%',
+    height: '60%',
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    borderRadius: 5,
+    marginBottom: 15,
+  },
+  text: {
+    fontSize: 20,
+    paddingVertical: 15,
+  },
+  rootSelect: {
+    borderRadius: 5,
+    elevation: 5,
+    marginVertical: 5,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  input: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 5,
   },
 });

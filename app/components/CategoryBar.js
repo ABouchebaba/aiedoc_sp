@@ -9,19 +9,13 @@ import {
 import {BACKEND_URL} from 'react-native-dotenv';
 
 export const CategoryBar = (props) => {
-  const [selected, setSelected] = useState(props.selected);
-
-  console.log('the SELECTED', selected);
-  const parent =
-    selected.length > 0
-      ? props.categories.find((s) => s._id === selected).parent
-      : '';
-  const categories = props.categories.filter((s) => s.parent === parent);
+  // const {service, modalOpen} = props.selected
+  const categories = props.categories.filter((s) => s.level === 'Family');
 
   function select(value) {
-    const toSelect = value._id === selected ? '' : value._id;
-    setSelected(toSelect);
-    props.filter(toSelect);
+    // const toSelect = value._id === service._id ? {} : value;
+    // const toSelect = value;
+    props.filter({service: value, modalOpen: true});
   }
 
   return (
@@ -34,8 +28,8 @@ export const CategoryBar = (props) => {
           <TouchableOpacity
             key={s._id}
             onPress={() => select(s)}
-            style={
-              s._id === selected ? styles.selectedService : styles.service
+            style={styles.service
+              // s._id === service._id ? styles.selectedService : styles.service
             }>
             {s.image && s.image.length > 0 ? (
               <Image

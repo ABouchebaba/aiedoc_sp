@@ -39,7 +39,7 @@ export const CartModal = (props) => {
         <Text style={styles.title}>Veuillez entrer votre addresse</Text>
         <View style={styles.inputGroup}>
           <GooglePlacesAutocomplete
-            placeholder="Search"
+            placeholder="Recherche"
             styles={{
               textInputContainer: {
                 backgroundColor: 'rgba(0,0,0,0)',
@@ -60,13 +60,12 @@ export const CartModal = (props) => {
               },
             }}
             onFail={(err) => {
-              console.log(err);
+              console.log("err :",err);
             }}
             enablePoweredByContainer={false}
             minLength={4}
             onPress={(data, details = null) => {
               setAdresse(details.name + ' ' + details.formatted_address);
-              // console.log(details.name + ' ' + details.formatted_address);
             }}
             fetchDetails={true}
             query={{
@@ -74,31 +73,10 @@ export const CartModal = (props) => {
               language: 'fr',
               components: 'country:dz',
             }}
-            currentLocation={true}
-            currentLocationLabel="Postion actuelle"
+            // currentLocation={true}
+            // currentLocationLabel="Postion actuelle"
           />
         </View>
-        {/* <View style={styles.inputGroup}>
-          <Text style={styles.text}>Wilaya</Text>
-          <View style={styles.wilayaInput}>
-            <Picker
-              selectedValue={wilaya}
-              onValueChange={(value) => setWilaya(value)}
-              style={{
-                backgroundColor: '#efefef',
-                // margin: 5,
-              }}>
-              <Picker.Item label="Wilaya..." value="" />
-              {wilayas.map((w) => (
-                <Picker.Item
-                  key={w.code}
-                  label={w.code + '- ' + w.nom}
-                  value={w.nom}
-                />
-              ))}
-            </Picker>
-          </View>
-        </View> */}
         <TouchableOpacity onPress={submit} style={styles.submit}>
           <Text style={{fontSize: 27, color: 'white'}}>Vérifier</Text>
         </TouchableOpacity>

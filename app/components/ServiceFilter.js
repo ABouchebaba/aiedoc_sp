@@ -68,9 +68,7 @@ export const ServiceFilter = (props) => {
 
       <ScrollView
         style={{flex: 1, height: '60%', width: '100%'}}
-        contentContainerStyle={
-          parents.length > 1 ? styles.viewServices : styles.viewTypes
-        }>
+        contentContainerStyle={styles.viewServices}>
         {toShow.map((s) => (
           <TouchableHighlight
             underlayColor="#fff"
@@ -79,11 +77,7 @@ export const ServiceFilter = (props) => {
             onPress={() => onElementPress(s)}>
             <View
               style={
-                props.selected(s._id)
-                  ? styles.selectedService
-                  : parents.length > 1
-                  ? styles.service
-                  : styles.type
+                props.selected(s._id) ? styles.selectedService : styles.service
               }>
               {s.image && s.image.length > 0 ? (
                 <Image
@@ -101,46 +95,12 @@ export const ServiceFilter = (props) => {
               ) : (
                 <View style={{width: '10%'}} />
               )}
-              <Text
-                style={
-                  parents.length > 1 ? styles.serviceName : styles.typeName
-                }>
-                {s.name.trim()}
-              </Text>
+              <Text style={styles.serviceName}>{s.name.trim()}</Text>
               {/* {s.price > 0 && <Text style={styles.price}>{s.price} DA</Text>} */}
             </View>
           </TouchableHighlight>
         ))}
       </ScrollView>
-      {/* <View style={styles.viewServices}>
-        {toShow.map((s) => (
-          <TouchableHighlight
-            underlayColor="#fff"
-            key={s._id}
-            onPress={() => onElementPress(s)}>
-            <View
-              style={
-                props.selected(s._id) ? styles.selectedService : styles.service
-              }>
-              {s.image && s.image.length > 0 && (
-                <Image
-                  style={{
-                    width: 60,
-                    height: 60,
-                    resizeMode: 'contain',
-                    alignSelf: 'center',
-                  }}
-                  source={{
-                    uri: BACKEND_URL + '/' + s.image,
-                    cache: 'only-if-cached',
-                  }}
-                />
-              )}
-              <Text style={styles.serviceName}>{s.name}</Text>
-            </View>
-          </TouchableHighlight>
-        ))}
-      </View> */}
     </View>
   );
 };

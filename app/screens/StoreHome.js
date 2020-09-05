@@ -21,7 +21,6 @@ import {
 } from '../components';
 import {getCategories, getProducts} from '../Store/actions';
 
-// const {width, height} = Dimensions.get('window');
 const ITEM_HEIGHT = 250;
 
 const StoreHome = (props) => {
@@ -32,9 +31,12 @@ const StoreHome = (props) => {
 
   const [filteredData, setFilteredData] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [nbLoad, setNbLoad] = useState(5);
-
+  // const [selectedCategory, setSelectedCategory] = useState('');
+  const [currentServiceAndModal, setCurrentServiceAndModal] = useState({
+    service: null,
+    modalOpen: false
+  });
+  
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getProducts());
@@ -54,14 +56,14 @@ const StoreHome = (props) => {
   }, [dispatch]);
 
   function searchByCategory(cat) {
-    console.log('The CAT ', cat)
+    products.map((one) => {
+      if (!one.category?._id) console.log(one.name);
+    });
     if (cat !== '') {
-      setSelectedCategory(cat);
       setFilteredData(
-        products.filter((product) => product.category._id === cat),
+        products.filter((product) => product.category?._id === cat),
       );
     } else {
-      setSelectedCategory('');
       setFilteredData(products);
     }
   }
@@ -97,14 +99,10 @@ const StoreHome = (props) => {
       setFilteredData(_.orderBy(filteredData, ['price'], ['desc']));
     }
   }
-  // let finalData = filteredData;
 
-  /* if (searchText.legth > 0)
-    finalData = filteredData.filter((product) =>
-      product.name.toUpperCase().includes(searchText.toUpperCase()),
-    ); */
-
-  //finalData = filteredData.slice(0, nbLoad);
+  function setServiceAndOpenModal(data) {
+    setCurrentServiceAndModal(data);
+  }
 
   return (
     <BackImage source={require('../../assets/bg/bgMarket.png')}>
@@ -137,22 +135,21 @@ const StoreHome = (props) => {
             <CategoriesFilter
               categories={categories}
               filter={searchByCategory}
+              data={currentServiceAndModal}
+              setData={setCurrentServiceAndModal}
               sortAZ={sortAZ}
               sortPrice={sortPrice}
             />
           )}
         </View>
-        {selectedCategory.length > 0 && (
-          <View style={styles.categoryBar}>
-            {!loadingCat && (
-              <CategoryBar
-                categories={categories}
-                selected={selectedCategory}
-                filter={searchByCategory}
-              />
-            )}
-          </View>
-        )}
+        <View style={styles.categoryBar}>
+          {!loadingCat && (
+            <CategoryBar
+              categories={categories}
+              filter={setCurrentServiceAndModal}
+            />
+          )}
+        </View>
         <View style={styles.scrollContain}>
           {loadingProd ? (
             <ActivityIndicator size="large" color="black" />
@@ -177,7 +174,7 @@ const StoreHome = (props) => {
             />
           ) : (
             <>
-              <Text style={{color: '#11A0C1', fontSize: 30, paddingBottom:50}}>
+              <Text style={{color: '#11A0C1', fontSize: 30, paddingBottom: 50}}>
                 Aucun produit trouvé
               </Text>
               <Image

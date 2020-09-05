@@ -4,17 +4,17 @@ import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {CatFilter} from './CatFilter';
 
 export const CategoriesFilterInput = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+  
   const [selected, setSelected] = useState('');
 
   const selectOne = (value) => {
-    setIsOpen(false);
+    props.setIsOpen(false);
     setSelected(value.name);
     props.selected(value._id);
   };
 
   const clear = () => {
-    setIsOpen(false);
+    props.setIsOpen(false);
     setSelected('');
     props.selected('');
   };
@@ -23,7 +23,7 @@ export const CategoriesFilterInput = (props) => {
     <View>
       <TouchableOpacity
         underlayColor={'#fff'}
-        onPress={() => setIsOpen(true)}
+        onPress={() => props.setIsOpen(true)}
         style={styles.rootSelect}>
         <View style={styles.input}>
           <Text style={{color: 'gray', margin: 3, fontSize: 15}}>
@@ -34,24 +34,6 @@ export const CategoriesFilterInput = (props) => {
           )}
         </View>
       </TouchableOpacity>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={isOpen}
-        onRequestClose={() => setIsOpen(false)}>
-        <View style={styles.modal}>
-          <View style={styles.modalInside}>
-            <Text style={styles.text}>Sélectionner une catégorie</Text>
-            <CatFilter levels={props.categories} selected={selectOne} />
-          </View>
-          <AntDesign
-            name="closecircle"
-            size={50}
-            color="#4EC7E6"
-            onPress={() => setIsOpen(false)}
-          />
-        </View>
-      </Modal>
     </View>
   );
 };
