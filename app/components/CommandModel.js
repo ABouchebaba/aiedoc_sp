@@ -5,8 +5,6 @@ import {ScrollView} from 'react-native-gesture-handler';
 
 export const CommandModel = (props) => {
   // const intervention = props.intervention
-  console.log('products', props.products);
-
   return (
     <Modal
       animationType="slide"

@@ -3,7 +3,7 @@ import React from 'react';
 import {CustomDrawerContent} from '../components';
 import About from '../screens/About';
 import History from '../screens/History';
-// import AuthTermsAndConditions from '../screens/AuthTermsAndConditions';
+// import AuthServiceForm from '../screens/AuthServiceForm';
 import Home from '../screens/Home';
 import ProfileStack from './ProfileStack';
 import Commands from '../screens/Commands';
@@ -25,10 +25,7 @@ function HomeDrawerScreen() {
       <HomeDrawer.Screen name="Mes prestations" component={History} />
       <HomeDrawer.Screen name="Mes achats" component={Commands} />
       <HomeDrawer.Screen name="Profil" component={ProfileStack} />
-      {/* <HomeDrawer.Screen
-        name="AuthTermsAndConditions"
-        component={AuthTermsAndConditions}
-      /> */}
+      {/* <HomeDrawer.Screen name="AuthServiceForm" component={AuthServiceForm} /> */}
       <HomeDrawer.Screen name="A propos" component={About} />
     </HomeDrawer.Navigator>
   );

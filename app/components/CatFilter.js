@@ -1,15 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, TouchableHighlight, Image, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+  Image,
+  ScrollView,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Ionicons} from '@expo/vector-icons';
 import {BACKEND_URL} from 'react-native-dotenv';
 
 export const CatFilter = (props) => {
-  // const selected = useSelector((state) => state.spFilter.services);
   const levels = props.levels;
-  const [parents, setParents] = useState([null]);
+  const parent = props.selectedParent?._id
   const [selected, setSelected] = useState('');
+  const [parents, setParents] = useState([parent || null]);
+
   let toShow = levels.filter((s) => s.parent === parents[parents.length - 1]);
 
   const onElementPress = (service) => {
@@ -19,8 +27,7 @@ export const CatFilter = (props) => {
       setParents([...parents, service._id]);
     } else {
       setSelected(service._id);
-      console.log(service._id);
-      props.selected(service);
+      props.selectOne(service);
     }
   };
 
@@ -30,7 +37,7 @@ export const CatFilter = (props) => {
 
   return (
     <View style={styles.container}>
-      {parents.length > 1 && (
+      {parents.length > 1  && (
         <TouchableHighlight onPress={back} underlayColor="#fff">
           <View style={styles.backButton}>
             <Ionicons name="ios-arrow-back" size={30} color="black" />
@@ -46,10 +53,7 @@ export const CatFilter = (props) => {
             underlayColor="#fff"
             key={s._id}
             onPress={() => onElementPress(s)}>
-            <View
-              style={
-                s._id === selected ? styles.selectedService : styles.service
-              }>
+            <View style={s._id === selected ? styles.service : styles.service}>
               {s.image && s.image.length > 0 && (
                 <Image
                   style={{
@@ -66,7 +70,7 @@ export const CatFilter = (props) => {
               )}
               <Text
                 style={
-                  parents.length > 1 ? styles.serviceName : styles.typeName
+                  parents.length > 1 ? styles.serviceName : styles.serviceName
                 }>
                 {s.name}
               </Text>
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     flexWrap: 'wrap',
-    alignItems:'center',
+    alignItems: 'center',
     paddingVertical: 10,
     // backgroundColor:'red'
   },

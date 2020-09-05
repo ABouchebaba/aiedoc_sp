@@ -21,7 +21,6 @@ export const Commands = (props) => {
     open: false,
     products: [],
   });
-  // console.log(JSON.stringify(command.))
   function close() {
     setCommand({ open: false, products: [] });
   }
