@@ -17,6 +17,7 @@ import {BackImage} from '../components/';
 import Button from '../components/Button';
 import {Picker} from '@react-native-community/picker';
 import CheckBox from '@react-native-community/checkbox';
+import ImagePicker from 'react-native-image-picker';
 
 const jobsList = [
   '---',
@@ -73,16 +74,31 @@ const AuthProForm = (props) => {
   }
 
   const _pickDocument = async () => {
-    let result = await DocumentPicker.getDocumentAsync({
-      copyToCacheDirectory: true,
-      type: 'image/*',
-    });
-
-    const file = {
-      uri: result.uri,
-      name: result.name,
+    const options = {
+      mediaType: 'photo',
+      quality: 0.5,
+      noData: true,
+      storageOptions: {
+        path: 'aiedoc',
+      },
     };
-    setDiplome({...diplome, file});
+
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const file = {uri: response.uri, name: response.fileName};
+        console.log('file name : ', response.fileName);
+        console.log('file size : ', response.fileSize / (1024 * 1024));
+        console.log('file uri : ', response.uri);
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        setDiplome({...diplome, file});
+      }
+    });
   };
 
   const submit = () => {
@@ -135,7 +151,7 @@ const AuthProForm = (props) => {
         </View>
       ) : (
         <View style={styles.mainView}>
-          <Text style={styles.title}>Informations personnelle</Text>
+          <Text style={styles.title}>Informations professionnelles</Text>
           <View style={{width: '90%'}}>
             <Text style={styles.label}>Profession</Text>
             <View style={styles.buttonWhite}>

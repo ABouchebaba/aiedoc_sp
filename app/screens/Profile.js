@@ -13,6 +13,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {BackImage} from '../components';
 import {BACKEND_URL} from 'react-native-dotenv';
 import * as DocumentPicker from 'expo-document-picker';
+import ImagePicker from 'react-native-image-picker';
+
 import {updatePicture} from '../Store/actions';
 import FastImage from 'react-native-fast-image';
 
@@ -30,18 +32,31 @@ const Profile = (props) => {
   // console.log(picture_uri);
 
   const changeProfilePicture = async () => {
-    let result = await DocumentPicker.getDocumentAsync({
-      copyToCacheDirectory: true,
-      type: 'image/*',
-    });
+    const options = {
+      mediaType: 'photo',
+      quality: 0.5,
+      noData: true,
+      storageOptions: {
+        path: 'aiedoc',
+      },
+    };
 
-    if (result.type === 'success') {
-      const picture = {
-        uri: result.uri,
-        name: result.name,
-      };
-      setSelectedPicture(picture);
-    }
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const picture = {uri: response.uri, name: response.fileName};
+        console.log('file name : ', response.fileName);
+        console.log('file size : ', response.fileSize / (1024 * 1024));
+        console.log('file uri : ', response.uri);
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        setSelectedPicture(picture);
+      }
+    });
   };
 
   const save_picture = () => {

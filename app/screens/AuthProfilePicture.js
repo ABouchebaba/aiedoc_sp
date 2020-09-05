@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Button from '../components/Button';
 import {BackImage} from '../components/';
 import * as DocumentPicker from 'expo-document-picker';
+import ImagePicker from 'react-native-image-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const AuthProfilePicture = (props) => {
@@ -16,18 +17,31 @@ const AuthProfilePicture = (props) => {
   const enabled = Object.keys(files).reduce((p, c) => p && files[c], true);
 
   const pickFile = (key, type) => async () => {
-    let result = await DocumentPicker.getDocumentAsync({
-      copyToCacheDirectory: true,
-      type,
-    });
+    const options = {
+      mediaType: 'photo',
+      quality: 0.5,
+      noData: true,
+      storageOptions: {
+        path: 'aiedoc',
+      },
+    };
 
-    if (result.type === 'success') {
-      const file = {
-        uri: result.uri,
-        name: result.name,
-      };
-      setFiles({...files, [key]: file});
-    }
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const file = {uri: response.uri, name: response.fileName};
+        console.log('file name : ', response.fileName);
+        console.log('file size : ', response.fileSize / (1024 * 1024));
+        console.log('file uri : ', response.uri);
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        setFiles({...files, [key]: file});
+      }
+    });
   };
 
   const submit = () => {
@@ -91,7 +105,7 @@ const AuthProfilePicture = (props) => {
             <AntDesign name="addfile" size={30} color="white" />
           )}
         </TouchableOpacity>
-        
+
         <Button title="Valider" onPress={submit} disabled={!enabled} />
       </View>
     </BackImage>
@@ -149,8 +163,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal:20,
-    borderRadius:10
+    paddingHorizontal: 20,
+    borderRadius: 10,
   },
   selected: {
     backgroundColor: 'green',
@@ -160,8 +174,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal:20,
-    borderRadius:10
+    paddingHorizontal: 20,
+    borderRadius: 10,
   },
 });
 

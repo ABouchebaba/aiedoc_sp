@@ -7,6 +7,7 @@ import {
   UNSET_USER,
   ERROR_USER,
   SET_USER_PICTURE,
+  SET_BALANCE,
 } from '../../constants/ActionTypes';
 
 const initialState = {
@@ -59,6 +60,19 @@ const UserReducer = (state = initialState, action) => {
       return {
         ...state,
         location: action.data,
+        loading: false,
+        error: false,
+      };
+    }
+    case SET_BALANCE: {
+      const {balance, percentToPay} = action.data;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          balance,
+          percentToPay,
+        },
         loading: false,
         error: false,
       };

@@ -38,3 +38,7 @@ export const update_picture = async (id, picture, token) => {
 export const setToken = (headerName, token) => {
   axios.defaults.headers.common[headerName] = token;
 };
+
+export const get_balance = () => {
+  return axios.get(`${BACKEND_URL}/api/serviceProviders/me/balance`);
+};

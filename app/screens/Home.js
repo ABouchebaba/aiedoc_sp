@@ -8,20 +8,21 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {BackImage, Header, Switch, LoadingModal} from '../components';
-import {setOnlineState, getServices} from '../Store/actions';
+import {setOnlineState, getServices, getBalance} from '../Store/actions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 
 const {height} = Dimensions.get('window');
 
-const powerOnColor = 'red';
-const powerOffColor = '#616161';
-const colors = [powerOffColor, powerOnColor];
+// const powerOnColor = 'red';
+// const powerOffColor = '#616161';
+// const colors = [powerOffColor, powerOnColor];
 
 const Home = (props) => {
   const dispatch = useDispatch();
   const {user, loading} = useSelector((state) => state.user);
   const {services} = useSelector((state) => state.services);
-  const powerColor = user.state !== 'notReady' ? colors : colors.reverse();
+  // const powerColor = user.state !== 'notReady' ? colors : colors.reverse();
 
   useEffect(() => {
     if (services.length === 0) dispatch(getServices());
@@ -35,12 +36,16 @@ const Home = (props) => {
     }
   };
 
-  const enableEmergency = () => {
-    dispatch(setOnlineState(user._id, 'emergencyReady'));
+  const updateBalance = () => {
+    dispatch(getBalance());
   };
-  const disableEmergency = () => {
-    dispatch(setOnlineState(user._id, 'ready'));
-  };
+
+  // const enableEmergency = () => {
+  //   dispatch(setOnlineState(user._id, 'emergencyReady'));
+  // };
+  // const disableEmergency = () => {
+  //   dispatch(setOnlineState(user._id, 'ready'));
+  // };
 
   return (
     <BackImage source={require('../../assets/bg/bgHome.png')}>
@@ -48,8 +53,24 @@ const Home = (props) => {
       <Header />
       <View style={styles.wrapper}>
         <View>
-          <Text style={styles.label}>Votre solde</Text>
-          <Text style={styles.balanceText}>{user.balance} DA</Text>
+          <View style={styles.balanceWrapper}>
+            <View style={styles.solde}>
+              <Text style={styles.label}>Solde</Text>
+              <Text style={styles.balanceText}>{user.balance} DA</Text>
+            </View>
+            <View style={styles.commission}>
+              <Text style={styles.label}>Commission</Text>
+              <Text style={styles.balanceText}>
+                {(user.balance * user.percentToPay) / 100} DA
+              </Text>
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={styles.refreshBalance}
+            onPress={updateBalance}>
+            <Feather name="refresh-ccw" size={25} color="#11a0c1" />
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
           onPress={toggleOnline}
@@ -82,9 +103,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  balanceWrapper: {
+    justifyContent: 'space-around',
+  },
   label: {
     color: 'white',
     fontSize: 18,
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   balanceText: {
     // left: -15,
@@ -98,6 +124,21 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  refreshBalance: {
+    alignSelf: 'center',
+    margin: 10,
+    padding: 10,
+    borderRadius: 30,
+    backgroundColor: '#efefef',
+    elevation: 24,
+    shadowColor: '#C62828',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
   },
   power: {
     borderWidth: 1,

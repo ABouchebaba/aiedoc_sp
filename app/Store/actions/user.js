@@ -5,6 +5,7 @@ import {
   USER_LOADING,
   SET_USER_PICTURE,
   ERROR_USER,
+  SET_BALANCE,
 } from '../../constants/ActionTypes';
 import {
   validatePin,
@@ -12,6 +13,7 @@ import {
   registerUser,
   setState,
   update_picture,
+  get_balance,
 } from '../api';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -248,4 +250,23 @@ export const setUser = (user) => (dispatch) => {
     type: SET_USER_DATA,
     data: user,
   });
+};
+
+export const getBalance = () => (dispatch) => {
+  dispatch({type: USER_LOADING});
+
+  get_balance()
+    .then((res) => {
+      console.log('response get balance : ', res.data);
+      dispatch({
+        type: SET_BALANCE,
+        data: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err.message);
+      dispatch({
+        type: ERROR_USER,
+      });
+    });
 };

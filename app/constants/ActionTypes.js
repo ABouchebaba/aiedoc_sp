@@ -6,6 +6,7 @@ export const SET_USER_DATA = 'SET_USER_DATA';
 export const SET_USER_STATE = 'SET_USER_STATE';
 export const SET_LOCATION = 'SET_LOCATION';
 export const SET_USER_PICTURE = 'SET_USER_PICTURE';
+export const SET_BALANCE = 'SET_BALANCE';
 export const UNSET_USER = 'UNSET_USER';
 export const ERROR_USER = 'ERROR_USER';
 

@@ -9,7 +9,7 @@ import {setToken} from '../Store/api';
 const Navigator = () => {
   const {user, token} = useSelector((state) => state.user);
   const {intervention} = useSelector((state) => state.current);
-  // recover token from storage and put it in Axios
+  // take token from storage and put it in Axios
   if (token) setToken('x-auth-token', token);
 
   // console.log(intervention._id);
