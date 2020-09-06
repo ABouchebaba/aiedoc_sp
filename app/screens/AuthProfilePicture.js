@@ -12,6 +12,7 @@ const AuthProfilePicture = (props) => {
     extNaissance: null,
     residence: null,
     idCard: null,
+    casierJudiciaire: null,
   });
 
   const enabled = Object.keys(files).reduce((p, c) => p && files[c], true);
@@ -33,9 +34,9 @@ const AuthProfilePicture = (props) => {
         console.log('ImagePicker Error: ', response.error);
       } else {
         const file = {uri: response.uri, name: response.fileName};
-        console.log('file name : ', response.fileName);
-        console.log('file size : ', response.fileSize / (1024 * 1024));
-        console.log('file uri : ', response.uri);
+        // console.log('file name : ', response.fileName);
+        // console.log('file size : ', response.fileSize / (1024 * 1024));
+        // console.log('file uri : ', response.uri);
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
@@ -100,6 +101,17 @@ const AuthProfilePicture = (props) => {
           onPress={pickFile('idCard', 'image/*')}>
           <Text style={styles.selectFileText}>Carte d'identité</Text>
           {files.idCard ? (
+            <AntDesign name="check" size={30} color="white" />
+          ) : (
+            <AntDesign name="addfile" size={30} color="white" />
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={files.casierJudiciaire ? styles.selected : styles.notSelected}
+          onPress={pickFile('casierJudiciaire', 'image/*')}>
+          <Text style={styles.selectFileText}>Casier Judiciaire</Text>
+          {files.casierJudiciaire ? (
             <AntDesign name="check" size={30} color="white" />
           ) : (
             <AntDesign name="addfile" size={30} color="white" />

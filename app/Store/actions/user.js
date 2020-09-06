@@ -149,6 +149,11 @@ export const register = (user, setLoading) => (dispatch) => {
       filename: user.idCard.name,
       data: RNFetchBlob.wrap(user.idCard.uri),
     },
+    {
+      name: 'casierJudiciaire',
+      filename: user.casierJudiciaire.name,
+      data: RNFetchBlob.wrap(user.casierJudiciaire.uri),
+    },
   ];
 
   for (let i = 0; i < user.files.length; i++) {
