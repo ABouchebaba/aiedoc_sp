@@ -69,7 +69,10 @@ export const ProductCard = (props) => {
           <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
             <Text style={styles.priceOld}>{product.price} DA</Text>
             <Text style={styles.priceDiscount}>
-              {product.price - product.price * (product.discount / 100)} DA
+              {Math.floor(
+                product.price - product.price * (product.discount / 100),
+              )}{' '}
+              DA
             </Text>
           </View>
         )}
