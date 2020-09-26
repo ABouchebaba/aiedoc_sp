@@ -36,7 +36,7 @@ export const CartModal = (props) => {
       <KeyboardAvoidingView
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={styles.modelCard}>
-        <Text style={styles.title}>Veuillez entrer votre addresse</Text>
+        <Text style={styles.title}>Veuillez entrer votre adresse</Text>
         <View style={styles.inputGroup}>
           <GooglePlacesAutocomplete
             placeholder="Recherche"
@@ -60,7 +60,7 @@ export const CartModal = (props) => {
               },
             }}
             onFail={(err) => {
-              console.log("err :",err);
+              console.log('err :', err);
             }}
             enablePoweredByContainer={false}
             minLength={4}
