@@ -57,7 +57,7 @@ const ProductProfile = ({route, navigation}) => {
       brand: product.brand,
       qty: 1,
       option: product.options.length > 1 ? option : product.options[0].option,
-      price: product.price * (1 - product.discount / 100),
+      price: Math.floor(product.price * (1 - product.discount / 100)),
       from: rent ? from : null,
       to: rent ? myDate.toISOString().slice(0, 10) : null,
     };

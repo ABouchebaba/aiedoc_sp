@@ -5,6 +5,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 
 export const CommandModel = (props) => {
   // const intervention = props.intervention
+
   return (
     <Modal
       animationType="slide"
@@ -27,7 +28,7 @@ export const CommandModel = (props) => {
                     Option:{' '}
                     {prd.option.trim().length == 0 ? 'Standard' : prd.option}
                   </Text>
-                  <Text style={styles.prdText}>Prix: {prd.product.price}</Text>
+                  <Text style={styles.prdText}>Prix: { Math.floor(prd.product.price)}</Text>
                   <Text style={styles.prdText}>Quantité: {prd.qty}</Text>
                   <Text style={styles.total}>
                     TOTAL: {prd.qty * prd.product.price}

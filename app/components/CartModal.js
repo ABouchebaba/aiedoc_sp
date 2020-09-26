@@ -9,7 +9,9 @@ import {
   View,
 } from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+
 navigator.geolocation = require('@react-native-community/geolocation');
+
 export const CartModal = (props) => {
   // const intervention = props.intervention
   const [address, setAdresse] = useState('');
@@ -25,7 +27,7 @@ export const CartModal = (props) => {
       setLocation({});
       return props.submit(data);
     }
-    Alert.alert('Erreur', 'Veuillez compléter le formulaire');
+    Alert.alert('Adresse introuvable', 'Veuillez entrer une adresse valide');
   }
   return (
     <Modal
@@ -40,6 +42,7 @@ export const CartModal = (props) => {
         <View style={styles.inputGroup}>
           <GooglePlacesAutocomplete
             placeholder="Recherche"
+            keyboardAppearance='default'
             styles={{
               textInputContainer: {
                 backgroundColor: 'rgba(0,0,0,0)',
@@ -63,7 +66,7 @@ export const CartModal = (props) => {
               console.log('err :', err);
             }}
             enablePoweredByContainer={false}
-            minLength={4}
+            minLength={3}
             onPress={(data, details = null) => {
               setAdresse(details.name + ' ' + details.formatted_address);
             }}
@@ -73,12 +76,19 @@ export const CartModal = (props) => {
               language: 'fr',
               components: 'country:dz',
             }}
-            // currentLocation={true}
-            // currentLocationLabel="Postion actuelle"
+            currentLocation={true}
+            GooglePlacesSearchQuery={{
+              rankby:'distance',
+              type: 'address'
+            }}
+            nearbyPlacesAPI='GooglePlacesSearch'
+            currentLocationLabel="Postion actuelle"
+            autoFillOnNotFound={true}
+            enableHighAccuracyLocation={true}
           />
         </View>
         <TouchableOpacity onPress={submit} style={styles.submit}>
-          <Text style={{fontSize: 27, color: 'white'}}>Vérifier</Text>
+          <Text style={{fontSize: 27, color: 'white'}}>Valider</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={props.close} style={styles.resend}>
           <Text style={{fontSize: 15, color: 'black'}}>Annuler</Text>

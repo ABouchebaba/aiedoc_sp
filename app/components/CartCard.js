@@ -45,7 +45,7 @@ export const CartCard = (props) => {
           option: {product.option.trim() !== '' ? product.option : 'Standard'}
         </Text>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={styles.price}>{product.price} DA </Text>
+          <Text style={styles.price}>{Math.floor(product.price)} DA </Text>
           {isRent && (
             <Text style={styles.fullPrice}>
               {diff / (1000 * 60 * 60 * 24)} jours{' '}
@@ -53,8 +53,9 @@ export const CartCard = (props) => {
           )}
           <Text style={styles.fullPrice}>
             {isRent
-              ? (product.price * product.qty * diff) / (1000 * 60 * 60 * 24)
-              : product.price * product.qty}{' '}
+              ? Math.floor(product.price * product.qty * diff) /
+                (1000 * 60 * 60 * 24)
+              : Math.floor(product.price * product.qty)}{' '}
             DA
           </Text>
         </View>

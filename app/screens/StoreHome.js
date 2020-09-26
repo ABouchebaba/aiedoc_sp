@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  BackHandler
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -20,6 +21,7 @@ import {
   ProductCard,
 } from '../components';
 import {getCategories, getProducts} from '../Store/actions';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ITEM_HEIGHT = 250;
 
@@ -36,6 +38,24 @@ const StoreHome = (props) => {
     service: null,
     modalOpen: false
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if ((filteredData.length !== products.length)|| searchText.length>0) {
+          setFilteredData(products)
+          setSearchText('')
+          return true;
+        } else {
+          console.log('false')
+          return false;
+        }
+      };
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [filteredData, products ])
+  );
   
   useEffect(() => {
     dispatch(getCategories());
