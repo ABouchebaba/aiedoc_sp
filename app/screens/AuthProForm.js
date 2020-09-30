@@ -1,5 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -18,8 +18,9 @@ import Button from '../components/Button';
 import {Picker} from '@react-native-community/picker';
 import CheckBox from '@react-native-community/checkbox';
 import ImagePicker from 'react-native-image-picker';
+import {getServices} from '../Store/actions';
 
-const jobsList = [
+/* const jobsList = [
   '---',
   'medecin generaliste',
   'pediatre',
@@ -37,11 +38,13 @@ const jobsList = [
   'puericultrice',
   'sage femme',
   'soin des ongles et cheveux',
-];
+]; */
 
 const AuthProForm = (props) => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.user.loading);
+  const {services} = useSelector((state) => state.services);
+  const jobsList = services.filter(x=> x.level==="SubFamily")
   const [job, setJob] = useState('');
   const [multiDiplome, setMultiDiplome] = useState(false);
   const [diplomes, setDiplomes] = useState([]);
@@ -50,11 +53,16 @@ const AuthProForm = (props) => {
     file: '',
     description: '',
   });
+
   const disabled = !(
     diplome.type !== '' &&
     diplome.file !== '' &&
     diplome.description !== ''
   );
+
+  useEffect(() => {
+    dispatch(getServices());
+  }, []);
 
   const disabledValidation = multiDiplome
     ? !(job !== '---' && diplomes.length > 0)
@@ -161,7 +169,7 @@ const AuthProForm = (props) => {
                 style={{fontSize: 20}}
                 onValueChange={(itemValue) => setJob(itemValue)}>
                 {jobsList.map((job, i) => (
-                  <Picker.Item key={i} label={job.toUpperCase()} value={job} />
+                  <Picker.Item key={i} label={job.name.toUpperCase()} value={job.name} />
                 ))}
               </Picker>
             </View>
