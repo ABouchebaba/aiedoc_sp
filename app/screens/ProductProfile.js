@@ -121,7 +121,7 @@ const ProductProfile = ({route, navigation}) => {
         )}
         <View style={styles.buy}>
           <Text style={styles.name}>
-            {product.price * (1 - product.discount / 100)} DA
+            {Math.floor(product.price * (1 - product.discount / 100))} DA
           </Text>
           <TouchableOpacity
             style={disabled ? styles.disabledbuyButton : styles.buyButton}
