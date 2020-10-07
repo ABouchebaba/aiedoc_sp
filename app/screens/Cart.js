@@ -77,7 +77,7 @@ const Cart = ({route, navigation}) => {
     let isBuy, isRent;
     const data = {
       address: address.address,
-      // wilaya: address.wilaya,
+      promoCode: address.promoCode,
       // location: address.location,
       user: _id,
       user_type: 'ServiceProvider',
@@ -99,6 +99,7 @@ const Cart = ({route, navigation}) => {
       }),
       type: isBuy && isRent ? 'both' : isRent ? 'rent' : 'buy',
     };
+    if(!address.promoCode) delete data.promoCode
     dispatch(addCommand(data, doneModal));
     close();
   }

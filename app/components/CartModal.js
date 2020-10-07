@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  TextInput
 } from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
@@ -15,20 +16,24 @@ navigator.geolocation = require('@react-native-community/geolocation');
 export const CartModal = (props) => {
   // const intervention = props.intervention
   const [address, setAdresse] = useState('');
-  // const [wilaya, setWilaya] = useState('');
+  const [promoCode, setPromoCode] = useState(null);
   const [location, setLocation] = useState({});
+
   function submit() {
     if (address.length > 0) {
       const data = {
         address: address,
         location: location,
+        promoCode: promoCode
       };
       setAdresse('');
       setLocation({});
+      setPromoCode(null)
       return props.submit(data);
     }
     Alert.alert('Adresse introuvable', 'Veuillez entrer une adresse valide');
   }
+
   return (
     <Modal
       animationType="slide"
@@ -42,7 +47,7 @@ export const CartModal = (props) => {
         <View style={styles.inputGroup}>
           <GooglePlacesAutocomplete
             placeholder="Recherche"
-            keyboardAppearance='default'
+            keyboardAppearance="default"
             styles={{
               textInputContainer: {
                 backgroundColor: 'rgba(0,0,0,0)',
@@ -63,7 +68,7 @@ export const CartModal = (props) => {
               },
             }}
             onFail={(err) => {
-              console.log("err :",err);
+              console.log('err :', err);
             }}
             enablePoweredByContainer={false}
             minLength={3}
@@ -78,13 +83,18 @@ export const CartModal = (props) => {
             }}
             currentLocation={true}
             GooglePlacesSearchQuery={{
-              rankby:'distance',
-              type: 'address'
+              rankby: 'distance',
+              type: 'address',
             }}
-            nearbyPlacesAPI='GooglePlacesSearch'
+            nearbyPlacesAPI="GooglePlacesSearch"
             currentLocationLabel="Postion actuelle"
             autoFillOnNotFound={true}
             enableHighAccuracyLocation={true}
+          />
+          <TextInput
+            placeholder="Code promo (optionnel)"
+            onChangeText={setPromoCode}
+            style={styles.TextInput}
           />
         </View>
         <TouchableOpacity onPress={submit} style={styles.submit}>
