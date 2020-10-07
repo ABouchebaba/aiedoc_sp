@@ -43,7 +43,7 @@ export const CartModal = (props) => {
       <KeyboardAvoidingView
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={styles.modelCard}>
-        <Text style={styles.title}>Veuillez entrer votre addresse</Text>
+        <Text style={styles.title}>Veuillez entrer votre adresse</Text>
         <View style={styles.inputGroup}>
           <GooglePlacesAutocomplete
             placeholder="Recherche"
